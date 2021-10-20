@@ -1,6 +1,6 @@
-import {object, array, tuple, literal, TypeOf, z, union} from 'zod';
+import { literal, union } from 'zod';
 
-export const permissionStatusSchema = z.union([
+export const permissionStatusSchema = union([
   literal(600),
   literal(601),
   literal(602),
@@ -102,7 +102,3 @@ export const permissionStatusSchema = z.union([
   literal(698),
   literal(699),
 ]);
-
-type Test = z.infer<typeof permissionStatusSchema>;
-
-const ret: Test = 650;

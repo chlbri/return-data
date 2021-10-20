@@ -1,6 +1,6 @@
-import { literal, z } from 'zod';
+import { literal, union } from 'zod';
 
-export const timeoutStatusSchema = z.union([
+export const timeoutErrorStatusSchema = union([
   literal(900),
   literal(901),
   literal(902),
@@ -102,7 +102,3 @@ export const timeoutStatusSchema = z.union([
   literal(998),
   literal(999),
 ]);
-
-type Test = z.infer<typeof timeoutStatusSchema>;
-
-const ret: Test = 950;

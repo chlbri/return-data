@@ -1,13 +1,4 @@
-import {
-  object,
-  array,
-  string,
-  tuple,
-  literal,
-  TypeOf,
-  z,
-  union,
-} from 'zod';
+import { object, string, TypeOf } from 'zod';
 import { clientErrorStatusSchema } from '../status';
 
 export const clientErrorDataSchema = object({
@@ -18,7 +9,7 @@ export const clientErrorDataSchema = object({
 type T = TypeOf<typeof clientErrorDataSchema>;
 
 /* prettier-ignore */
-export const CLIENT_ERROR_CONSTANTS = {
+export const CLIENT_ERROR_DATAS = {
   400: { status: 400 } as T,
   401: { status: 401 } as T,
   402: { status: 402 } as T,

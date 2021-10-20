@@ -1,6 +1,6 @@
-import {object, array, tuple, literal, TypeOf, z, union} from 'zod';
+import { literal, union } from 'zod';
 
-export const informationStatusSchema = z.union([
+export const informationStatusSchema = union([
   literal(100),
   literal(101),
   literal(102),
@@ -102,7 +102,3 @@ export const informationStatusSchema = z.union([
   literal(198),
   literal(199),
 ]);
-
-type Test = z.infer<typeof informationStatusSchema>;
-
-const ret: Test = 150;

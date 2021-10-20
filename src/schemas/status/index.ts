@@ -1,32 +1,28 @@
-import { union, TypeOf } from 'zod';
-import { clientErrorsStatusSchema } from './client';
+import { union } from 'zod';
+import { clientErrorsStatusSchema as clientErrorStatusSchema } from './client';
 import { informationStatusSchema } from './information';
 import { permissionStatusSchema } from './permission';
 import { redirectStatusSchema } from './redirect';
 import { serverErrorStatusSchema } from './server';
 import { successfullStatusSchema } from './successfull';
-import { timeoutStatusSchema } from './timeout';
+import { timeoutErrorStatusSchema } from './timeout';
 
 export {
-  clientErrorsStatusSchema as clientErrorStatusSchema,
+  clientErrorStatusSchema,
   informationStatusSchema,
   permissionStatusSchema,
   redirectStatusSchema,
   serverErrorStatusSchema,
   successfullStatusSchema,
-  timeoutStatusSchema,
+  timeoutErrorStatusSchema,
 };
 
 export const statusSchema = union([
-  ...clientErrorsStatusSchema.options,
+  ...clientErrorStatusSchema.options,
   ...informationStatusSchema.options,
   ...permissionStatusSchema.options,
   ...redirectStatusSchema.options,
   ...serverErrorStatusSchema.options,
   ...successfullStatusSchema.options,
-  ...timeoutStatusSchema.options,
+  ...timeoutErrorStatusSchema.options,
 ]);
-
-type Test = TypeOf<typeof statusSchema>;
-
-const ret: Test = 200;

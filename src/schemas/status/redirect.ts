@@ -1,6 +1,6 @@
-import {object, array, tuple, literal, TypeOf, z, union} from 'zod';
+import { literal, union } from 'zod';
 
-export const redirectStatusSchema = z.union([
+export const redirectStatusSchema = union([
   literal(300),
   literal(301),
   literal(302),
@@ -102,7 +102,3 @@ export const redirectStatusSchema = z.union([
   literal(398),
   literal(399),
 ]);
-
-type Test = z.infer<typeof redirectStatusSchema>;
-
-const ret: Test = 350;

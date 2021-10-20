@@ -6,14 +6,15 @@ import {
   ZodRawShape,
   ZodTypeAny,
 } from 'zod';
-import { isPrimitive, ZodPrimitive } from '../../.config';
+import { isPrimitive } from '../../functions';
+import type { Success, ZodPrimitive } from '../../types';
 import { successfullStatusSchema } from '../status';
 
 export const successfullDataSchema = <
   T extends ZodRawShape | ZodPrimitive,
 >(
   shape: T,
-) => {
+): Success<T> => {
   const payload = (
     isPrimitive(shape) ? shape : object(shape)
   ) as T extends ZodRawShape

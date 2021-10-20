@@ -4,14 +4,14 @@ import {
   TypeOf,
   ZodOptional,
   ZodRawShape,
-  ZodTypeAny,
+  ZodTypeAny
 } from 'zod';
-import {
-  isPrimitive,
-  OptionalDeepPartial,
-  ZodPrimitive,
-} from '../../.config';
+import { isPrimitive } from '../../functions';
+import type {
+  OptionalDeepPartial, ZodPrimitive
+} from '../../types';
 import { redirectStatusSchema } from '../status';
+
 
 export const redirectDataSchema = <T extends ZodRawShape | ZodPrimitive>(
   shape: T,

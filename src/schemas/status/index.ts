@@ -1,5 +1,5 @@
 import { union } from 'zod';
-import { clientErrorsStatusSchema as clientErrorStatusSchema } from './client';
+import { clientErrorStatusSchema as clientErrorStatusSchema } from './client';
 import { informationStatusSchema } from './information';
 import { permissionStatusSchema } from './permission';
 import { redirectStatusSchema } from './redirect';

@@ -4,20 +4,21 @@ import {
   TypeOf,
   ZodOptional,
   ZodRawShape,
-  ZodTypeAny,
+  ZodTypeAny
 } from 'zod';
+import { isPrimitive } from '../../functions';
 import {
-  isPrimitive,
+  Information,
   OptionalDeepPartial,
-  ZodPrimitive,
-} from '../../.config';
+  ZodPrimitive
+} from '../../types';
 import { informationStatusSchema } from '../status';
 
 export const informationDataSchema = <
   T extends ZodRawShape | ZodPrimitive,
 >(
   shape: T,
-) => {
+): Information<T> => {
   const payload = (
     isPrimitive(shape) ? shape.optional() : object(shape).deepPartial()
   ) as T extends ZodRawShape

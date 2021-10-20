@@ -7,16 +7,17 @@ import {
   ZodRawShape,
   ZodTypeAny,
 } from 'zod';
-import {
-  isPrimitive,
+import { isPrimitive } from '../../functions';
+import type {
   OptionalDeepPartial,
+  Permission,
   ZodPrimitive,
-} from '../../.config';
+} from '../../types';
 import { permissionStatusSchema } from '../status';
 
 export const permissionDataSchema = <T extends ZodRawShape | ZodPrimitive>(
   shape: T,
-) => {
+): Permission<T> => {
   const payload = (
     isPrimitive(shape) ? shape.optional() : object(shape).deepPartial()
   ) as T extends ZodRawShape

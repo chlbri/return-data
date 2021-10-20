@@ -1,14 +1,7 @@
-import { object, TypeOf } from 'zod';
-import { timeoutErrorStatusSchema } from '../status';
-
-export const timeoutErrorDataSchema = object({
-  status: timeoutErrorStatusSchema,
-});
-
-type T = TypeOf<typeof timeoutErrorDataSchema>;
+import type { Timeout as T } from '../types';
 
 /* prettier-ignore */
-export const TIMEOUT_ERROR_DATAS = {
+const TIMEOUT_ERRORS = {
   900: { status: 900 } as T,
   901: { status: 901 } as T,
   902: { status: 902 } as T,
@@ -110,3 +103,5 @@ export const TIMEOUT_ERROR_DATAS = {
   998: { status: 998 } as T,
   999: { status: 999 } as T,
 } as const;
+
+export default TIMEOUT_ERRORS;

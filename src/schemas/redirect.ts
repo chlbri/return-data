@@ -1,6 +1,6 @@
 import { literal, union } from 'zod';
 
-export const redirectStatusSchema = union([
+const redirectStatusSchema = union([
   literal(300),
   literal(301),
   literal(302),
@@ -102,3 +102,5 @@ export const redirectStatusSchema = union([
   literal(398),
   literal(399),
 ]);
+
+export default redirectStatusSchema;

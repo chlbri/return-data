@@ -1,6 +1,6 @@
 import { literal, union } from 'zod';
 
-export const clientErrorStatusSchema = union([
+const clientErrorStatusSchema = union([
   literal(400),
   literal(401),
   literal(402),
@@ -102,3 +102,5 @@ export const clientErrorStatusSchema = union([
   literal(498),
   literal(499),
 ]);
+
+export default clientErrorStatusSchema;

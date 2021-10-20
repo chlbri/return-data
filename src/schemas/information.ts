@@ -1,6 +1,6 @@
 import { literal, union } from 'zod';
 
-export const informationStatusSchema = union([
+const informationStatusSchema = union([
   literal(100),
   literal(101),
   literal(102),
@@ -102,3 +102,5 @@ export const informationStatusSchema = union([
   literal(198),
   literal(199),
 ]);
+
+export default informationStatusSchema;

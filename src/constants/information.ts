@@ -1,48 +1,7 @@
-import {
-  object,
-  string,
-  TypeOf,
-  ZodOptional,
-  ZodRawShape,
-  ZodTypeAny
-} from 'zod';
-import { isPrimitive } from '../../functions';
-import {
-  Information,
-  OptionalDeepPartial,
-  ZodPrimitive
-} from '../../types';
-import { informationStatusSchema } from '../status';
-
-export const informationDataSchema = <
-  T extends ZodRawShape | ZodPrimitive,
->(
-  shape: T,
-): Information<T> => {
-  const payload = (
-    isPrimitive(shape) ? shape.optional() : object(shape).deepPartial()
-  ) as T extends ZodRawShape
-    ? OptionalDeepPartial<T>
-    : T extends ZodTypeAny
-    ? ZodOptional<T>
-    : never;
-
-  return object({
-    status: informationStatusSchema,
-    payload,
-    message: string().optional(),
-  });
-};
-
-const examples = informationDataSchema({
-  id: string(),
-  password: string(),
-});
-
-type T = TypeOf<typeof examples>;
+import type { Information as T } from '../types';
 
 /* prettier-ignore */
-export const INFORMATION_DATAS = {
+const INFORMATIONS = {
   100: { status: 100 } as T,
   101: { status: 101 } as T,
   102: { status: 102 } as T,
@@ -144,3 +103,5 @@ export const INFORMATION_DATAS = {
   198: { status: 198 } as T,
   199: { status: 199 } as T,
 } as const;
+
+export default INFORMATIONS;

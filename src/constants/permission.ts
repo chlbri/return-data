@@ -1,47 +1,7 @@
-import {
-  array,
-  object,
-  string,
-  TypeOf,
-  ZodOptional,
-  ZodRawShape,
-  ZodTypeAny,
-} from 'zod';
-import { isPrimitive } from '../../functions';
-import type {
-  OptionalDeepPartial,
-  Permission,
-  ZodPrimitive,
-} from '../../types';
-import { permissionStatusSchema } from '../status';
-
-export const permissionDataSchema = <T extends ZodRawShape | ZodPrimitive>(
-  shape: T,
-): Permission<T> => {
-  const payload = (
-    isPrimitive(shape) ? shape.optional() : object(shape).deepPartial()
-  ) as T extends ZodRawShape
-    ? OptionalDeepPartial<T>
-    : T extends ZodTypeAny
-    ? ZodOptional<T>
-    : never;
-
-  return object({
-    status: permissionStatusSchema,
-    payload,
-    notPermitteds: array(string()).optional(),
-  });
-};
-
-const examples = permissionDataSchema({
-  id: string(),
-  password: string(),
-});
-
-type T = TypeOf<typeof examples>;
+import type { Permission as T } from '../types';
 
 /*prettier-ignore*/
-export const PERMISSION_DENIED_DATAS = {
+const PERMISSION_DENIEDS = {
   600: { status: 600 } as T,
   601: { status: 601 } as T,
   602: { status: 602 } as T,
@@ -143,3 +103,5 @@ export const PERMISSION_DENIED_DATAS = {
   698: { status: 698 } as T,
   699: { status: 699 } as T,
 } as const;
+
+export default PERMISSION_DENIEDS;

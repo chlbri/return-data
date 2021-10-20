@@ -15,16 +15,17 @@ import {
   serverErrorStatusSchema,
   successfullStatusSchema,
   timeoutErrorStatusSchema,
-} from './schemas/status';
-import {
-  ClientErrorD,
+} from './schemas';
+import type {
+  ChainReturn,
+  ClientError,
+  Information,
+  Permission,
+  Redirect,
+  Server,
+  Success,
+  Timeout,
   ZodPrimitive,
-  InformationD,
-  PermissionD,
-  RedirectD,
-  ServerD,
-  SuccessD,
-  TimeoutD,
 } from './types';
 
 export function isPrimitive(val: any): val is ZodPrimitive {
@@ -38,8 +39,11 @@ export function isPrimitive(val: any): val is ZodPrimitive {
   );
 }
 
-export function chainSchemas<T>(value: T, ...schemas: ZodType<T>[]) {
-  if (!schemas[0]) return value;
+export function chainSchemas<T>(
+  value: T,
+  ...schemas: ZodType<T>[]
+): ChainReturn<T> {
+  if (!schemas[0]) return { success: true, data: value };
   const firstSchema = schemas[0];
   let out = firstSchema.safeParse(value);
 
@@ -53,31 +57,40 @@ export function chainSchemas<T>(value: T, ...schemas: ZodType<T>[]) {
   return out;
 }
 
-export function isClientErrorD(
+export function isClientError(
   arg: Record<string, any>,
-): arg is ClientErrorD {
+): arg is ClientError {
   return clientErrorStatusSchema.safeParse(arg.status).success;
 }
-export function isInformationD<T =any>(
+
+export function isInformation<T = any>(
   arg: Record<string, any>,
-): arg is InformationD<T> {
+): arg is Information<T> {
   return informationStatusSchema.safeParse(arg.status).success;
 }
-export function isPermissionD<T =any>(
+
+export function isPermission<T = any>(
   arg: Record<string, any>,
-): arg is PermissionD<T> {
+): arg is Permission<T> {
   return permissionStatusSchema.safeParse(arg.status).success;
 }
-export function isRedirectD<T =any>(arg: Record<string, any>): arg is RedirectD<T> {
+
+export function isRedirect<T = any>(
+  arg: Record<string, any>,
+): arg is Redirect<T> {
   return redirectStatusSchema.safeParse(arg.status).success;
 }
-export function isServerD(arg: Record<string, any>): arg is ServerD {
+
+export function isServer(arg: Record<string, any>): arg is Server {
   return successfullStatusSchema.safeParse(arg.status).success;
 }
-export function isSuccessD<T =any>(arg: Record<string, any>): arg is SuccessD<T> {
+
+export function isSuccess<T = any>(
+  arg: Record<string, any>,
+): arg is Success<T> {
   return serverErrorStatusSchema.safeParse(arg.status).success;
 }
 
-export function isTimeoutD(arg: Record<string, any>): arg is TimeoutD {
+export function isTimeout(arg: Record<string, any>): arg is Timeout {
   return timeoutErrorStatusSchema.safeParse(arg.status).success;
 }

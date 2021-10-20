@@ -1,42 +1,7 @@
-import {
-  object,
-  string,
-  TypeOf,
-  ZodOptional,
-  ZodRawShape,
-  ZodTypeAny
-} from 'zod';
-import { isPrimitive } from '../../functions';
-import type {
-  OptionalDeepPartial, ZodPrimitive
-} from '../../types';
-import { redirectStatusSchema } from '../status';
-
-
-export const redirectDataSchema = <T extends ZodRawShape | ZodPrimitive>(
-  shape: T,
-) => {
-  const payload = (
-    isPrimitive(shape) ? shape.optional() : object(shape).deepPartial()
-  ) as T extends ZodRawShape
-    ? OptionalDeepPartial<T>
-    : T extends ZodTypeAny
-    ? ZodOptional<T>
-    : never;
-
-  return object({
-    status: redirectStatusSchema,
-    payload,
-    message: string().optional(),
-  });
-};
-
-const examples = redirectDataSchema({ id: string(), password: string() });
-
-type T = TypeOf<typeof examples>;
+import type { Redirect as T } from '..';
 
 /*prettier-ignore*/
-export const REDIRECT_DATAS = {
+const REDIRECTS = {
   300: { status: 300 } as T,
   301: { status: 301 } as T,
   302: { status: 302 } as T,
@@ -138,3 +103,5 @@ export const REDIRECT_DATAS = {
   398: { status: 398 } as T,
   399: { status: 399 } as T,
 } as const;
+
+export default REDIRECTS;

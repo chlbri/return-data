@@ -1,15 +1,7 @@
-import { object, string, TypeOf } from 'zod';
-import { serverErrorStatusSchema } from '../status';
-
-export const serverErrorDataSchema = object({
-  status: serverErrorStatusSchema,
-  message: string().optional(),
-});
-
-type T = TypeOf<typeof serverErrorDataSchema>;
+import type { Server as T } from '../types';
 
 /*prettier-ignore*/
-export const SERVER_ERROR_DATAS = {
+const SERVER_ERRORS = {
   500: { status: 500 } as T,
   501: { status: 501 } as T,
   502: { status: 502 } as T,
@@ -111,3 +103,5 @@ export const SERVER_ERROR_DATAS = {
   598: { status: 598 } as T,
   599: { status: 599 } as T,
 } as const;
+
+export default SERVER_ERRORS;

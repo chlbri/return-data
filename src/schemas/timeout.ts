@@ -1,6 +1,6 @@
 import { literal, union } from 'zod';
 
-export const timeoutErrorStatusSchema = union([
+const timeoutErrorStatusSchema = union([
   literal(900),
   literal(901),
   literal(902),
@@ -102,3 +102,5 @@ export const timeoutErrorStatusSchema = union([
   literal(998),
   literal(999),
 ]);
+
+export default timeoutErrorStatusSchema;

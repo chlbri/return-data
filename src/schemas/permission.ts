@@ -1,6 +1,6 @@
 import { literal, union } from 'zod';
 
-export const permissionStatusSchema = union([
+const permissionStatusSchema = union([
   literal(600),
   literal(601),
   literal(602),
@@ -102,3 +102,5 @@ export const permissionStatusSchema = union([
   literal(698),
   literal(699),
 ]);
+
+export default permissionStatusSchema

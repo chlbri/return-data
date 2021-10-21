@@ -103,4 +103,4 @@ const permissionStatusSchema = union([
   literal(699),
 ]);
 
-export default permissionStatusSchema
+export default permissionStatusSchema;

@@ -1,6 +1,6 @@
 import { literal, union } from 'zod';
 
- const successfullStatusSchema = union([
+const successfullStatusSchema = union([
   literal(200),
   literal(201),
   literal(202),

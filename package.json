@@ -5,7 +5,7 @@
   "repository": "https://github.com/chlbri/core-promises.git",
   "author": "chlbri <bri_lvi@icloud.com>",
   "license": "MIT",
-  "private": true,
+  "private": false,
   "devDependencies": {
     "@types/faker": "^5.5.9",
     "@types/jest": "^27.0.2",

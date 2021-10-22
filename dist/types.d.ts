@@ -1,5 +1,12 @@
-import { TypeOf, ZodArray, ZodBoolean, ZodDate, ZodNumber, ZodObject, ZodOptional, ZodRawShape, ZodString, ZodTypeAny, ZodUndefined } from 'zod';
-import { clientErrorStatusSchema, informationStatusSchema, permissionStatusSchema, redirectStatusSchema, serverErrorStatusSchema, statusSchema, successfullStatusSchema, timeoutErrorStatusSchema } from './schemas/status';
+import { TypeOf, ZodArray, ZodBoolean, ZodDate, ZodNumber, ZodObject, ZodOptional, ZodRawShape, ZodString, ZodTypeAny, ZodUndefined, ZodError } from 'zod';
+import { clientErrorStatusSchema, informationStatusSchema, permissionStatusSchema, redirectStatusSchema, serverErrorStatusSchema, statusSchema, successfullStatusSchema, timeoutErrorStatusSchema } from './schemas';
+export declare type ChainReturn<T> = {
+    success: true;
+    data: T;
+} | {
+    success: false;
+    error: ZodError<T>;
+};
 export declare type OptionalDeepPartial<T extends ZodRawShape> = ZodOptional<ZodObject<{
     [key in keyof T]: ZodOptional<T[key]>;
 }>>;

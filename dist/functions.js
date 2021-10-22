@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isTimeoutD = exports.isSuccessD = exports.isServerD = exports.isRedirectD = exports.isPermissionD = exports.isInformationD = exports.isClientErrorD = exports.chainSchemas = exports.isPrimitive = void 0;
+exports.isTimeout = exports.isSuccess = exports.isServer = exports.isRedirect = exports.isPermission = exports.isInformation = exports.isClientError = exports.chainSchemas = exports.isPrimitive = void 0;
 const zod_1 = require("zod");
-const status_1 = require("./schemas/status");
+const schemas_1 = require("./schemas");
 function isPrimitive(val) {
     return (val instanceof zod_1.ZodNumber ||
         val instanceof zod_1.ZodString ||
@@ -14,7 +14,7 @@ function isPrimitive(val) {
 exports.isPrimitive = isPrimitive;
 function chainSchemas(value, ...schemas) {
     if (!schemas[0])
-        return value;
+        return { success: true, data: value };
     const firstSchema = schemas[0];
     let out = firstSchema.safeParse(value);
     const _schemas = schemas.slice(1);
@@ -27,31 +27,31 @@ function chainSchemas(value, ...schemas) {
     return out;
 }
 exports.chainSchemas = chainSchemas;
-function isClientErrorD(arg) {
-    return status_1.clientErrorStatusSchema.safeParse(arg.status).success;
+function isClientError(arg) {
+    return schemas_1.clientErrorStatusSchema.safeParse(arg.status).success;
 }
-exports.isClientErrorD = isClientErrorD;
-function isInformationD(arg) {
-    return status_1.informationStatusSchema.safeParse(arg.status).success;
+exports.isClientError = isClientError;
+function isInformation(arg) {
+    return schemas_1.informationStatusSchema.safeParse(arg.status).success;
 }
-exports.isInformationD = isInformationD;
-function isPermissionD(arg) {
-    return status_1.permissionStatusSchema.safeParse(arg.status).success;
+exports.isInformation = isInformation;
+function isPermission(arg) {
+    return schemas_1.permissionStatusSchema.safeParse(arg.status).success;
 }
-exports.isPermissionD = isPermissionD;
-function isRedirectD(arg) {
-    return status_1.redirectStatusSchema.safeParse(arg.status).success;
+exports.isPermission = isPermission;
+function isRedirect(arg) {
+    return schemas_1.redirectStatusSchema.safeParse(arg.status).success;
 }
-exports.isRedirectD = isRedirectD;
-function isServerD(arg) {
-    return status_1.successfullStatusSchema.safeParse(arg.status).success;
+exports.isRedirect = isRedirect;
+function isServer(arg) {
+    return schemas_1.successfullStatusSchema.safeParse(arg.status).success;
 }
-exports.isServerD = isServerD;
-function isSuccessD(arg) {
-    return status_1.serverErrorStatusSchema.safeParse(arg.status).success;
+exports.isServer = isServer;
+function isSuccess(arg) {
+    return schemas_1.serverErrorStatusSchema.safeParse(arg.status).success;
 }
-exports.isSuccessD = isSuccessD;
-function isTimeoutD(arg) {
-    return status_1.timeoutErrorStatusSchema.safeParse(arg.status).success;
+exports.isSuccess = isSuccess;
+function isTimeout(arg) {
+    return schemas_1.timeoutErrorStatusSchema.safeParse(arg.status).success;
 }
-exports.isTimeoutD = isTimeoutD;
+exports.isTimeout = isTimeout;

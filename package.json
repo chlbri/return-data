@@ -46,6 +46,6 @@
     "publish": "yarn run rm && yarn run clean && yarn run yarn",
     "clean": "yarn cache clean",
     "yarn": "yarn install",
-    "git-push": "git push --tags"
+    "git-push": "yarn install && yarn build && git push --tags"
   }
 }

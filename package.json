@@ -38,16 +38,20 @@
   },
   "scripts": {
     "tsc": "tsc",
-    "build": "yarn run tsc && yarn run lint",
-    "test": "jest",
+    "build": "yarn run test && yarn run tsc && yarn run lint",
+    "test": "jest --passWithNoTests",
     "prettier": "prettier --write \"src/**/*.{ts,tsx}\"",
-    "eslint": "eslint \"{src/**/*,App}.{ts,tsx}\"",
+    "eslint": "eslint \"{src/**/*,App}.{ts,tsx,yml,json}\"",
     "lint": "yarn run prettier && yarn run eslint --fix",
     "rm": "./node_modules/.bin/rimraf -rf node_modules yarn.lock",
     "rinit": "yarn run rm && yarn cache clean && yarn run yarn",
     "publish": "yarn run rm && yarn run clean && yarn run yarn",
     "clean": "yarn cache clean",
     "yarn": "yarn install",
-    "git-push": "yarn install && yarn build && git push --tags"
+    "upgrade": "yarn upgrade",
+    "upgrade-internal": "yarn upgrade core core-promises core-test",
+    "git-push": "git push --follow-tags",
+    "git-build-push": "yarn install && yarn build && yarn run git-push",
+    "git-publish": "yarn run git-build-push && git checkout publish && git merge main && yarn run git-push && git checkout main"
   }
 }

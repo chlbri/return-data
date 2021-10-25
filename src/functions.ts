@@ -82,13 +82,13 @@ export function isRedirect<T = any>(
 }
 
 export function isServer(arg: Record<string, any>): arg is Server {
-  return successfullStatusSchema.safeParse(arg.status).success;
+  return serverErrorStatusSchema.safeParse(arg.status).success;
 }
 
 export function isSuccess<T = any>(
   arg: Record<string, any>,
 ): arg is Success<T> {
-  return serverErrorStatusSchema.safeParse(arg.status).success;
+  return successfullStatusSchema.safeParse(arg.status).success;
 }
 
 export function isTimeout(arg: Record<string, any>): arg is Timeout {

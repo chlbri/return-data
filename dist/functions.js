@@ -44,11 +44,11 @@ function isRedirect(arg) {
 }
 exports.isRedirect = isRedirect;
 function isServer(arg) {
-    return schemas_1.successfullStatusSchema.safeParse(arg.status).success;
+    return schemas_1.serverErrorStatusSchema.safeParse(arg.status).success;
 }
 exports.isServer = isServer;
 function isSuccess(arg) {
-    return schemas_1.serverErrorStatusSchema.safeParse(arg.status).success;
+    return schemas_1.successfullStatusSchema.safeParse(arg.status).success;
 }
 exports.isSuccess = isSuccess;
 function isTimeout(arg) {

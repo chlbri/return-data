@@ -1,6 +1,6 @@
 {
   "name": "@core/promises",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "description": "GitPod for Typescript",
   "repository": "https://github.com/chlbri/core-promises.git",
   "author": "chlbri <bri_lvi@icloud.com>",

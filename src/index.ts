@@ -8,12 +8,16 @@ import {
   isSuccess,
   isTimeout,
 } from './functions';
-import type { ForEach, Status, _ReturnData } from './types';
+import type { RDMap, RDMaybeMap, Status, _ReturnData } from './types';
 
 export * from './constants';
 export * from './functions';
 export * from './schemas';
 export * from './types';
+
+export const error = () => {
+  throw new Error();
+};
 
 export default class ReturnData<T, S extends TypeOf<Status>> {
   constructor(private data: _ReturnData<T, S>) {}
@@ -59,37 +63,85 @@ export default class ReturnData<T, S extends TypeOf<Status>> {
     return this.data.status;
   }
 
-  forEach<R>(cases: ForEach<T, R>): R {
+  map<R>({
+    information,
+    client,
+    permission,
+    redirect,
+    server,
+    success,
+    timeout,
+  }: RDMap<T, R>): R {
     const data = this.data;
 
     if (isInformation(data)) {
-      return cases.information(data.status, data.payload, data.message);
+      return information(data.status, data.payload, data.message);
     }
 
     if (isPermission(data)) {
-      return cases.permission(
-        data.status,
-        data.payload,
-        data.notPermitteds,
-      );
+      return permission(data.status, data.payload, data.notPermitteds);
     }
 
     if (isRedirect(data)) {
-      return cases.redirect(data.status, data.payload, data.message);
+      return redirect(data.status, data.payload, data.message);
     }
 
     if (isServer(data)) {
-      return cases.server(data.status, data.message);
+      return server(data.status, data.message);
     }
 
     if (isSuccess(data)) {
-      return cases.success(data.status, data.payload);
+      return success(data.status, data.payload);
     }
 
     if (isTimeout(data)) {
-      return cases.timeout(data.status);
+      return timeout(data.status);
     }
 
-    return cases.client(data.status, data.message);
+    return client(data.status, data.message);
+  }
+
+  maybeMap<R>({
+    information,
+    client,
+    permission,
+    redirect,
+    server,
+    success,
+    timeout,
+  }: RDMaybeMap<T, R>): R {
+    const data = this.data;
+
+    if (isInformation(data)) {
+      if (!information) return error();
+      return information(data.status, data.payload, data.message);
+    }
+
+    if (isPermission(data)) {
+      if (!permission) return error();
+      return permission(data.status, data.payload, data.notPermitteds);
+    }
+
+    if (isRedirect(data)) {
+      if (!redirect) return error();
+      return redirect(data.status, data.payload, data.message);
+    }
+
+    if (isServer(data)) {
+      if (!server) return error();
+      return server(data.status, data.message);
+    }
+
+    if (isSuccess(data)) {
+      return success(data.status, data.payload);
+    }
+
+    if (isTimeout(data)) {
+      if (!timeout) return error();
+      return timeout(data.status);
+    }
+
+    if (!client) return error();
+    return client(data.status, data.message);
   }
 }

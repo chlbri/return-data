@@ -7,6 +7,14 @@ import serverErrorStatusSchema from './server';
 import successfullStatusSchema from './successfull';
 import timeoutErrorStatusSchema from './timeout';
 
+export * from './client';
+export * from './information';
+export * from './permission';
+export * from './redirect';
+export * from './server';
+export * from './successfull';
+export * from './timeout';
+
 export {
   clientErrorStatusSchema,
   informationStatusSchema,
@@ -18,11 +26,11 @@ export {
 };
 
 export const statusSchema = union([
-  ...clientErrorStatusSchema.options,
-  ...informationStatusSchema.options,
-  ...permissionStatusSchema.options,
-  ...redirectStatusSchema.options,
-  ...serverErrorStatusSchema.options,
-  ...successfullStatusSchema.options,
-  ...timeoutErrorStatusSchema.options,
+  clientErrorStatusSchema,
+  informationStatusSchema,
+  permissionStatusSchema,
+  redirectStatusSchema,
+  serverErrorStatusSchema,
+  successfullStatusSchema,
+  timeoutErrorStatusSchema,
 ]);

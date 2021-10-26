@@ -1,4 +1,4 @@
-import type { Permission as T } from '../types';
+import type { Permission as T } from '../../types';
 
 /*prettier-ignore*/
 const PERMISSION_DENIEDS = {

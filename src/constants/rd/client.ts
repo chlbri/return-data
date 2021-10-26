@@ -1,4 +1,4 @@
-import type { ClientError as T } from '../types';
+import type { ClientError as T } from '../../types';
 
 /* prettier-ignore */
 const CLIENT_ERRORS = {

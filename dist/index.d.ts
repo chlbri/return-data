@@ -1,11 +1,10 @@
-import type { TypeOf } from 'zod';
-import type { RDMap, RDMaybeMap, Status, _ReturnData } from './types';
+import type { RDMap, RDMaybeMap, RDSuccessMap, Status, _ReturnData } from './types';
 export * from './constants';
 export * from './functions';
 export * from './schemas';
 export * from './types';
 export declare const error: () => never;
-export default class ReturnData<T, S extends TypeOf<Status>> {
+export default class ReturnData<T, S extends Status> {
     private data;
     constructor(data: _ReturnData<T, S>);
     get isClienError(): boolean;
@@ -16,7 +15,8 @@ export default class ReturnData<T, S extends TypeOf<Status>> {
     get isSuccess(): boolean;
     get isTimeoutError(): boolean;
     get hasData(): boolean;
-    get status(): TypeOf<Status>;
+    get status(): Status;
     map<R>({ information, client, permission, redirect, server, success, timeout, }: RDMap<T, R>): R;
-    maybeMap<R>({ information, client, permission, redirect, server, success, timeout, }: RDMaybeMap<T, R>): R;
+    successMap<R>({ information, client, permission, redirect, server, success, timeout, }: RDSuccessMap<T, R>): R;
+    maybeMap<R>(cases: RDMaybeMap<T, R>): R;
 }

@@ -1,4 +1,4 @@
-import type { Redirect as T } from '..';
+import type { Redirect as T } from '../../types';
 
 /*prettier-ignore*/
 const REDIRECTS = {

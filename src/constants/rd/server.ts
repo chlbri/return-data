@@ -1,4 +1,4 @@
-import type { Server as T } from '../types';
+import type { Server as T } from '../../types';
 
 /*prettier-ignore*/
 const SERVER_ERRORS = {

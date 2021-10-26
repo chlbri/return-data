@@ -1,4 +1,4 @@
-import type { Timeout as T } from '../types';
+import type { Timeout as T } from '../../types';
 
 /* prettier-ignore */
 const TIMEOUT_ERRORS = {

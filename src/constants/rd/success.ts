@@ -1,4 +1,4 @@
-import type { Success } from '../types';
+import type { Success } from '../../types';
 
 type T = Success<undefined>;
 

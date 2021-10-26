@@ -1,8 +1,9 @@
+import { NOmit, Unionize } from 'core';
 import {
-  TypeOf,
   ZodArray,
   ZodBoolean,
   ZodDate,
+  ZodError,
   ZodNumber,
   ZodObject,
   ZodOptional,
@@ -10,21 +11,20 @@ import {
   ZodString,
   ZodTypeAny,
   ZodUndefined,
-  ZodError,
 } from 'zod';
-
 import {
-  clientErrorStatusSchema,
-  informationStatusSchema,
-  permissionStatusSchema,
-  redirectStatusSchema,
-  serverErrorStatusSchema,
-  statusSchema,
-  successfullStatusSchema,
-  timeoutErrorStatusSchema,
-} from './schemas';
+  CLIENT_ERROR_STATUS,
+  INFORMATION_STATUS,
+  PERMISSION_ERROR_STATUS,
+  REDIRECT_STATUS,
+  STATUS,
+  SERVER_ERROR_STATUS,
+  SUCCESS_STATUS,
+  TIMEOUT_ERROR_STATUS,
+} from './constants/status';
 
 // #region Config
+
 export type ChainReturn<T> =
   | {
       success: true;
@@ -60,123 +60,129 @@ export type DeepPartial<T> = T extends Record<string, unknown>
   ? { [key in keyof T]?: DeepPartial<T[key]> }
   : T;
 
+// #region Functions
+
+export type ClientErrorFunction<R> = (
+  status: ClientErrorStatus,
+  message?: string,
+) => R;
+export type InformationFunction<T, R> = (
+  status: InformationStatus,
+  payload?: DeepPartial<T>,
+  message?: string,
+) => R;
+export type PermissionErrorFunction<T, R> = (
+  status: PermissionErrorStatus,
+  payload?: DeepPartial<T>,
+  notPermitteds?: string[],
+) => R;
+export type RedirectFunction<T, R> = (
+  status: RedirectStatus,
+  payload?: DeepPartial<T>,
+  message?: string,
+) => R;
+export type SuccessFunction<T, R> = (
+  status: SuccessStatus,
+  payload: DeepPartial<T>,
+) => R;
+export type ServerFunction<R> = (
+  status: ServerErrorStatus,
+  message?: string,
+) => R;
+export type TimeoutFunction<R> = (status: TimeoutErrorStatus) => R;
+
+// #endregion
+
+// #region Maps
+
 export type RDMap<T, R> = {
-  client: (status: TypeOf<ClientErrorStatus>, message?: string) => R;
-  information: (
-    status: TypeOf<InformationStatus>,
-    payload?: DeepPartial<T>,
-    message?: string,
-  ) => R;
-  permission: (
-    status: TypeOf<PermissionErrorStatus>,
-    payload?: DeepPartial<T>,
-    notPermitteds?: string[],
-  ) => R;
-  redirect: (
-    status: TypeOf<RedirectStatus>,
-    payload?: DeepPartial<T>,
-    message?: string,
-  ) => R;
-  server: (status: TypeOf<ServerErrorStatus>, message?: string) => R;
-  success: (status: TypeOf<SuccessStatus>, payload: DeepPartial<T>) => R;
-  timeout: (status: TypeOf<TimeoutErrorStatus>, message?: string) => R;
+  client: ClientErrorFunction<R>;
+  information: InformationFunction<T, R>;
+  permission: PermissionErrorFunction<T, R>;
+  redirect: RedirectFunction<T, R>;
+  server: ServerFunction<R>;
+  success: SuccessFunction<T, R>;
+  timeout: TimeoutFunction<R>;
 };
 
-export type RDMaybeMap<T, R> = {
-  client?: (status: TypeOf<ClientErrorStatus>, message?: string) => R;
-  information?: (
-    status: TypeOf<InformationStatus>,
-    payload?: DeepPartial<T>,
-    message?: string,
-  ) => R;
-  permission?: (
-    status: TypeOf<PermissionErrorStatus>,
-    payload?: DeepPartial<T>,
-    notPermitteds?: string[],
-  ) => R;
-  redirect?: (
-    status: TypeOf<RedirectStatus>,
-    payload?: DeepPartial<T>,
-    message?: string,
-  ) => R;
-  server?: (status: TypeOf<ServerErrorStatus>, message?: string) => R;
-  success: (status: TypeOf<SuccessStatus>, payload: DeepPartial<T>) => R;
-  timeout?: (status: TypeOf<TimeoutErrorStatus>, message?: string) => R;
-};
+export type RDSuccessMap<T, R> = Partial<NOmit<RDMap<T, R>, 'success'>> &
+  Pick<RDMap<T, R>, 'success'>;
+
+export type RDMaybeMap<T, R> = Unionize<RDMap<T, R>> & { else: () => R };
+
+// #endregion
+
 // #endregion
 
 // #region Status
-export type ClientErrorStatus = typeof clientErrorStatusSchema;
+export type ClientErrorStatus = typeof CLIENT_ERROR_STATUS[number];
 
-export type InformationStatus = typeof informationStatusSchema;
+export type InformationStatus = typeof INFORMATION_STATUS[number];
 
-export type PermissionErrorStatus = typeof permissionStatusSchema;
+export type PermissionErrorStatus = typeof PERMISSION_ERROR_STATUS[number];
 
-export type RedirectStatus = typeof redirectStatusSchema;
+export type RedirectStatus = typeof REDIRECT_STATUS[number];
 
-export type ServerErrorStatus = typeof serverErrorStatusSchema;
+export type ServerErrorStatus = typeof SERVER_ERROR_STATUS[number];
 
-export type SuccessStatus = typeof successfullStatusSchema;
+export type SuccessStatus = typeof SUCCESS_STATUS[number];
 
-export type TimeoutErrorStatus = typeof timeoutErrorStatusSchema;
+export type TimeoutErrorStatus = typeof TIMEOUT_ERROR_STATUS[number];
 
-export type Status = typeof statusSchema;
+export type Status = typeof STATUS[number];
 // #endregion
 
 // #region ReturnData
 export type ClientError = {
-  status: TypeOf<ClientErrorStatus>;
-  message?: TypeOf<ZodOptional<ZodString>>;
+  status: ClientErrorStatus;
+  message?: string;
 };
 
 export type Information<T = any> = {
-  status: TypeOf<InformationStatus>;
+  status: InformationStatus;
   payload?: DeepPartial<T>;
-  message?: TypeOf<ZodOptional<ZodString>>;
+  message?: string;
 };
 
 export type Permission<T = any> = {
-  status: TypeOf<PermissionErrorStatus>;
+  status: PermissionErrorStatus;
   payload?: DeepPartial<T>;
-  notPermitteds?: TypeOf<ZodOptional<ZodArray<ZodString>>>;
+  notPermitteds?: string[];
 };
 
 export type Redirect<T = any> = {
-  status: TypeOf<RedirectStatus>;
+  status: RedirectStatus;
   payload?: DeepPartial<T>;
-  message?: TypeOf<ZodOptional<ZodString>>;
+  message?: string;
 };
 
 export type Success<T = any> = {
-  status: TypeOf<SuccessStatus>;
+  status: SuccessStatus;
   payload: DeepPartial<T>;
 };
 
 export type Server = {
-  status: TypeOf<ServerErrorStatus>;
-  message?: TypeOf<ZodOptional<ZodString>>;
+  status: ServerErrorStatus;
+  message?: string;
 };
 
 export type Timeout = {
-  status: TypeOf<TimeoutErrorStatus>;
+  status: TimeoutErrorStatus;
 };
 // #endregion
 
-export type _ReturnData<
-  T,
-  S extends TypeOf<Status>,
-> = S extends TypeOf<ClientErrorStatus>
+export type _ReturnData<T, S extends Status> = S extends ClientErrorStatus
   ? ClientError
-  : S extends TypeOf<InformationStatus>
+  : S extends InformationStatus
   ? Information<T>
-  : S extends TypeOf<PermissionErrorStatus>
+  : S extends PermissionErrorStatus
   ? Permission<T>
-  : S extends TypeOf<RedirectStatus>
+  : S extends RedirectStatus
   ? Redirect<T>
-  : S extends TypeOf<ServerErrorStatus>
+  : S extends ServerErrorStatus
   ? Server
-  : S extends TypeOf<SuccessStatus>
+  : S extends SuccessStatus
   ? Success<T>
-  : S extends TypeOf<TimeoutErrorStatus>
+  : S extends TimeoutErrorStatus
   ? Timeout
   : never;

@@ -60,7 +60,7 @@ export type DeepPartial<T> = T extends Record<string, unknown>
   ? { [key in keyof T]?: DeepPartial<T[key]> }
   : T;
 
-export type ForEach<T, R> = {
+export type RDMap<T, R> = {
   client: (status: TypeOf<ClientErrorStatus>, message?: string) => R;
   information: (
     status: TypeOf<InformationStatus>,
@@ -80,6 +80,28 @@ export type ForEach<T, R> = {
   server: (status: TypeOf<ServerErrorStatus>, message?: string) => R;
   success: (status: TypeOf<SuccessStatus>, payload: DeepPartial<T>) => R;
   timeout: (status: TypeOf<TimeoutErrorStatus>, message?: string) => R;
+};
+
+export type RDMaybeMap<T, R> = {
+  client?: (status: TypeOf<ClientErrorStatus>, message?: string) => R;
+  information?: (
+    status: TypeOf<InformationStatus>,
+    payload?: DeepPartial<T>,
+    message?: string,
+  ) => R;
+  permission?: (
+    status: TypeOf<PermissionErrorStatus>,
+    payload?: DeepPartial<T>,
+    notPermitteds?: string[],
+  ) => R;
+  redirect?: (
+    status: TypeOf<RedirectStatus>,
+    payload?: DeepPartial<T>,
+    message?: string,
+  ) => R;
+  server?: (status: TypeOf<ServerErrorStatus>, message?: string) => R;
+  success: (status: TypeOf<SuccessStatus>, payload: DeepPartial<T>) => R;
+  timeout?: (status: TypeOf<TimeoutErrorStatus>, message?: string) => R;
 };
 // #endregion
 

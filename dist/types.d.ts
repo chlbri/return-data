@@ -15,7 +15,7 @@ export declare type ZodPrimitive = ZodNumber | ZodString | ZodBoolean | ZodDate 
 export declare type DeepPartial<T> = T extends Record<string, unknown> ? {
     [key in keyof T]?: DeepPartial<T[key]>;
 } : T;
-export declare type ForEach<T, R> = {
+export declare type RDMap<T, R> = {
     client: (status: TypeOf<ClientErrorStatus>, message?: string) => R;
     information: (status: TypeOf<InformationStatus>, payload?: DeepPartial<T>, message?: string) => R;
     permission: (status: TypeOf<PermissionErrorStatus>, payload?: DeepPartial<T>, notPermitteds?: string[]) => R;
@@ -23,6 +23,15 @@ export declare type ForEach<T, R> = {
     server: (status: TypeOf<ServerErrorStatus>, message?: string) => R;
     success: (status: TypeOf<SuccessStatus>, payload: DeepPartial<T>) => R;
     timeout: (status: TypeOf<TimeoutErrorStatus>, message?: string) => R;
+};
+export declare type RDMaybeMap<T, R> = {
+    client?: (status: TypeOf<ClientErrorStatus>, message?: string) => R;
+    information?: (status: TypeOf<InformationStatus>, payload?: DeepPartial<T>, message?: string) => R;
+    permission?: (status: TypeOf<PermissionErrorStatus>, payload?: DeepPartial<T>, notPermitteds?: string[]) => R;
+    redirect?: (status: TypeOf<RedirectStatus>, payload?: DeepPartial<T>, message?: string) => R;
+    server?: (status: TypeOf<ServerErrorStatus>, message?: string) => R;
+    success: (status: TypeOf<SuccessStatus>, payload: DeepPartial<T>) => R;
+    timeout?: (status: TypeOf<TimeoutErrorStatus>, message?: string) => R;
 };
 export declare type ClientErrorStatus = typeof clientErrorStatusSchema;
 export declare type InformationStatus = typeof informationStatusSchema;

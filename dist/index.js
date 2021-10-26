@@ -76,7 +76,7 @@ class ReturnData {
         }
         return client(data.status, data.message);
     }
-    maybeMap({ information, client, permission, redirect, server, success, timeout, }) {
+    successMap({ information, client, permission, redirect, server, success, timeout, }) {
         const data = this.data;
         if ((0, functions_1.isInformation)(data)) {
             if (!information)
@@ -110,5 +110,113 @@ class ReturnData {
             return (0, exports.error)();
         return client(data.status, data.message);
     }
+    maybeMap(cases) {
+        const data = this.data;
+        if ((0, functions_1.isInformation)(data)) {
+            const _information = cases.information;
+            if (!_information)
+                return (0, exports.error)();
+            const information = _information;
+            return this.map({
+                information,
+                client: cases.else,
+                permission: cases.else,
+                redirect: cases.else,
+                success: cases.else,
+                server: cases.else,
+                timeout: cases.else,
+            });
+        }
+        if ((0, functions_1.isPermission)(data)) {
+            const _permission = cases.permission;
+            if (!_permission)
+                return (0, exports.error)();
+            const permission = _permission;
+            return this.map({
+                information: cases.else,
+                client: cases.else,
+                permission,
+                redirect: cases.else,
+                success: cases.else,
+                server: cases.else,
+                timeout: cases.else,
+            });
+        }
+        if ((0, functions_1.isRedirect)(data)) {
+            const _redirect = cases.redirect;
+            if (!_redirect)
+                return (0, exports.error)();
+            const redirect = _redirect;
+            return this.map({
+                information: cases.else,
+                client: cases.else,
+                permission: cases.else,
+                redirect,
+                success: cases.else,
+                server: cases.else,
+                timeout: cases.else,
+            });
+        }
+        if ((0, functions_1.isServer)(data)) {
+            const _server = cases.server;
+            if (!_server)
+                return (0, exports.error)();
+            const server = _server;
+            return this.map({
+                information: cases.else,
+                client: cases.else,
+                permission: cases.else,
+                redirect: cases.else,
+                success: cases.else,
+                server,
+                timeout: cases.else,
+            });
+        }
+        if ((0, functions_1.isSuccess)(data)) {
+            const _success = cases.success;
+            if (!_success)
+                return (0, exports.error)();
+            const success = _success;
+            return this.map({
+                information: cases.else,
+                client: cases.else,
+                permission: cases.else,
+                redirect: cases.else,
+                server: cases.else,
+                success,
+                timeout: cases.else,
+            });
+        }
+        if ((0, functions_1.isTimeout)(data)) {
+            const _timeout = cases.timeout;
+            if (!_timeout)
+                return (0, exports.error)();
+            const timeout = _timeout;
+            return this.map({
+                information: cases.else,
+                client: cases.else,
+                permission: cases.else,
+                redirect: cases.else,
+                success: cases.else,
+                timeout,
+                server: cases.else,
+            });
+        }
+        const _client = cases.client;
+        if (!_client)
+            return (0, exports.error)();
+        const client = _client;
+        return this.map({
+            information: cases.else,
+            client,
+            permission: cases.else,
+            redirect: cases.else,
+            success: cases.else,
+            timeout: cases.else,
+            server: cases.else,
+        });
+    }
 }
 exports.default = ReturnData;
+const _schemas = new ReturnData({ status: 900 });
+_schemas.maybeMap({ information: () => 1, else: () => 2 });

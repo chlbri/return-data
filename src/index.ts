@@ -1,4 +1,3 @@
-import type { TypeOf } from 'zod';
 import {
   isClientError,
   isInformation,
@@ -8,7 +7,20 @@ import {
   isSuccess,
   isTimeout,
 } from './functions';
-import type { RDMap, RDMaybeMap, Status, _ReturnData } from './types';
+import type {
+  ClientErrorFunction,
+  InformationFunction,
+  PermissionErrorFunction,
+  RDMap,
+  RDMaybeMap,
+  RDSuccessMap,
+  RedirectFunction,
+  ServerFunction,
+  Status,
+  SuccessFunction,
+  TimeoutFunction,
+  _ReturnData,
+} from './types';
 
 export * from './constants';
 export * from './functions';
@@ -19,7 +31,7 @@ export const error = () => {
   throw new Error();
 };
 
-export default class ReturnData<T, S extends TypeOf<Status>> {
+export default class ReturnData<T, S extends Status> {
   constructor(private data: _ReturnData<T, S>) {}
 
   get isClienError(): boolean {
@@ -59,7 +71,7 @@ export default class ReturnData<T, S extends TypeOf<Status>> {
     );
   }
 
-  get status(): TypeOf<Status> {
+  get status(): Status {
     return this.data.status;
   }
 
@@ -101,7 +113,7 @@ export default class ReturnData<T, S extends TypeOf<Status>> {
     return client(data.status, data.message);
   }
 
-  maybeMap<R>({
+  successMap<R>({
     information,
     client,
     permission,
@@ -109,7 +121,7 @@ export default class ReturnData<T, S extends TypeOf<Status>> {
     server,
     success,
     timeout,
-  }: RDMaybeMap<T, R>): R {
+  }: RDSuccessMap<T, R>): R {
     const data = this.data;
 
     if (isInformation(data)) {
@@ -144,4 +156,114 @@ export default class ReturnData<T, S extends TypeOf<Status>> {
     if (!client) return error();
     return client(data.status, data.message);
   }
+
+  maybeMap<R>(cases: RDMaybeMap<T, R>): R {
+    const data = this.data;
+
+    if (isInformation(data)) {
+      const _information = (cases as any).information;
+      if (!_information) return error();
+      const information = _information as InformationFunction<T, R>;
+      return this.map({
+        information,
+        client: cases.else,
+        permission: cases.else,
+        redirect: cases.else,
+        success: cases.else,
+        server: cases.else,
+        timeout: cases.else,
+      });
+    }
+
+    if (isPermission(data)) {
+      const _permission = (cases as any).permission;
+      if (!_permission) return error();
+      const permission = _permission as PermissionErrorFunction<T, R>;
+      return this.map({
+        information: cases.else,
+        client: cases.else,
+        permission,
+        redirect: cases.else,
+        success: cases.else,
+        server: cases.else,
+        timeout: cases.else,
+      });
+    }
+
+    if (isRedirect(data)) {
+      const _redirect = (cases as any).redirect;
+      if (!_redirect) return error();
+      const redirect = _redirect as RedirectFunction<T, R>;
+      return this.map({
+        information: cases.else,
+        client: cases.else,
+        permission: cases.else,
+        redirect,
+        success: cases.else,
+        server: cases.else,
+        timeout: cases.else,
+      });
+    }
+
+    if (isServer(data)) {
+      const _server = (cases as any).server;
+      if (!_server) return error();
+      const server = _server as ServerFunction<R>;
+      return this.map({
+        information: cases.else,
+        client: cases.else,
+        permission: cases.else,
+        redirect: cases.else,
+        success: cases.else,
+        server,
+        timeout: cases.else,
+      });
+    }
+
+    if (isSuccess(data)) {
+      const _success = (cases as any).success;
+      if (!_success) return error();
+      const success = _success as SuccessFunction<T, R>;
+      return this.map({
+        information: cases.else,
+        client: cases.else,
+        permission: cases.else,
+        redirect: cases.else,
+        server: cases.else,
+        success,
+        timeout: cases.else,
+      });
+    }
+
+    if (isTimeout(data)) {
+      const _timeout = (cases as any).timeout;
+      if (!_timeout) return error();
+      const timeout = _timeout as TimeoutFunction<R>;
+      return this.map({
+        information: cases.else,
+        client: cases.else,
+        permission: cases.else,
+        redirect: cases.else,
+        success: cases.else,
+        timeout,
+        server: cases.else,
+      });
+    }
+
+    const _client = (cases as any).client;
+    if (!_client) return error();
+    const client = _client as ClientErrorFunction<R>;
+    return this.map({
+      information: cases.else,
+      client,
+      permission: cases.else,
+      redirect: cases.else,
+      success: cases.else,
+      timeout: cases.else,
+      server: cases.else,
+    });
+  }
 }
+
+const _schemas = new ReturnData({ status: 900 });
+_schemas.maybeMap({ information: () => 1, else: () => 2 });

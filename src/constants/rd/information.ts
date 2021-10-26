@@ -1,4 +1,4 @@
-import type { Information as T } from '../types';
+import type { Information as T } from '../../types';
 
 /* prettier-ignore */
 const INFORMATIONS = {

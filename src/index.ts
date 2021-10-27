@@ -161,9 +161,9 @@ export default class ReturnData<T, S extends Status> {
     const data = this.data;
 
     if (isInformation(data)) {
-      const _information = (cases as any).information;
-      if (!_information) return error();
-      const information = _information as InformationFunction<T, R>;
+      const information =
+        ((cases as any).information as InformationFunction<T, R>) ??
+        cases.else;
       return this.map({
         information,
         client: cases.else,
@@ -176,9 +176,9 @@ export default class ReturnData<T, S extends Status> {
     }
 
     if (isPermission(data)) {
-      const _permission = (cases as any).permission;
-      if (!_permission) return error();
-      const permission = _permission as PermissionErrorFunction<T, R>;
+      const permission =
+        ((cases as any).permission as PermissionErrorFunction<T, R>) ??
+        cases.else;
       return this.map({
         information: cases.else,
         client: cases.else,
@@ -191,9 +191,8 @@ export default class ReturnData<T, S extends Status> {
     }
 
     if (isRedirect(data)) {
-      const _redirect = (cases as any).redirect;
-      if (!_redirect) return error();
-      const redirect = _redirect as RedirectFunction<T, R>;
+      const redirect =
+        ((cases as any).redirect as RedirectFunction<T, R>) ?? cases.else;
       return this.map({
         information: cases.else,
         client: cases.else,
@@ -206,9 +205,8 @@ export default class ReturnData<T, S extends Status> {
     }
 
     if (isServer(data)) {
-      const _server = (cases as any).server;
-      if (!_server) return error();
-      const server = _server as ServerFunction<R>;
+      const server =
+        ((cases as any).server as ServerFunction<R>) ?? cases.else;
       return this.map({
         information: cases.else,
         client: cases.else,
@@ -221,9 +219,8 @@ export default class ReturnData<T, S extends Status> {
     }
 
     if (isSuccess(data)) {
-      const _success = (cases as any).success;
-      if (!_success) return error();
-      const success = _success as SuccessFunction<T, R>;
+      const success =
+        ((cases as any).success as SuccessFunction<T, R>) ?? cases.else;
       return this.map({
         information: cases.else,
         client: cases.else,
@@ -236,9 +233,8 @@ export default class ReturnData<T, S extends Status> {
     }
 
     if (isTimeout(data)) {
-      const _timeout = (cases as any).timeout;
-      if (!_timeout) return error();
-      const timeout = _timeout as TimeoutFunction<R>;
+      const timeout =
+        ((cases as any).timeout as TimeoutFunction<R>) ?? cases.else;
       return this.map({
         information: cases.else,
         client: cases.else,
@@ -250,9 +246,8 @@ export default class ReturnData<T, S extends Status> {
       });
     }
 
-    const _client = (cases as any).client;
-    if (!_client) return error();
-    const client = _client as ClientErrorFunction<R>;
+    const client =
+      ((cases as any).client as ClientErrorFunction<R>) ?? cases.else;
     return this.map({
       information: cases.else,
       client,
@@ -264,6 +259,3 @@ export default class ReturnData<T, S extends Status> {
     });
   }
 }
-
-const _schemas = new ReturnData({ status: 900 });
-_schemas.maybeMap({ information: () => 1, else: () => 2 });

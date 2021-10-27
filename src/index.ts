@@ -5,7 +5,7 @@ import {
   isRedirect,
   isServer,
   isSuccess,
-  isTimeout
+  isTimeout,
 } from './functions';
 import type {
   ClientErrorFunction,
@@ -19,7 +19,7 @@ import type {
   Status,
   SuccessFunction,
   TimeoutFunction,
-  _ReturnData
+  _ReturnData,
 } from './types';
 
 export * from './constants';

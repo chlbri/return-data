@@ -17,6 +17,6 @@ export default class ReturnData<T, S extends Status> {
     get hasData(): boolean;
     get status(): Status;
     map<R>({ information, client, permission, redirect, server, success, timeout, }: RDMap<T, R>): R;
-    successMap<R>({ information, client, permission, redirect, server, success, timeout, }: RDSuccessMap<T, R>): R;
+    successMap<R>(cases: RDSuccessMap<T, R>): R;
     maybeMap<R>(cases: RDMaybeMap<T, R>): R;
 }

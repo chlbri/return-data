@@ -113,149 +113,66 @@ export default class ReturnData<T, S extends Status> {
     return client(data.status, data.message);
   }
 
-  successMap<R>({
-    information,
-    client,
-    permission,
-    redirect,
-    server,
-    success,
-    timeout,
-  }: RDSuccessMap<T, R>): R {
-    const data = this.data;
+  successMap<R>(cases: RDSuccessMap<T, R>): R {
+    // #region Cases
 
-    if (isInformation(data)) {
-      if (!information) return error();
-      return information(data.status, data.payload, data.message);
-    }
+    const information = cases.information ?? error;
+    const permission = cases.permission ?? error;
+    const redirect = cases.redirect ?? error;
+    const server = cases.server ?? error;
+    const success = cases.success;
+    const timeout = cases.timeout ?? error;
+    const client = cases.client ?? error;
 
-    if (isPermission(data)) {
-      if (!permission) return error();
-      return permission(data.status, data.payload, data.notPermitteds);
-    }
+    // #endregion
 
-    if (isRedirect(data)) {
-      if (!redirect) return error();
-      return redirect(data.status, data.payload, data.message);
-    }
-
-    if (isServer(data)) {
-      if (!server) return error();
-      return server(data.status, data.message);
-    }
-
-    if (isSuccess(data)) {
-      return success(data.status, data.payload);
-    }
-
-    if (isTimeout(data)) {
-      if (!timeout) return error();
-      return timeout(data.status);
-    }
-
-    if (!client) return error();
-    return client(data.status, data.message);
+    return this.map({
+      client,
+      information,
+      permission,
+      redirect,
+      server,
+      success,
+      timeout,
+    });
   }
 
   maybeMap<R>(cases: RDMaybeMap<T, R>): R {
-    const data = this.data;
-
-    if (isInformation(data)) {
-      const information =
-        ((cases as any).information as InformationFunction<T, R>) ??
-        cases.else;
-      return this.map({
-        information,
-        client: cases.else,
-        permission: cases.else,
-        redirect: cases.else,
-        success: cases.else,
-        server: cases.else,
-        timeout: cases.else,
-      });
-    }
-
-    if (isPermission(data)) {
-      const permission =
-        ((cases as any).permission as PermissionErrorFunction<T, R>) ??
-        cases.else;
-      return this.map({
-        information: cases.else,
-        client: cases.else,
-        permission,
-        redirect: cases.else,
-        success: cases.else,
-        server: cases.else,
-        timeout: cases.else,
-      });
-    }
-
-    if (isRedirect(data)) {
-      const redirect =
-        ((cases as any).redirect as RedirectFunction<T, R>) ?? cases.else;
-      return this.map({
-        information: cases.else,
-        client: cases.else,
-        permission: cases.else,
-        redirect,
-        success: cases.else,
-        server: cases.else,
-        timeout: cases.else,
-      });
-    }
-
-    if (isServer(data)) {
-      const server =
-        ((cases as any).server as ServerFunction<R>) ?? cases.else;
-      return this.map({
-        information: cases.else,
-        client: cases.else,
-        permission: cases.else,
-        redirect: cases.else,
-        success: cases.else,
-        server,
-        timeout: cases.else,
-      });
-    }
-
-    if (isSuccess(data)) {
-      const success =
-        ((cases as any).success as SuccessFunction<T, R>) ?? cases.else;
-      return this.map({
-        information: cases.else,
-        client: cases.else,
-        permission: cases.else,
-        redirect: cases.else,
-        server: cases.else,
-        success,
-        timeout: cases.else,
-      });
-    }
-
-    if (isTimeout(data)) {
-      const timeout =
-        ((cases as any).timeout as TimeoutFunction<R>) ?? cases.else;
-      return this.map({
-        information: cases.else,
-        client: cases.else,
-        permission: cases.else,
-        redirect: cases.else,
-        success: cases.else,
-        timeout,
-        server: cases.else,
-      });
-    }
+    // #region Cases
 
     const client =
       ((cases as any).client as ClientErrorFunction<R>) ?? cases.else;
+
+    const information =
+      ((cases as any).information as InformationFunction<T, R>) ??
+      cases.else;
+
+    const permission =
+      ((cases as any).permission as PermissionErrorFunction<T, R>) ??
+      cases.else;
+
+    const redirect =
+      ((cases as any).redirect as RedirectFunction<T, R>) ?? cases.else;
+
+    const server =
+      ((cases as any).server as ServerFunction<R>) ?? cases.else;
+
+    const success =
+      ((cases as any).success as SuccessFunction<T, R>) ?? cases.else;
+
+    const timeout =
+      ((cases as any).timeout as TimeoutFunction<R>) ?? cases.else;
+
+    // #endregion
+
     return this.map({
-      information: cases.else,
       client,
-      permission: cases.else,
-      redirect: cases.else,
-      success: cases.else,
-      timeout: cases.else,
-      server: cases.else,
+      information,
+      permission,
+      redirect,
+      server,
+      success,
+      timeout,
     });
   }
 }

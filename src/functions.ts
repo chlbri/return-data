@@ -57,6 +57,8 @@ export function chainSchemas<T>(
   return out;
 }
 
+// #region Checkers
+
 export function isClientError(
   arg: Record<string, any>,
 ): arg is ClientError {
@@ -94,3 +96,5 @@ export function isSuccess<T = any>(
 export function isTimeout(arg: Record<string, any>): arg is Timeout {
   return timeoutErrorStatusSchema.safeParse(arg.status).success;
 }
+
+// #endregion

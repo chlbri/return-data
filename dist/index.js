@@ -24,6 +24,7 @@ class ReturnData {
     constructor(data) {
         this.data = data;
     }
+    // #region Checkers
     get isClienError() {
         return (0, functions_1.isClientError)(this.data);
     }
@@ -45,6 +46,7 @@ class ReturnData {
     get isTimeoutError() {
         return (0, functions_1.isTimeout)(this.data);
     }
+    // #endregion
     get hasData() {
         return (this.isInformation ||
             this.isPermission ||
@@ -54,8 +56,10 @@ class ReturnData {
     get status() {
         return this.data.status;
     }
+    // #region Mappers
     map({ information, client, permission, redirect, server, success, timeout, }) {
         const data = this.data;
+        // #region Checkers
         if ((0, functions_1.isInformation)(data)) {
             return information(data.status, data.payload, data.message);
         }
@@ -74,6 +78,7 @@ class ReturnData {
         if ((0, functions_1.isTimeout)(data)) {
             return timeout(data.status);
         }
+        // #endregion
         return client(data.status, data.message);
     }
     successMap(cases) {

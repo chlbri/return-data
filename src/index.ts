@@ -34,6 +34,7 @@ export const error = () => {
 export default class ReturnData<T, S extends Status> {
   constructor(private data: _ReturnData<T, S>) {}
 
+  // #region Checkers
   get isClienError(): boolean {
     return isClientError(this.data);
   }
@@ -61,6 +62,7 @@ export default class ReturnData<T, S extends Status> {
   get isTimeoutError(): boolean {
     return isTimeout(this.data);
   }
+  // #endregion
 
   get hasData(): boolean {
     return (
@@ -75,6 +77,8 @@ export default class ReturnData<T, S extends Status> {
     return this.data.status;
   }
 
+  // #region Mappers
+
   map<R>({
     information,
     client,
@@ -85,6 +89,8 @@ export default class ReturnData<T, S extends Status> {
     timeout,
   }: RDMap<T, R>): R {
     const data = this.data;
+
+    // #region Checkers
 
     if (isInformation(data)) {
       return information(data.status, data.payload, data.message);
@@ -109,6 +115,8 @@ export default class ReturnData<T, S extends Status> {
     if (isTimeout(data)) {
       return timeout(data.status);
     }
+
+    // #endregion
 
     return client(data.status, data.message);
   }
@@ -175,4 +183,6 @@ export default class ReturnData<T, S extends Status> {
       timeout,
     });
   }
+
+  // #endregion
 }

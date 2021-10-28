@@ -34,6 +34,7 @@ export const error = () => {
 export default class ReturnData<T, S extends Status> {
   constructor(private data: _ReturnData<T, S>) {}
 
+  // #region Checkers
   get isClienError(): boolean {
     return isClientError(this.data);
   }
@@ -61,6 +62,7 @@ export default class ReturnData<T, S extends Status> {
   get isTimeoutError(): boolean {
     return isTimeout(this.data);
   }
+  // #endregion
 
   get hasData(): boolean {
     return (

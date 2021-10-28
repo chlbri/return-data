@@ -24,6 +24,7 @@ class ReturnData {
     constructor(data) {
         this.data = data;
     }
+    // #region Checkers
     get isClienError() {
         return (0, functions_1.isClientError)(this.data);
     }
@@ -45,6 +46,7 @@ class ReturnData {
     get isTimeoutError() {
         return (0, functions_1.isTimeout)(this.data);
     }
+    // #endregion
     get hasData() {
         return (this.isInformation ||
             this.isPermission ||

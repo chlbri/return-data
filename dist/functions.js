@@ -27,6 +27,7 @@ function chainSchemas(value, ...schemas) {
     return out;
 }
 exports.chainSchemas = chainSchemas;
+// #region Checkers
 function isClientError(arg) {
     return schemas_1.clientErrorStatusSchema.safeParse(arg.status).success;
 }
@@ -55,3 +56,4 @@ function isTimeout(arg) {
     return schemas_1.timeoutErrorStatusSchema.safeParse(arg.status).success;
 }
 exports.isTimeout = isTimeout;
+// #endregion

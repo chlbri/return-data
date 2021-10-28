@@ -56,8 +56,10 @@ class ReturnData {
     get status() {
         return this.data.status;
     }
+    // #region Mappers
     map({ information, client, permission, redirect, server, success, timeout, }) {
         const data = this.data;
+        // #region Checkers
         if ((0, functions_1.isInformation)(data)) {
             return information(data.status, data.payload, data.message);
         }
@@ -76,6 +78,7 @@ class ReturnData {
         if ((0, functions_1.isTimeout)(data)) {
             return timeout(data.status);
         }
+        // #endregion
         return client(data.status, data.message);
     }
     successMap(cases) {

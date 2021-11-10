@@ -1,5 +1,6 @@
 import { NOmit, Unionize } from 'core';
 import { ZodArray, ZodBoolean, ZodDate, ZodError, ZodNumber, ZodObject, ZodOptional, ZodRawShape, ZodString, ZodTypeAny, ZodUndefined } from 'zod';
+import ReturnData from './rd';
 import { CLIENT_ERROR_STATUS, INFORMATION_STATUS, PERMISSION_ERROR_STATUS, REDIRECT_STATUS, STATUS, SERVER_ERROR_STATUS, SUCCESS_STATUS, TIMEOUT_ERROR_STATUS } from './constants/status';
 export declare type ChainReturn<T> = {
     success: true;
@@ -35,6 +36,20 @@ export declare type RDMap<T, R> = {
 export declare type RDSuccessMap<T, R> = Partial<NOmit<RDMap<T, R>, 'success'>> & Pick<RDMap<T, R>, 'success'>;
 export declare type RDMaybeMap<T, R> = Unionize<RDMap<T, R>> & {
     else: () => R;
+};
+export declare type RD<T, S extends Status = Status> = ReturnData<T, S>;
+export declare type PRD<T> = Promise<RD<T>>;
+export declare type RDChainSync<T> = {
+    information: InformationFunction<T, RD<T>>;
+    permission: PermissionErrorFunction<T, RD<T>>;
+    redirect: RedirectFunction<T, RD<T>>;
+    success: SuccessFunction<T, RD<T>>;
+};
+export declare type RDChainAsync<T> = {
+    information: InformationFunction<T, PRD<T>>;
+    permission: PermissionErrorFunction<T, PRD<T>>;
+    redirect: RedirectFunction<T, PRD<T>>;
+    success: SuccessFunction<T, PRD<T>>;
 };
 export declare type ClientErrorStatus = typeof CLIENT_ERROR_STATUS[number];
 export declare type InformationStatus = typeof INFORMATION_STATUS[number];

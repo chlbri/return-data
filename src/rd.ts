@@ -194,7 +194,7 @@ export default class ReturnData<T, S extends Status> {
     redirect,
     success,
   }: RDChainSync<T>): RD<T> {
-    return this.successMap({
+    return this.map({
       success: (...args) => {
         return success(...args);
       },
@@ -287,7 +287,7 @@ export default class ReturnData<T, S extends Status> {
     success,
   }: RDChainAsync<T>): PRD<T> {
     Promise.resolve(information);
-    return this.successMap({
+    return this.map({
       success: (...args) => success(...args),
       information: async (status, payload, message) => {
         const out = await information(status, payload, message);

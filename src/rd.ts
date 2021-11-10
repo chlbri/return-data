@@ -1,3 +1,4 @@
+import { DeepPartial } from 'core';
 import {
   isClientError,
   isInformation,
@@ -30,7 +31,7 @@ export const error = () => {
   throw new Error();
 };
 
-type FPRD<T> = () => PRD<T>;
+type FPRD<T> = (status: Status, payload?: DeepPartial<T>) => PRD<T>;
 
 export default class ReturnData<T, S extends Status> {
   constructor(private data: _ReturnData<T, S>) {}
@@ -360,10 +361,10 @@ export default class ReturnData<T, S extends Status> {
   chainAsync(args: RDChainAsync<T> | FPRD<T>) {
     if (args instanceof Function) {
       return this._chainAsync({
-        information: () => args(),
-        permission: () => args(),
-        redirect: () => args(),
-        success: () => args(),
+        information: args,
+        permission: args,
+        redirect: args,
+        success: args,
       });
     }
 

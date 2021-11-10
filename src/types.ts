@@ -1,4 +1,4 @@
-import { NOmit, Unionize } from 'core';
+import { DeepPartial, NOmit, Unionize } from 'core';
 import {
   ZodArray,
   ZodBoolean,
@@ -56,10 +56,6 @@ export type ZodPrimitive =
   | ZodDate
   | ZodArray<any>
   | ZodUndefined;
-
-export type DeepPartial<T> = T extends Record<string, unknown>
-  ? { [key in keyof T]?: DeepPartial<T[key]> }
-  : T;
 
 // #region Maps
 

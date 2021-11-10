@@ -1,4 +1,4 @@
-import { NOmit, Unionize } from 'core';
+import { DeepPartial, NOmit, Unionize } from 'core';
 import { ZodArray, ZodBoolean, ZodDate, ZodError, ZodNumber, ZodObject, ZodOptional, ZodRawShape, ZodString, ZodTypeAny, ZodUndefined } from 'zod';
 import ReturnData from './rd';
 import { CLIENT_ERROR_STATUS, INFORMATION_STATUS, PERMISSION_ERROR_STATUS, REDIRECT_STATUS, STATUS, SERVER_ERROR_STATUS, SUCCESS_STATUS, TIMEOUT_ERROR_STATUS } from './constants/status';
@@ -14,9 +14,6 @@ export declare type OptionalDeepPartial<T extends ZodRawShape> = ZodOptional<Zod
 }>>;
 export declare type Optional<T extends ZodRawShape | ZodPrimitive> = T extends ZodRawShape ? OptionalDeepPartial<T> : T extends ZodTypeAny ? ZodOptional<T> : never;
 export declare type ZodPrimitive = ZodNumber | ZodString | ZodBoolean | ZodDate | ZodArray<any> | ZodUndefined;
-export declare type DeepPartial<T> = T extends Record<string, unknown> ? {
-    [key in keyof T]?: DeepPartial<T[key]>;
-} : T;
 export declare type ClientErrorFunction<R> = (status: ClientErrorStatus, message?: string) => R;
 export declare type InformationFunction<T, R> = (status: InformationStatus, payload?: DeepPartial<T>, message?: string) => R;
 export declare type PermissionErrorFunction<T, R> = (status: PermissionErrorStatus, payload?: DeepPartial<T>, notPermitteds?: string[]) => R;

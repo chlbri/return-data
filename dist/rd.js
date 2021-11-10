@@ -111,7 +111,7 @@ class ReturnData {
     }
     // #endregion
     _chainSync({ information, permission, redirect, success, }) {
-        return this.successMap({
+        return this.map({
             success: (...args) => {
                 return success(...args);
             },
@@ -196,7 +196,7 @@ class ReturnData {
     }
     _chainAsync({ information, permission, redirect, success, }) {
         Promise.resolve(information);
-        return this.successMap({
+        return this.map({
             success: (...args) => success(...args),
             information: async (status, payload, message) => {
                 const out = await information(status, payload, message);

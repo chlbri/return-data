@@ -12,6 +12,7 @@ import {
   ZodTypeAny,
   ZodUndefined,
 } from 'zod';
+import ReturnData from './rd';
 import {
   CLIENT_ERROR_STATUS,
   INFORMATION_STATUS,
@@ -59,6 +60,8 @@ export type ZodPrimitive =
 export type DeepPartial<T> = T extends Record<string, unknown>
   ? { [key in keyof T]?: DeepPartial<T[key]> }
   : T;
+
+// #region Maps
 
 // #region Functions
 
@@ -109,6 +112,30 @@ export type RDSuccessMap<T, R> = Partial<NOmit<RDMap<T, R>, 'success'>> &
   Pick<RDMap<T, R>, 'success'>;
 
 export type RDMaybeMap<T, R> = Unionize<RDMap<T, R>> & { else: () => R };
+
+// #endregion
+
+// #endregion
+
+// #region Chains
+
+export type RD<T, S extends Status = Status> = ReturnData<T, S>;
+
+export type PRD<T> = Promise<RD<T>>;
+
+export type RDChainSync<T> = {
+  information: InformationFunction<T, RD<T>>;
+  permission: PermissionErrorFunction<T, RD<T>>;
+  redirect: RedirectFunction<T, RD<T>>;
+  success: SuccessFunction<T, RD<T>>;
+};
+
+export type RDChainAsync<T> = {
+  information: InformationFunction<T, PRD<T>>;
+  permission: PermissionErrorFunction<T, PRD<T>>;
+  redirect: RedirectFunction<T, PRD<T>>;
+  success: SuccessFunction<T, PRD<T>>;
+};
 
 // #endregion
 

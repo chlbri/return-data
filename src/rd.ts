@@ -30,6 +30,8 @@ export const error = () => {
   throw new Error();
 };
 
+type FPRD<T> = () => PRD<T>;
+
 export default class ReturnData<T, S extends Status> {
   constructor(private data: _ReturnData<T, S>) {}
 
@@ -355,13 +357,13 @@ export default class ReturnData<T, S extends Status> {
     });
   }
 
-  chainASync(args: RDChainAsync<T> | PRD<T>) {
-    if (args instanceof Promise) {
+  chainAsync(args: RDChainAsync<T> | FPRD<T>) {
+    if (args instanceof Function) {
       return this._chainAsync({
-        information: () => args,
-        permission: () => args,
-        redirect: () => args,
-        success: () => args,
+        information: () => args(),
+        permission: () => args(),
+        redirect: () => args(),
+        success: () => args(),
       });
     }
 

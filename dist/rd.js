@@ -266,13 +266,13 @@ class ReturnData {
             server: async () => this,
         });
     }
-    chainASync(args) {
-        if (args instanceof Promise) {
+    chainAsync(args) {
+        if (args instanceof Function) {
             return this._chainAsync({
-                information: () => args,
-                permission: () => args,
-                redirect: () => args,
-                success: () => args,
+                information: () => args(),
+                permission: () => args(),
+                redirect: () => args(),
+                success: () => args(),
             });
         }
         return this._chainAsync(args);

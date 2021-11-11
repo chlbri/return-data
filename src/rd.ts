@@ -18,6 +18,8 @@ import type {
   RDChainSync,
   RDMap,
   RDMaybeMap,
+  RDRenewAsync,
+  RDRenewSync,
   RDSuccessMap,
   RedirectFunction,
   ServerFunction,
@@ -32,7 +34,15 @@ export const error = () => {
 };
 
 type FPRD<T = any> = (status: Status, payload?: DeepPartial<T>) => PRD<T>;
+type FPRD2<T = any, R = any> = (
+  status: Status,
+  payload?: DeepPartial<T>,
+) => PRD<R>;
 type FRD<T = any> = (status: Status, payload?: DeepPartial<T>) => RD<T>;
+type FRD2<T = any, R = any> = (
+  status: Status,
+  payload?: DeepPartial<T>,
+) => RD<R>;
 
 export default class ReturnData<T, S extends Status> {
   constructor(private data: _ReturnData<T, S>) {}
@@ -270,7 +280,7 @@ export default class ReturnData<T, S extends Status> {
     });
   }
 
-  chainSync(args: RDChainSync<T> | RD<T> | FRD) {
+  chainSync(args: RDChainSync<T> | RD<T> | FRD<T>): RD<T> {
     if (args instanceof ReturnData) {
       return this._chainSync({
         information: () => args,
@@ -369,7 +379,7 @@ export default class ReturnData<T, S extends Status> {
     });
   }
 
-  chainAsync(args: RDChainAsync<T> | FPRD<T>) {
+  chainAsync(args: RDChainAsync<T> | FPRD<T> | PRD<T>): PRD<T> {
     if (args instanceof Function) {
       return this._chainAsync({
         information: args,
@@ -378,8 +388,138 @@ export default class ReturnData<T, S extends Status> {
         success: args,
       });
     }
+    if (args instanceof Promise) {
+      return this._chainAsync({
+        information: () => args,
+        permission: () => args,
+        redirect: () => args,
+        success: () => args,
+      });
+    }
 
     return this._chainAsync(args);
+  }
+
+  // #endregion
+
+  // #region Renews
+
+  private _renewSync<R>({
+    information,
+    permission,
+    redirect,
+    success,
+  }: RDRenewSync<T, R>): RD<R> {
+    return this.map({
+      success: (...args) => {
+        return success(...args);
+      },
+      information: (status, payload, message) => {
+        const out = information(status, payload, message);
+        return out.maybeMap({
+          success(_, payload) {
+            return new ReturnData({ status, payload, message });
+          },
+          else() {
+            return out;
+          },
+        });
+      },
+      redirect: (status, payload, message) => {
+        const out = redirect(status, payload, message);
+        return out.maybeMap({
+          success(_, payload) {
+            return new ReturnData({ status, payload, message });
+          },
+          else() {
+            return out;
+          },
+        });
+      },
+      permission,
+      client: () => new ReturnData<R, Status>({ status: 400 }),
+      timeout: () => new ReturnData<R, Status>({ status: 900 }),
+      server: () => new ReturnData<R, Status>({ status: 500 }),
+    });
+  }
+
+  renewSync<R>(args: RDRenewSync<T, R> | RD<R> | FRD2<T, R>): RD<R> {
+    if (args instanceof ReturnData) {
+      return this._renewSync({
+        information: () => args,
+        permission: () => args,
+        redirect: () => args,
+        success: () => args,
+      });
+    }
+    if (args instanceof Function) {
+      return this._renewSync({
+        information: args,
+        permission: args,
+        redirect: args,
+        success: args,
+      });
+    }
+
+    return this._renewSync(args);
+  }
+
+  private _renewAsync<R>({
+    information,
+    permission,
+    redirect,
+    success,
+  }: RDRenewAsync<T, R>): PRD<R> {
+    return this.map({
+      success: (...args) => success(...args),
+      information: async (status, payload, message) => {
+        const out = await information(status, payload, message);
+        return out.maybeMap({
+          success(_, payload) {
+            return new ReturnData({ status, payload, message });
+          },
+          else() {
+            return out;
+          },
+        });
+      },
+      redirect: async (status, payload, message) => {
+        const out = await redirect(status, payload, message);
+        return out.maybeMap({
+          success(_, payload) {
+            return new ReturnData({ status, payload, message });
+          },
+          else() {
+            return out;
+          },
+        });
+      },
+      permission,
+      client: async () => new ReturnData<R, Status>({ status: 400 }),
+      timeout: async () => new ReturnData<R, Status>({ status: 900 }),
+      server: async () => new ReturnData<R, Status>({ status: 500 }),
+    });
+  }
+
+  renewAsync<R>(args: RDRenewAsync<T, R> | PRD<R> | FPRD2<T, R>): PRD<R> {
+    if (args instanceof Function) {
+      return this._renewAsync({
+        information: args,
+        permission: args,
+        redirect: args,
+        success: args,
+      });
+    }
+    if (args instanceof Promise) {
+      return this._renewAsync({
+        information: () => args,
+        permission: () => args,
+        redirect: () => args,
+        success: () => args,
+      });
+    }
+
+    return this._renewAsync(args);
   }
 
   // #endregion

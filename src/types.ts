@@ -119,11 +119,17 @@ export type RD<T = any, S extends Status = Status> = ReturnData<T, S>;
 
 export type PRD<T = any> = Promise<RD<T>>;
 
-export type RDChainSync<T> = {
+export type RDChainSync<T = any> = {
   information: InformationFunction<T, RD<T>>;
   permission: PermissionErrorFunction<T, RD<T>>;
   redirect: RedirectFunction<T, RD<T>>;
   success: SuccessFunction<T, RD<T>>;
+};
+export type RDRenewSync<T = any, R = any> = {
+  information: InformationFunction<T, RD<R>>;
+  permission: PermissionErrorFunction<T, RD<R>>;
+  redirect: RedirectFunction<T, RD<R>>;
+  success: SuccessFunction<T, RD<R>>;
 };
 
 export type RDChainAsync<T = any> = {
@@ -131,6 +137,12 @@ export type RDChainAsync<T = any> = {
   permission: PermissionErrorFunction<T, PRD<T>>;
   redirect: RedirectFunction<T, PRD<T>>;
   success: SuccessFunction<T, PRD<T>>;
+};
+export type RDRenewAsync<T = any, R = any> = {
+  information: InformationFunction<T, PRD<R>>;
+  permission: PermissionErrorFunction<T, PRD<R>>;
+  redirect: RedirectFunction<T, PRD<R>>;
+  success: SuccessFunction<T, PRD<R>>;
 };
 
 // #endregion

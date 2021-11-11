@@ -36,17 +36,29 @@ export declare type RDMaybeMap<T, R> = Unionize<RDMap<T, R>> & {
 };
 export declare type RD<T = any, S extends Status = Status> = ReturnData<T, S>;
 export declare type PRD<T = any> = Promise<RD<T>>;
-export declare type RDChainSync<T> = {
+export declare type RDChainSync<T = any> = {
     information: InformationFunction<T, RD<T>>;
     permission: PermissionErrorFunction<T, RD<T>>;
     redirect: RedirectFunction<T, RD<T>>;
     success: SuccessFunction<T, RD<T>>;
+};
+export declare type RDRenewSync<T = any, R = any> = {
+    information: InformationFunction<T, RD<R>>;
+    permission: PermissionErrorFunction<T, RD<R>>;
+    redirect: RedirectFunction<T, RD<R>>;
+    success: SuccessFunction<T, RD<R>>;
 };
 export declare type RDChainAsync<T = any> = {
     information: InformationFunction<T, PRD<T>>;
     permission: PermissionErrorFunction<T, PRD<T>>;
     redirect: RedirectFunction<T, PRD<T>>;
     success: SuccessFunction<T, PRD<T>>;
+};
+export declare type RDRenewAsync<T = any, R = any> = {
+    information: InformationFunction<T, PRD<R>>;
+    permission: PermissionErrorFunction<T, PRD<R>>;
+    redirect: RedirectFunction<T, PRD<R>>;
+    success: SuccessFunction<T, PRD<R>>;
 };
 export declare type ClientErrorStatus = typeof CLIENT_ERROR_STATUS[number];
 export declare type InformationStatus = typeof INFORMATION_STATUS[number];

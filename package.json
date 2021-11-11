@@ -1,6 +1,6 @@
 {
   "name": "@core/promises",
-  "version": "0.0.31",
+  "version": "0.0.32",
   "description": "GitPod for Typescript",
   "repository": "https://github.com/chlbri/core-promises.git",
   "author": "chlbri <bri_lvi@icloud.com>",
@@ -38,7 +38,7 @@
   },
   "scripts": {
     "tsc": "tsc",
-    "build": "yarn run test && yarn run tsc && yarn run lint",
+    "build": "yarn run upgrade-internal && yarn run test && yarn run tsc && yarn run lint",
     "test": "jest --passWithNoTests",
     "prettier": "prettier --write \"src/**/*.{ts,tsx}\"",
     "eslint": "eslint \"{src/**/*,App}.{ts,tsx,yml,json}\"",

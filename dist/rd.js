@@ -284,7 +284,119 @@ class ReturnData {
                 success: args,
             });
         }
+        if (args instanceof Promise) {
+            return this._chainAsync({
+                information: () => args,
+                permission: () => args,
+                redirect: () => args,
+                success: () => args,
+            });
+        }
         return this._chainAsync(args);
+    }
+    // #endregion
+    // #region Renews
+    _renewSync({ information, permission, redirect, success, }) {
+        return this.map({
+            success: (...args) => {
+                return success(...args);
+            },
+            information: (status, payload, message) => {
+                const out = information(status, payload, message);
+                return out.maybeMap({
+                    success(_, payload) {
+                        return new ReturnData({ status, payload, message });
+                    },
+                    else() {
+                        return out;
+                    },
+                });
+            },
+            redirect: (status, payload, message) => {
+                const out = redirect(status, payload, message);
+                return out.maybeMap({
+                    success(_, payload) {
+                        return new ReturnData({ status, payload, message });
+                    },
+                    else() {
+                        return out;
+                    },
+                });
+            },
+            permission,
+            client: () => new ReturnData({ status: 400 }),
+            timeout: () => new ReturnData({ status: 900 }),
+            server: () => new ReturnData({ status: 500 }),
+        });
+    }
+    renewSync(args) {
+        if (args instanceof ReturnData) {
+            return this._renewSync({
+                information: () => args,
+                permission: () => args,
+                redirect: () => args,
+                success: () => args,
+            });
+        }
+        if (args instanceof Function) {
+            return this._renewSync({
+                information: args,
+                permission: args,
+                redirect: args,
+                success: args,
+            });
+        }
+        return this._renewSync(args);
+    }
+    _renewAsync({ information, permission, redirect, success, }) {
+        return this.map({
+            success: (...args) => success(...args),
+            information: async (status, payload, message) => {
+                const out = await information(status, payload, message);
+                return out.maybeMap({
+                    success(_, payload) {
+                        return new ReturnData({ status, payload, message });
+                    },
+                    else() {
+                        return out;
+                    },
+                });
+            },
+            redirect: async (status, payload, message) => {
+                const out = await redirect(status, payload, message);
+                return out.maybeMap({
+                    success(_, payload) {
+                        return new ReturnData({ status, payload, message });
+                    },
+                    else() {
+                        return out;
+                    },
+                });
+            },
+            permission,
+            client: async () => new ReturnData({ status: 400 }),
+            timeout: async () => new ReturnData({ status: 900 }),
+            server: async () => new ReturnData({ status: 500 }),
+        });
+    }
+    renewAsync(args) {
+        if (args instanceof Function) {
+            return this._renewAsync({
+                information: args,
+                permission: args,
+                redirect: args,
+                success: args,
+            });
+        }
+        if (args instanceof Promise) {
+            return this._renewAsync({
+                information: () => args,
+                permission: () => args,
+                redirect: () => args,
+                success: () => args,
+            });
+        }
+        return this._renewAsync(args);
     }
     // #endregion
     // #region Static

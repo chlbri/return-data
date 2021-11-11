@@ -31,7 +31,7 @@ export const error = () => {
   throw new Error();
 };
 
-type FPRD<T> = (status: Status, payload?: DeepPartial<T>) => PRD<T>;
+type FPRD<T = any> = (status: Status, payload?: DeepPartial<T>) => PRD<T>;
 
 export default class ReturnData<T, S extends Status> {
   constructor(private data: _ReturnData<T, S>) {}
@@ -188,6 +188,8 @@ export default class ReturnData<T, S extends Status> {
 
   // #endregion
 
+  // #region Chain
+
   private _chainSync({
     information,
     permission,
@@ -230,7 +232,7 @@ export default class ReturnData<T, S extends Status> {
           success() {
             return new ReturnData({ status, payload, message });
           },
-          information(status, _, message) {
+          information(_, __, message) {
             return new ReturnData({ status, payload, message });
           },
           redirect(status, _, message) {
@@ -317,11 +319,11 @@ export default class ReturnData<T, S extends Status> {
       },
       redirect: async (status, payload, message) => {
         const out = await redirect(status, payload, message);
-        return out.successMap({
+        return out.map({
           success() {
             return new ReturnData({ status, payload, message });
           },
-          information(status, _, message) {
+          information(_, __, message) {
             return new ReturnData({ status, payload, message });
           },
           redirect(status, _, message) {
@@ -370,4 +372,14 @@ export default class ReturnData<T, S extends Status> {
 
     return this._chainAsync(args);
   }
+
+  // #endregion
+
+  // #region Static
+
+  static chain(previous: RD, next: FPRD | RDChainAsync): PRD {
+    return previous.chainAsync(next);
+  }
+
+  // #endregion
 }

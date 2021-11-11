@@ -12,17 +12,17 @@ import {
   ZodTypeAny,
   ZodUndefined,
 } from 'zod';
-import ReturnData from './rd';
 import {
   CLIENT_ERROR_STATUS,
   INFORMATION_STATUS,
   PERMISSION_ERROR_STATUS,
   REDIRECT_STATUS,
-  STATUS,
   SERVER_ERROR_STATUS,
+  STATUS,
   SUCCESS_STATUS,
   TIMEOUT_ERROR_STATUS,
 } from './constants/status';
+import ReturnData from './rd';
 
 // #region Config
 
@@ -115,9 +115,9 @@ export type RDMaybeMap<T, R> = Unionize<RDMap<T, R>> & { else: () => R };
 
 // #region Chains
 
-export type RD<T, S extends Status = Status> = ReturnData<T, S>;
+export type RD<T = any, S extends Status = Status> = ReturnData<T, S>;
 
-export type PRD<T> = Promise<RD<T>>;
+export type PRD<T = any> = Promise<RD<T>>;
 
 export type RDChainSync<T> = {
   information: InformationFunction<T, RD<T>>;
@@ -126,7 +126,7 @@ export type RDChainSync<T> = {
   success: SuccessFunction<T, RD<T>>;
 };
 
-export type RDChainAsync<T> = {
+export type RDChainAsync<T = any> = {
   information: InformationFunction<T, PRD<T>>;
   permission: PermissionErrorFunction<T, PRD<T>>;
   redirect: RedirectFunction<T, PRD<T>>;

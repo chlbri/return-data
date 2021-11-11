@@ -110,6 +110,7 @@ class ReturnData {
         });
     }
     // #endregion
+    // #region Chain
     _chainSync({ information, permission, redirect, success, }) {
         return this.map({
             success: (...args) => {
@@ -147,7 +148,7 @@ class ReturnData {
                     success() {
                         return new ReturnData({ status, payload, message });
                     },
-                    information(status, _, message) {
+                    information(_, __, message) {
                         return new ReturnData({ status, payload, message });
                     },
                     redirect(status, _, message) {
@@ -226,11 +227,11 @@ class ReturnData {
             },
             redirect: async (status, payload, message) => {
                 const out = await redirect(status, payload, message);
-                return out.successMap({
+                return out.map({
                     success() {
                         return new ReturnData({ status, payload, message });
                     },
-                    information(status, _, message) {
+                    information(_, __, message) {
                         return new ReturnData({ status, payload, message });
                     },
                     redirect(status, _, message) {
@@ -276,6 +277,11 @@ class ReturnData {
             });
         }
         return this._chainAsync(args);
+    }
+    // #endregion
+    // #region Static
+    static chain(previous, next) {
+        return previous.chainAsync(next);
     }
 }
 exports.default = ReturnData;

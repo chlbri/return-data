@@ -193,6 +193,14 @@ class ReturnData {
                 success: () => args,
             });
         }
+        if (args instanceof Function) {
+            return this._chainSync({
+                information: args,
+                permission: args,
+                redirect: args,
+                success: args,
+            });
+        }
         return this._chainSync(args);
     }
     _chainAsync({ information, permission, redirect, success, }) {

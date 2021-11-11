@@ -1,4 +1,4 @@
-import { DeepPartial, NOmit, Unionize } from 'core';
+import { NOmit, Unionize } from 'core';
 import { ZodArray, ZodBoolean, ZodDate, ZodError, ZodNumber, ZodObject, ZodOptional, ZodRawShape, ZodString, ZodTypeAny, ZodUndefined } from 'zod';
 import { CLIENT_ERROR_STATUS, INFORMATION_STATUS, PERMISSION_ERROR_STATUS, REDIRECT_STATUS, SERVER_ERROR_STATUS, STATUS, SUCCESS_STATUS, TIMEOUT_ERROR_STATUS } from './constants/status';
 import ReturnData from './rd';
@@ -15,10 +15,10 @@ export declare type OptionalDeepPartial<T extends ZodRawShape> = ZodOptional<Zod
 export declare type Optional<T extends ZodRawShape | ZodPrimitive> = T extends ZodRawShape ? OptionalDeepPartial<T> : T extends ZodTypeAny ? ZodOptional<T> : never;
 export declare type ZodPrimitive = ZodNumber | ZodString | ZodBoolean | ZodDate | ZodArray<any> | ZodUndefined;
 export declare type ClientErrorFunction<R> = (status: ClientErrorStatus, message?: string) => R;
-export declare type InformationFunction<T, R> = (status: InformationStatus, payload?: DeepPartial<T>, message?: string) => R;
-export declare type PermissionErrorFunction<T, R> = (status: PermissionErrorStatus, payload?: DeepPartial<T>, notPermitteds?: string[]) => R;
-export declare type RedirectFunction<T, R> = (status: RedirectStatus, payload?: DeepPartial<T>, message?: string) => R;
-export declare type SuccessFunction<T, R> = (status: SuccessStatus, payload: DeepPartial<T>) => R;
+export declare type InformationFunction<T, R> = (status: InformationStatus, payload?: T, message?: string) => R;
+export declare type PermissionErrorFunction<T, R> = (status: PermissionErrorStatus, payload?: T, notPermitteds?: string[]) => R;
+export declare type RedirectFunction<T, R> = (status: RedirectStatus, payload?: T, message?: string) => R;
+export declare type SuccessFunction<T, R> = (status: SuccessStatus, payload: T) => R;
 export declare type ServerFunction<R> = (status: ServerErrorStatus, message?: string) => R;
 export declare type TimeoutFunction<R> = (status: TimeoutErrorStatus) => R;
 export declare type RDMap<T, R> = {
@@ -74,22 +74,22 @@ export declare type ClientError = {
 };
 export declare type Information<T = any> = {
     status: InformationStatus;
-    payload?: DeepPartial<T>;
+    payload?: T;
     message?: string;
 };
 export declare type Permission<T = any> = {
     status: PermissionErrorStatus;
-    payload?: DeepPartial<T>;
+    payload?: T;
     notPermitteds?: string[];
 };
 export declare type Redirect<T = any> = {
     status: RedirectStatus;
-    payload?: DeepPartial<T>;
+    payload?: T;
     message?: string;
 };
 export declare type Success<T = any> = {
     status: SuccessStatus;
-    payload: DeepPartial<T>;
+    payload: T;
 };
 export declare type Server = {
     status: ServerErrorStatus;

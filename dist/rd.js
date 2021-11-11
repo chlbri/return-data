@@ -47,6 +47,7 @@ class ReturnData {
         const data = this.data;
         // #region Checkers
         if ((0, functions_1.isInformation)(data)) {
+            data.payload;
             return information(data.status, data.payload, data.message);
         }
         if ((0, functions_1.isPermission)(data)) {
@@ -118,7 +119,7 @@ class ReturnData {
             },
             information: (status, payload, message) => {
                 const out = information(status, payload, message);
-                return out.successMap({
+                return out.map({
                     success() {
                         return new ReturnData({ status, payload, message });
                     },
@@ -144,7 +145,7 @@ class ReturnData {
             },
             redirect: (status, payload, message) => {
                 const out = redirect(status, payload, message);
-                return out.successMap({
+                return out.map({
                     success() {
                         return new ReturnData({ status, payload, message });
                     },
@@ -204,7 +205,6 @@ class ReturnData {
         return this._chainSync(args);
     }
     _chainAsync({ information, permission, redirect, success, }) {
-        Promise.resolve(information);
         return this.map({
             success: (...args) => success(...args),
             information: async (status, payload, message) => {

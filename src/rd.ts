@@ -32,6 +32,7 @@ export const error = () => {
 };
 
 type FPRD<T = any> = (status: Status, payload?: DeepPartial<T>) => PRD<T>;
+type FRD<T = any> = (status: Status, payload?: DeepPartial<T>) => RD<T>;
 
 export default class ReturnData<T, S extends Status> {
   constructor(private data: _ReturnData<T, S>) {}
@@ -269,13 +270,21 @@ export default class ReturnData<T, S extends Status> {
     });
   }
 
-  chainSync(args: RDChainSync<T> | RD<T>) {
+  chainSync(args: RDChainSync<T> | RD<T> | FRD) {
     if (args instanceof ReturnData) {
       return this._chainSync({
         information: () => args,
         permission: () => args,
         redirect: () => args,
         success: () => args,
+      });
+    }
+    if (args instanceof Function) {
+      return this._chainSync({
+        information: args,
+        permission: args,
+        redirect: args,
+        success: args,
       });
     }
 

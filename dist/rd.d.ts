@@ -1,11 +1,10 @@
-import { DeepPartial } from 'core';
 import type { PRD, RD, RDChainAsync, RDChainSync, RDMap, RDMaybeMap, RDRenewAsync, RDRenewSync, RDSuccessMap, Status, _ReturnData } from './types';
 export declare const error: () => never;
-declare type FPRD<T = any> = (status: Status, payload?: DeepPartial<T>) => PRD<T>;
-declare type FPRD2<T = any, R = any> = (status: Status, payload?: DeepPartial<T>) => PRD<R>;
-declare type FRD<T = any> = (status: Status, payload?: DeepPartial<T>) => RD<T>;
-declare type FRD2<T = any, R = any> = (status: Status, payload?: DeepPartial<T>) => RD<R>;
-export default class ReturnData<T, S extends Status> {
+declare type FPRD<T = any> = (status: Status, payload?: T) => PRD<T>;
+declare type FPRD2<T = any, R = any> = (status: Status, payload?: T) => PRD<R>;
+declare type FRD<T = any> = (status: Status, payload?: T) => RD<T>;
+declare type FRD2<T = any, R = any> = (status: Status, payload?: T) => RD<R>;
+export default class ReturnData<T = any, S extends Status = Status> {
     private data;
     constructor(data: _ReturnData<T, S>);
     get isClienError(): boolean;

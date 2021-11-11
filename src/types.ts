@@ -67,22 +67,22 @@ export type ClientErrorFunction<R> = (
 ) => R;
 export type InformationFunction<T, R> = (
   status: InformationStatus,
-  payload?: DeepPartial<T>,
+  payload?: T,
   message?: string,
 ) => R;
 export type PermissionErrorFunction<T, R> = (
   status: PermissionErrorStatus,
-  payload?: DeepPartial<T>,
+  payload?: T,
   notPermitteds?: string[],
 ) => R;
 export type RedirectFunction<T, R> = (
   status: RedirectStatus,
-  payload?: DeepPartial<T>,
+  payload?: T,
   message?: string,
 ) => R;
 export type SuccessFunction<T, R> = (
   status: SuccessStatus,
-  payload: DeepPartial<T>,
+  payload: T,
 ) => R;
 export type ServerFunction<R> = (
   status: ServerErrorStatus,
@@ -125,6 +125,7 @@ export type RDChainSync<T = any> = {
   redirect: RedirectFunction<T, RD<T>>;
   success: SuccessFunction<T, RD<T>>;
 };
+
 export type RDRenewSync<T = any, R = any> = {
   information: InformationFunction<T, RD<R>>;
   permission: PermissionErrorFunction<T, RD<R>>;
@@ -175,25 +176,25 @@ export type ClientError = {
 
 export type Information<T = any> = {
   status: InformationStatus;
-  payload?: DeepPartial<T>;
+  payload?: T;
   message?: string;
 };
 
 export type Permission<T = any> = {
   status: PermissionErrorStatus;
-  payload?: DeepPartial<T>;
+  payload?: T;
   notPermitteds?: string[];
 };
 
 export type Redirect<T = any> = {
   status: RedirectStatus;
-  payload?: DeepPartial<T>;
+  payload?: T;
   message?: string;
 };
 
 export type Success<T = any> = {
   status: SuccessStatus;
-  payload: DeepPartial<T>;
+  payload: T;
 };
 
 export type Server = {

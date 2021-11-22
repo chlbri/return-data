@@ -1,4 +1,4 @@
-import { NOmit, Unionize } from 'core';
+import { NOmit } from 'core';
 import { ZodArray, ZodBoolean, ZodDate, ZodError, ZodNumber, ZodObject, ZodOptional, ZodRawShape, ZodString, ZodTypeAny, ZodUndefined } from 'zod';
 import { CLIENT_ERROR_STATUS, INFORMATION_STATUS, PERMISSION_ERROR_STATUS, REDIRECT_STATUS, SERVER_ERROR_STATUS, STATUS, SUCCESS_STATUS, TIMEOUT_ERROR_STATUS } from './constants/status';
 import ReturnData from './rd';
@@ -31,7 +31,7 @@ export declare type RDMap<T, R> = {
     timeout: TimeoutFunction<R>;
 };
 export declare type RDSuccessMap<T, R> = Partial<NOmit<RDMap<T, R>, 'success'>> & Pick<RDMap<T, R>, 'success'>;
-export declare type RDMaybeMap<T, R> = Unionize<RDMap<T, R>> & {
+export declare type RDMaybeMap<T, R> = Partial<RDMap<T, R>> & {
     else: () => R;
 };
 export declare type RD<T = any, S extends Status = Status> = ReturnData<T, S>;

@@ -17,8 +17,8 @@ export default class ReturnData<T = any, S extends Status = Status> {
     get hasData(): boolean;
     get status(): Status;
     map<R>({ information, client, permission, redirect, server, success, timeout, }: RDMap<T, R>): R;
-    successMap<R>(cases: RDSuccessMap<T, R>): R;
     maybeMap<R>(cases: RDMaybeMap<T, R>): R;
+    successMap<R>(cases: RDSuccessMap<T, R>): R;
     private _chainSync;
     chainSync(args: RDChainSync<T> | RD<T> | FRD<T>): RD<T>;
     private _chainAsync;

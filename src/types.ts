@@ -1,4 +1,4 @@
-import { NOmit, Unionize } from 'core';
+import { NOmit } from 'core';
 import {
   ZodArray,
   ZodBoolean,
@@ -109,7 +109,7 @@ export type RDMap<T, R> = {
 export type RDSuccessMap<T, R> = Partial<NOmit<RDMap<T, R>, 'success'>> &
   Pick<RDMap<T, R>, 'success'>;
 
-export type RDMaybeMap<T, R> = Unionize<RDMap<T, R>> & { else: () => R };
+export type RDMaybeMap<T, R> = Partial<RDMap<T, R>> & { else: () => R };
 
 // #endregion
 

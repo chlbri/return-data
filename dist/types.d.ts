@@ -14,12 +14,12 @@ export declare type OptionalDeepPartial<T extends ZodRawShape> = ZodOptional<Zod
 }>>;
 export declare type Optional<T extends ZodRawShape | ZodPrimitive> = T extends ZodRawShape ? OptionalDeepPartial<T> : T extends ZodTypeAny ? ZodOptional<T> : never;
 export declare type ZodPrimitive = ZodNumber | ZodString | ZodBoolean | ZodDate | ZodArray<any> | ZodUndefined;
-export declare type ClientErrorFunction<R> = (status: ClientErrorStatus, message?: string) => R;
-export declare type InformationFunction<T, R> = (status: InformationStatus, payload?: T, message?: string) => R;
-export declare type PermissionErrorFunction<T, R> = (status: PermissionErrorStatus, payload?: T, notPermitteds?: string[]) => R;
-export declare type RedirectFunction<T, R> = (status: RedirectStatus, payload?: T, message?: string) => R;
-export declare type SuccessFunction<T, R> = (status: SuccessStatus, payload: T) => R;
-export declare type ServerFunction<R> = (status: ServerErrorStatus, message?: string) => R;
+export declare type ClientErrorFunction<R> = (status: ClientErrorStatus, messages?: string[]) => R;
+export declare type InformationFunction<T, R> = (status: InformationStatus, payload?: T, messages?: string[]) => R;
+export declare type PermissionErrorFunction<T, R> = (status: PermissionErrorStatus, payload?: T, notPermitteds?: string[], messages?: string[]) => R;
+export declare type RedirectFunction<T, R> = (status: RedirectStatus, payload?: T, messages?: string[]) => R;
+export declare type SuccessFunction<T, R> = (status: SuccessStatus, payload: T, messages?: string[]) => R;
+export declare type ServerFunction<R> = (status: ServerErrorStatus, messages?: string[]) => R;
 export declare type TimeoutFunction<R> = (status: TimeoutErrorStatus) => R;
 export declare type RDMap<T, R> = {
     client: ClientErrorFunction<R>;
@@ -70,22 +70,23 @@ export declare type TimeoutErrorStatus = typeof TIMEOUT_ERROR_STATUS[number];
 export declare type Status = typeof STATUS[number];
 export declare type ClientError = {
     status: ClientErrorStatus;
-    message?: string;
+    messages?: string[];
 };
 export declare type Information<T = any> = {
     status: InformationStatus;
     payload?: T;
-    message?: string;
+    messages?: string[];
 };
 export declare type Permission<T = any> = {
     status: PermissionErrorStatus;
     payload?: T;
     notPermitteds?: string[];
+    messages?: string[];
 };
 export declare type Redirect<T = any> = {
     status: RedirectStatus;
     payload?: T;
-    message?: string;
+    messages?: string[];
 };
 export declare type Success<T = any> = {
     status: SuccessStatus;
@@ -93,7 +94,7 @@ export declare type Success<T = any> = {
 };
 export declare type Server = {
     status: ServerErrorStatus;
-    message?: string;
+    messages?: string[];
 };
 export declare type Timeout = {
     status: TimeoutErrorStatus;

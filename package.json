@@ -1,6 +1,6 @@
 {
   "name": "@core/promises",
-  "version": "0.0.32",
+  "version": "0.0.33",
   "description": "GitPod for Typescript",
   "repository": "https://github.com/chlbri/core-promises.git",
   "author": "chlbri <bri_lvi@icloud.com>",
@@ -13,8 +13,9 @@
     "@types/jest": "^27.0.2",
     "@typescript-eslint/eslint-plugin": "^5.1.0",
     "@typescript-eslint/parser": "^5.1.0",
-    "core": "https://github.com/chlbri/core.git#publish",
+    "core": "github:chlbri/core#v0.0.22",
     "dayjs": "^1.10.7",
+    "dequal": "^2.0.2",
     "edit-json-file": "^1.6.0",
     "eslint": "^8.0.1",
     "faker": "^5.5.3",
@@ -30,28 +31,29 @@
     "typescript": "^4.4.4",
     "zod": "3.10.1"
   },
-  "dependencies": {
-    "dequal": "^2.0.2"
-  },
   "peerDependencies": {
+    "dequal": "^2.0.2",
+    "immer": "^9.0.6",
+    "nanoid": "^3.1.30",
     "zod": "3.10.1"
   },
   "scripts": {
     "tsc": "tsc",
-    "build": "yarn run upgrade-internal && yarn run test && yarn run tsc && yarn run lint",
+    "build": "pnpm run upgrade-internal && pnpm run test && pnpm run tsc && pnpm run lint",
+    "build:-test": "pnpm run tsc && pnpm run lint",
     "test": "jest --passWithNoTests",
     "prettier": "prettier --write \"src/**/*.{ts,tsx}\"",
     "eslint": "eslint \"{src/**/*,App}.{ts,tsx,yml,json}\"",
-    "lint": "yarn run prettier && yarn run eslint --fix",
-    "rm": "./node_modules/.bin/rimraf -rf node_modules yarn.lock",
-    "rinit": "yarn run rm && yarn cache clean && yarn run yarn",
-    "publish": "yarn run rm && yarn run clean && yarn run yarn",
-    "clean": "yarn cache clean",
-    "yarn": "yarn install",
-    "upgrade": "yarn upgrade",
-    "upgrade-internal": "yarn upgrade core core-promises core-test",
+    "lint": "pnpm run prettier && pnpm run eslint -- --fix",
+    "rm": "./node_modules/.bin/rimraf -rf node_modules pnpm.lock",
+    "rinit": "pnpm run rm && pnpm cache clean && pnpm run pnpm",
+    "publish": "pnpm run rm && pnpm run clean && pnpm run pnpm",
+    "clean": "pnpm cache clean",
+    "pnpm": "pnpm install",
+    "upgrade": "pnpm upgrade",
+    "upgrade-internal": "pnpm upgrade core core-promises core-test",
     "git-push": "git push --follow-tags",
-    "git-build-push": "yarn install && yarn build && yarn run git-push",
-    "git-publish": "yarn run git-build-push && git checkout publish && git merge main && yarn run git-push && git checkout main"
+    "git-build-push": "pnpm install && pnpm build && pnpm run git-push",
+    "git-publish": "pnpm run git-build-push && git checkout main && git merge dev && pnpm run git-push && git checkout dev"
   }
 }

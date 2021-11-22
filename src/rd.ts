@@ -101,7 +101,7 @@ export default class ReturnData<T = any, S extends Status = Status> {
 
     if (isInformation(data)) {
       data.payload;
-      return information(data.status, data.payload, data.message);
+      return information(data.status, data.payload, data.messages);
     }
 
     if (isPermission(data)) {
@@ -109,11 +109,11 @@ export default class ReturnData<T = any, S extends Status = Status> {
     }
 
     if (isRedirect(data)) {
-      return redirect(data.status, data.payload, data.message);
+      return redirect(data.status, data.payload, data.messages);
     }
 
     if (isServer(data)) {
-      return server(data.status, data.message);
+      return server(data.status, data.messages);
     }
 
     if (isSuccess(data)) {
@@ -126,7 +126,7 @@ export default class ReturnData<T = any, S extends Status = Status> {
 
     // #endregion
 
-    return client(data.status, data.message);
+    return client(data.status, data.messages);
   }
 
   successMap<R>(cases: RDSuccessMap<T, R>): R {
@@ -206,66 +206,86 @@ export default class ReturnData<T = any, S extends Status = Status> {
       success: (...args) => {
         return success(...args);
       },
-      information: (status, payload, message) => {
-        const out = information(status, payload, message);
+      information: (status, payload, messages) => {
+        const out = information(status, payload, messages);
         return out.map({
           success() {
-            return new ReturnData<T>({ status, payload, message });
+            return new ReturnData<T>({ status, payload, messages });
           },
-          information(status, _, message) {
-            return new ReturnData<T>({ status, payload, message });
+          information(status, _, messages) {
+            return new ReturnData<T>({ status, payload, messages });
           },
-          redirect(status, _, message) {
-            return new ReturnData<T>({ status, payload, message });
+          redirect(status, _, messages) {
+            return new ReturnData<T>({ status, payload, messages });
           },
-          permission(status, _, notPermitteds) {
-            return new ReturnData<T>({ status, payload, notPermitteds });
+          permission(status, _, notPermitteds, messages) {
+            return new ReturnData<T>({
+              status,
+              payload,
+              notPermitteds,
+              messages,
+            });
           },
-          client(_, message) {
-            return new ReturnData<T>({ status, payload, message });
+          client(_, messages) {
+            return new ReturnData<T>({ status, payload, messages });
           },
           timeout() {
-            return new ReturnData<T>({ status, payload, message });
+            return new ReturnData<T>({ status, payload, messages });
           },
-          server(_, message) {
-            return new ReturnData<T>({ status, payload, message });
+          server(_, messages) {
+            return new ReturnData<T>({ status, payload, messages });
           },
         });
       },
-      redirect: (status, payload, message) => {
-        const out = redirect(status, payload, message);
+      redirect: (status, payload, messages) => {
+        const out = redirect(status, payload, messages);
         return out.map({
           success() {
-            return new ReturnData<T>({ status, payload, message });
+            return new ReturnData<T>({ status, payload, messages });
           },
-          information(_, __, message) {
-            return new ReturnData<T>({ status, payload, message });
+          information(_, __, messages) {
+            return new ReturnData<T>({ status, payload, messages });
           },
-          redirect(status, _, message) {
-            return new ReturnData<T>({ status, payload, message });
+          redirect(status, _, messages) {
+            return new ReturnData<T>({ status, payload, messages });
           },
-          permission(status, _, notPermitteds) {
-            return new ReturnData<T>({ status, payload, notPermitteds });
+          permission(status, _, notPermitteds, messages) {
+            return new ReturnData<T>({
+              status,
+              payload,
+              notPermitteds,
+              messages,
+            });
           },
-          client(_, message) {
-            return new ReturnData<T>({ status, payload, message });
+          client(_, messages) {
+            return new ReturnData<T>({ status, payload, messages });
           },
           timeout() {
-            return new ReturnData<T>({ status, payload, message });
+            return new ReturnData<T>({ status, payload, messages });
           },
-          server(_, message) {
-            return new ReturnData<T>({ status, payload, message });
+          server(_, messages) {
+            return new ReturnData<T>({ status, payload, messages });
           },
         });
       },
-      permission: (status, payload, notPermitteds) => {
-        const out = permission(status, payload, notPermitteds);
+      permission: (status, payload, notPermitteds, messages) => {
+        const out = permission(status, payload, notPermitteds, messages);
         return out.maybeMap({
           success() {
-            return new ReturnData<T>({ status, payload, notPermitteds });
+            return new ReturnData<T>({
+              status,
+              payload,
+              notPermitteds,
+              messages,
+            });
           },
           else() {
-            return new ReturnData<T>({ status, payload, notPermitteds });
+            return new ReturnData<T>({
+              status,
+              payload,
+              notPermitteds,
+              messages,
+            });
           },
         });
       },
@@ -304,66 +324,91 @@ export default class ReturnData<T = any, S extends Status = Status> {
   }: RDChainAsync<T>): PRD<T> {
     return this.map({
       success: (...args) => success(...args),
-      information: async (status, payload, message) => {
-        const out = await information(status, payload, message);
+      information: async (status, payload, messages) => {
+        const out = await information(status, payload, messages);
         return out.successMap({
           success() {
-            return new ReturnData<T>({ status, payload, message });
+            return new ReturnData<T>({ status, payload, messages });
           },
-          information(status, _, message) {
-            return new ReturnData<T>({ status, payload, message });
+          information(status, _, messages) {
+            return new ReturnData<T>({ status, payload, messages });
           },
-          redirect(status, _, message) {
-            return new ReturnData<T>({ status, payload, message });
+          redirect(status, _, messages) {
+            return new ReturnData<T>({ status, payload, messages });
           },
-          permission(status, _, notPermitteds) {
-            return new ReturnData<T>({ status, payload, notPermitteds });
+          permission(status, _, notPermitteds, messages) {
+            return new ReturnData<T>({
+              status,
+              payload,
+              notPermitteds,
+              messages,
+            });
           },
-          client(_, message) {
-            return new ReturnData<T>({ status, payload, message });
+          client(_, messages) {
+            return new ReturnData<T>({ status, payload, messages });
           },
           timeout() {
-            return new ReturnData<T>({ status, payload, message });
+            return new ReturnData<T>({ status, payload, messages });
           },
-          server(_, message) {
-            return new ReturnData<T>({ status, payload, message });
+          server(_, messages) {
+            return new ReturnData<T>({ status, payload, messages });
           },
         });
       },
-      redirect: async (status, payload, message) => {
-        const out = await redirect(status, payload, message);
+      redirect: async (status, payload, messages) => {
+        const out = await redirect(status, payload, messages);
         return out.map({
           success() {
-            return new ReturnData<T>({ status, payload, message });
+            return new ReturnData<T>({ status, payload, messages });
           },
-          information(_, __, message) {
-            return new ReturnData<T>({ status, payload, message });
+          information(_, __, messages) {
+            return new ReturnData<T>({ status, payload, messages });
           },
-          redirect(status, _, message) {
-            return new ReturnData<T>({ status, payload, message });
+          redirect(status, _, messages) {
+            return new ReturnData<T>({ status, payload, messages });
           },
-          permission(status, _, notPermitteds) {
-            return new ReturnData<T>({ status, payload, notPermitteds });
+          permission(status, _, notPermitteds, messages) {
+            return new ReturnData<T>({
+              status,
+              payload,
+              notPermitteds,
+              messages,
+            });
           },
-          client(_, message) {
-            return new ReturnData<T>({ status, payload, message });
+          client(_, messages) {
+            return new ReturnData<T>({ status, payload, messages });
           },
           timeout() {
-            return new ReturnData<T>({ status, payload, message });
+            return new ReturnData<T>({ status, payload, messages });
           },
-          server(_, message) {
-            return new ReturnData<T>({ status, payload, message });
+          server(_, messages) {
+            return new ReturnData<T>({ status, payload, messages });
           },
         });
       },
-      permission: async (status, payload, notPermitteds) => {
-        const out = await permission(status, payload, notPermitteds);
+      permission: async (status, payload, notPermitteds, messages) => {
+        const out = await permission(
+          status,
+          payload,
+          notPermitteds,
+          messages,
+        );
         return out.maybeMap({
           success() {
-            return new ReturnData<T>({ status, payload, notPermitteds });
+            return new ReturnData<T>({
+              status,
+              payload,
+              notPermitteds,
+              messages,
+            });
           },
           else() {
-            return new ReturnData<T>({ status, payload, notPermitteds });
+            return new ReturnData<T>({
+              status,
+              payload,
+              notPermitteds,
+              messages,
+            });
           },
         });
       },
@@ -408,22 +453,22 @@ export default class ReturnData<T = any, S extends Status = Status> {
       success: (...args) => {
         return success(...args);
       },
-      information: (status, payload, message) => {
-        const out = information(status, payload, message);
+      information: (status, payload, messages) => {
+        const out = information(status, payload, messages);
         return out.maybeMap({
           success(_, payload) {
-            return new ReturnData({ status, payload, message });
+            return new ReturnData({ status, payload, messages });
           },
           else() {
             return out;
           },
         });
       },
-      redirect: (status, payload, message) => {
-        const out = redirect(status, payload, message);
+      redirect: (status, payload, messages) => {
+        const out = redirect(status, payload, messages);
         return out.maybeMap({
           success(_, payload) {
-            return new ReturnData({ status, payload, message });
+            return new ReturnData({ status, payload, messages });
           },
           else() {
             return out;
@@ -466,22 +511,22 @@ export default class ReturnData<T = any, S extends Status = Status> {
   }: RDRenewAsync<T, R>): PRD<R> {
     return this.map({
       success: (...args) => success(...args),
-      information: async (status, payload, message) => {
-        const out = await information(status, payload, message);
+      information: async (status, payload, messages) => {
+        const out = await information(status, payload, messages);
         return out.maybeMap({
           success(_, payload) {
-            return new ReturnData({ status, payload, message });
+            return new ReturnData({ status, payload, messages });
           },
           else() {
             return out;
           },
         });
       },
-      redirect: async (status, payload, message) => {
-        const out = await redirect(status, payload, message);
+      redirect: async (status, payload, messages) => {
+        const out = await redirect(status, payload, messages);
         return out.maybeMap({
           success(_, payload) {
-            return new ReturnData({ status, payload, message });
+            return new ReturnData({ status, payload, messages });
           },
           else() {
             return out;

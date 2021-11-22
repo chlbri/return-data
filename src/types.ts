@@ -1,4 +1,4 @@
-import { DeepPartial, NOmit, Unionize } from 'core';
+import { NOmit, Unionize } from 'core';
 import {
   ZodArray,
   ZodBoolean,
@@ -63,30 +63,32 @@ export type ZodPrimitive =
 
 export type ClientErrorFunction<R> = (
   status: ClientErrorStatus,
-  message?: string,
+  messages?: string[],
 ) => R;
 export type InformationFunction<T, R> = (
   status: InformationStatus,
   payload?: T,
-  message?: string,
+  messages?: string[],
 ) => R;
 export type PermissionErrorFunction<T, R> = (
   status: PermissionErrorStatus,
   payload?: T,
   notPermitteds?: string[],
+  messages?: string[],
 ) => R;
 export type RedirectFunction<T, R> = (
   status: RedirectStatus,
   payload?: T,
-  message?: string,
+  messages?: string[],
 ) => R;
 export type SuccessFunction<T, R> = (
   status: SuccessStatus,
   payload: T,
+  messages?: string[],
 ) => R;
 export type ServerFunction<R> = (
   status: ServerErrorStatus,
-  message?: string,
+  messages?: string[],
 ) => R;
 export type TimeoutFunction<R> = (status: TimeoutErrorStatus) => R;
 
@@ -171,25 +173,26 @@ export type Status = typeof STATUS[number];
 // #region ReturnData
 export type ClientError = {
   status: ClientErrorStatus;
-  message?: string;
+  messages?: string[];
 };
 
 export type Information<T = any> = {
   status: InformationStatus;
   payload?: T;
-  message?: string;
+  messages?: string[];
 };
 
 export type Permission<T = any> = {
   status: PermissionErrorStatus;
   payload?: T;
   notPermitteds?: string[];
+  messages?: string[];
 };
 
 export type Redirect<T = any> = {
   status: RedirectStatus;
   payload?: T;
-  message?: string;
+  messages?: string[];
 };
 
 export type Success<T = any> = {
@@ -199,7 +202,7 @@ export type Success<T = any> = {
 
 export type Server = {
   status: ServerErrorStatus;
-  message?: string;
+  messages?: string[];
 };
 
 export type Timeout = {

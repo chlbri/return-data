@@ -129,30 +129,6 @@ export default class ReturnData<T = any, S extends Status = Status> {
     return client(data.status, data.messages);
   }
 
-  successMap<R>(cases: RDSuccessMap<T, R>): R {
-    // #region Cases
-
-    const information = cases.information ?? error;
-    const permission = cases.permission ?? error;
-    const redirect = cases.redirect ?? error;
-    const server = cases.server ?? error;
-    const success = cases.success;
-    const timeout = cases.timeout ?? error;
-    const client = cases.client ?? error;
-
-    // #endregion
-
-    return this.map({
-      client,
-      information,
-      permission,
-      redirect,
-      server,
-      success,
-      timeout,
-    });
-  }
-
   maybeMap<R>(cases: RDMaybeMap<T, R>): R {
     // #region Cases
 
@@ -178,6 +154,30 @@ export default class ReturnData<T = any, S extends Status = Status> {
 
     const timeout =
       ((cases as any).timeout as TimeoutFunction<R>) ?? cases.else;
+
+    // #endregion
+
+    return this.map({
+      client,
+      information,
+      permission,
+      redirect,
+      server,
+      success,
+      timeout,
+    });
+  }
+
+  successMap<R>(cases: RDSuccessMap<T, R>): R {
+    // #region Cases
+
+    const information = cases.information ?? error;
+    const permission = cases.permission ?? error;
+    const redirect = cases.redirect ?? error;
+    const server = cases.server ?? error;
+    const success = cases.success;
+    const timeout = cases.timeout ?? error;
+    const client = cases.client ?? error;
 
     // #endregion
 

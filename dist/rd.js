@@ -68,16 +68,16 @@ class ReturnData {
         // #endregion
         return client(data.status, data.messages);
     }
-    successMap(cases) {
+    maybeMap(cases) {
         // #region Cases
-        var _a, _b, _c, _d, _e, _f;
-        const information = (_a = cases.information) !== null && _a !== void 0 ? _a : exports.error;
-        const permission = (_b = cases.permission) !== null && _b !== void 0 ? _b : exports.error;
-        const redirect = (_c = cases.redirect) !== null && _c !== void 0 ? _c : exports.error;
-        const server = (_d = cases.server) !== null && _d !== void 0 ? _d : exports.error;
-        const success = cases.success;
-        const timeout = (_e = cases.timeout) !== null && _e !== void 0 ? _e : exports.error;
-        const client = (_f = cases.client) !== null && _f !== void 0 ? _f : exports.error;
+        var _a, _b, _c, _d, _e, _f, _g;
+        const client = (_a = cases.client) !== null && _a !== void 0 ? _a : cases.else;
+        const information = (_b = cases.information) !== null && _b !== void 0 ? _b : cases.else;
+        const permission = (_c = cases.permission) !== null && _c !== void 0 ? _c : cases.else;
+        const redirect = (_d = cases.redirect) !== null && _d !== void 0 ? _d : cases.else;
+        const server = (_e = cases.server) !== null && _e !== void 0 ? _e : cases.else;
+        const success = (_f = cases.success) !== null && _f !== void 0 ? _f : cases.else;
+        const timeout = (_g = cases.timeout) !== null && _g !== void 0 ? _g : cases.else;
         // #endregion
         return this.map({
             client,
@@ -89,16 +89,16 @@ class ReturnData {
             timeout,
         });
     }
-    maybeMap(cases) {
+    successMap(cases) {
         // #region Cases
-        var _a, _b, _c, _d, _e, _f, _g;
-        const client = (_a = cases.client) !== null && _a !== void 0 ? _a : cases.else;
-        const information = (_b = cases.information) !== null && _b !== void 0 ? _b : cases.else;
-        const permission = (_c = cases.permission) !== null && _c !== void 0 ? _c : cases.else;
-        const redirect = (_d = cases.redirect) !== null && _d !== void 0 ? _d : cases.else;
-        const server = (_e = cases.server) !== null && _e !== void 0 ? _e : cases.else;
-        const success = (_f = cases.success) !== null && _f !== void 0 ? _f : cases.else;
-        const timeout = (_g = cases.timeout) !== null && _g !== void 0 ? _g : cases.else;
+        var _a, _b, _c, _d, _e, _f;
+        const information = (_a = cases.information) !== null && _a !== void 0 ? _a : exports.error;
+        const permission = (_b = cases.permission) !== null && _b !== void 0 ? _b : exports.error;
+        const redirect = (_c = cases.redirect) !== null && _c !== void 0 ? _c : exports.error;
+        const server = (_d = cases.server) !== null && _d !== void 0 ? _d : exports.error;
+        const success = cases.success;
+        const timeout = (_e = cases.timeout) !== null && _e !== void 0 ? _e : exports.error;
+        const client = (_f = cases.client) !== null && _f !== void 0 ? _f : exports.error;
         // #endregion
         return this.map({
             client,

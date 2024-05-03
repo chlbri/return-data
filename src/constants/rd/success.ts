@@ -104,4 +104,3 @@ export const SUCCESS = {
   298: { status: 298, payload: undefined } as T,
   299: { status: 299, payload: undefined } as T,
 } as const;
-

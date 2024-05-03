@@ -1,5 +1,5 @@
 import type { ClientError } from '../..';
-declare const CLIENT_ERRORS: {
+export declare const CLIENT_ERRORS: {
     readonly 400: ClientError;
     readonly 401: ClientError;
     readonly 402: ClientError;
@@ -101,5 +101,4 @@ declare const CLIENT_ERRORS: {
     readonly 498: ClientError;
     readonly 499: ClientError;
 };
-export default CLIENT_ERRORS;
 //# sourceMappingURL=client.d.ts.map

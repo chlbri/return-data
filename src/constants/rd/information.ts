@@ -102,4 +102,3 @@ export const INFORMATIONS = {
   198: { status: 198 } as Information,
   199: { status: 199 } as Information,
 } as const;
-

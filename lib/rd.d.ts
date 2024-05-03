@@ -1,10 +1,10 @@
-import type { PRD, RD, RDChainAsync, RDChainSync, RDMap, RDMaybeMap, RDRenewAsync, RDRenewSync, RDSuccessMap, Status, _ReturnData } from './types';
-export declare const error: () => never;
-type FPRD<T = any> = (status: Status, payload?: T) => PRD<T>;
-type FPRD2<T = any, R = any> = (status: Status, payload?: T) => PRD<R>;
-type FRD<T = any> = (status: Status, payload?: T) => RD<T>;
-type FRD2<T = any, R = any> = (status: Status, payload?: T) => RD<R>;
-export default class ReturnData<T = any, S extends Status = Status> {
+import type { PromiseRD, RD, ReturnDataChainAsync, ReturnDataChainSync, ReturnDataMap, ReturnDataRenewAsync, ReturnDataRenewSync, ReturnDataSuccessMap, ReturnDatatMaybeMap, Status, _ReturnData } from './types';
+export declare const defaultError: () => never;
+type FunctionPromiseRD<T = any> = (status: Status, payload?: T) => PromiseRD<T>;
+type FunctionPromiseRD2<T = any, R = any> = (status: Status, payload?: T) => PromiseRD<R>;
+type FunctionRD<T = any> = (status: Status, payload?: T) => RD<T>;
+type FunctionRD2<T = any, R = any> = (status: Status, payload?: T) => RD<R>;
+export declare class ReturnData<T = any, S extends Status = Status> {
     private data;
     constructor(data: _ReturnData<T, S>);
     get isClienError(): boolean;
@@ -16,18 +16,18 @@ export default class ReturnData<T = any, S extends Status = Status> {
     get isTimeoutError(): boolean;
     get hasData(): boolean;
     get status(): Status;
-    map<R>({ information, client, permission, redirect, server, success, timeout, }: RDMap<T, R>): R;
-    maybeMap<R>(cases: RDMaybeMap<T, R>): R;
-    successMap<R>(cases: RDSuccessMap<T, R>): R;
+    map<R>({ information, client, permission, redirect, server, success, timeout, }: ReturnDataMap<T, R>): R;
+    maybeMap<R>(cases: ReturnDatatMaybeMap<T, R>): R;
+    successMap<R>(cases: ReturnDataSuccessMap<T, R>): R;
     private _chainSync;
-    chainSync(args: RDChainSync<T> | RD<T> | FRD<T>): RD<T>;
+    chainSync(args: ReturnDataChainSync<T> | RD<T> | FunctionRD<T>): RD<T>;
     private _chainAsync;
-    chainAsync(args: RDChainAsync<T> | FPRD<T> | PRD<T>): PRD<T>;
+    chainAsync(args: ReturnDataChainAsync<T> | FunctionPromiseRD<T> | PromiseRD<T>): PromiseRD<T>;
     private _renewSync;
-    renewSync<R>(args: RDRenewSync<T, R> | RD<R> | FRD2<T, R>): RD<R>;
+    renewSync<R>(args: ReturnDataRenewSync<T, R> | RD<R> | FunctionRD2<T, R>): RD<R>;
     private _renewAsync;
-    renewAsync<R>(args: RDRenewAsync<T, R> | PRD<R> | FPRD2<T, R>): PRD<R>;
-    static chain(previous: RD, next: FPRD | RDChainAsync): PRD;
+    renewAsync<R>(args: ReturnDataRenewAsync<T, R> | PromiseRD<R> | FunctionPromiseRD2<T, R>): PromiseRD<R>;
+    static chain(previous: RD, next: FunctionPromiseRD | ReturnDataChainAsync): PromiseRD;
 }
 export {};
 //# sourceMappingURL=rd.d.ts.map

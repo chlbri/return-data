@@ -1,5 +1,5 @@
 import type { Timeout } from '../..';
-declare const TIMEOUT_ERRORS: {
+export declare const TIMEOUT_ERRORS: {
     readonly 900: Timeout;
     readonly 901: Timeout;
     readonly 902: Timeout;
@@ -101,5 +101,4 @@ declare const TIMEOUT_ERRORS: {
     readonly 998: Timeout;
     readonly 999: Timeout;
 };
-export default TIMEOUT_ERRORS;
 //# sourceMappingURL=timeout.d.ts.map

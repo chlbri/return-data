@@ -1,10 +1,10 @@
-import CLIENT_ERRORS from './client';
-import INFORMATIONS from './information';
-import PERMISSION_DENIEDS from './permission';
-import REDIRECTS from './redirect';
-import SERVER_ERRORS from './server';
-import SUCCESS from './success';
-import TIMEOUT_ERRORS from './timeout';
+import { CLIENT_ERRORS } from './client';
+import { INFORMATIONS } from './information';
+import { PERMISSION_DENIEDS } from './permission';
+import { REDIRECTS } from './redirect';
+import { SERVER_ERRORS } from './server';
+import { SUCCESS } from './success';
+import { TIMEOUT_ERRORS } from './timeout';
 export declare const RETURN_DATAS: {
     900: import("../..").Timeout;
     901: import("../..").Timeout;

@@ -1,5 +1,5 @@
 import type { Server } from '../..';
-declare const SERVER_ERRORS: {
+export declare const SERVER_ERRORS: {
     readonly 500: Server;
     readonly 501: Server;
     readonly 502: Server;
@@ -101,5 +101,4 @@ declare const SERVER_ERRORS: {
     readonly 598: Server;
     readonly 599: Server;
 };
-export default SERVER_ERRORS;
 //# sourceMappingURL=server.d.ts.map

@@ -1,6 +1,6 @@
 import { ZodArray, ZodBoolean, ZodDate, ZodError, ZodNumber, ZodObject, ZodOptional, ZodRawShape, ZodString, ZodTypeAny, ZodUndefined } from 'zod';
 import { CLIENT_ERROR_STATUS, INFORMATION_STATUS, PERMISSION_ERROR_STATUS, REDIRECT_STATUS, SERVER_ERROR_STATUS, STATUS, SUCCESS_STATUS, TIMEOUT_ERROR_STATUS } from './constants/status';
-import ReturnData from './rd';
+import type { ReturnData } from './rd';
 export type ChainReturn<T> = {
     success: true;
     data: T;
@@ -20,7 +20,7 @@ export type RedirectFunction<T, R> = (status: RedirectStatus, payload?: T, messa
 export type SuccessFunction<T, R> = (status: SuccessStatus, payload: T, messages?: string[]) => R;
 export type ServerFunction<R> = (status: ServerErrorStatus, messages?: string[]) => R;
 export type TimeoutFunction<R> = (status: TimeoutErrorStatus) => R;
-export type RDMap<T, R> = {
+export type ReturnDataMap<T, R> = {
     client: ClientErrorFunction<R>;
     information: InformationFunction<T, R>;
     permission: PermissionErrorFunction<T, R>;
@@ -29,35 +29,35 @@ export type RDMap<T, R> = {
     success: SuccessFunction<T, R>;
     timeout: TimeoutFunction<R>;
 };
-export type RDSuccessMap<T, R> = Partial<Omit<RDMap<T, R>, 'success'>> & Pick<RDMap<T, R>, 'success'>;
-export type RDMaybeMap<T, R> = Partial<RDMap<T, R>> & {
+export type ReturnDataSuccessMap<T, R> = Partial<Omit<ReturnDataMap<T, R>, 'success'>> & Pick<ReturnDataMap<T, R>, 'success'>;
+export type ReturnDatatMaybeMap<T, R> = Partial<ReturnDataMap<T, R>> & {
     else: () => R;
 };
 export type RD<T = any, S extends Status = Status> = ReturnData<T, S>;
-export type PRD<T = any> = Promise<RD<T>>;
-export type RDChainSync<T = any> = {
+export type PromiseRD<T = any> = Promise<RD<T>>;
+export type ReturnDataChainSync<T = any> = {
     information: InformationFunction<T, RD<T>>;
     permission: PermissionErrorFunction<T, RD<T>>;
     redirect: RedirectFunction<T, RD<T>>;
     success: SuccessFunction<T, RD<T>>;
 };
-export type RDRenewSync<T = any, R = any> = {
+export type ReturnDataRenewSync<T = any, R = any> = {
     information: InformationFunction<T, RD<R>>;
     permission: PermissionErrorFunction<T, RD<R>>;
     redirect: RedirectFunction<T, RD<R>>;
     success: SuccessFunction<T, RD<R>>;
 };
-export type RDChainAsync<T = any> = {
-    information: InformationFunction<T, PRD<T>>;
-    permission: PermissionErrorFunction<T, PRD<T>>;
-    redirect: RedirectFunction<T, PRD<T>>;
-    success: SuccessFunction<T, PRD<T>>;
+export type ReturnDataChainAsync<T = any> = {
+    information: InformationFunction<T, PromiseRD<T>>;
+    permission: PermissionErrorFunction<T, PromiseRD<T>>;
+    redirect: RedirectFunction<T, PromiseRD<T>>;
+    success: SuccessFunction<T, PromiseRD<T>>;
 };
-export type RDRenewAsync<T = any, R = any> = {
-    information: InformationFunction<T, PRD<R>>;
-    permission: PermissionErrorFunction<T, PRD<R>>;
-    redirect: RedirectFunction<T, PRD<R>>;
-    success: SuccessFunction<T, PRD<R>>;
+export type ReturnDataRenewAsync<T = any, R = any> = {
+    information: InformationFunction<T, PromiseRD<R>>;
+    permission: PermissionErrorFunction<T, PromiseRD<R>>;
+    redirect: RedirectFunction<T, PromiseRD<R>>;
+    success: SuccessFunction<T, PromiseRD<R>>;
 };
 export type ClientErrorStatus = (typeof CLIENT_ERROR_STATUS)[number];
 export type InformationStatus = (typeof INFORMATION_STATUS)[number];

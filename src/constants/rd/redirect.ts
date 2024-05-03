@@ -102,4 +102,3 @@ export const REDIRECTS = {
   398: { status: 398 } as Redirect,
   399: { status: 399 } as Redirect,
 } as const;
-

@@ -1,5 +1,5 @@
 import type { Information } from '../..';
-declare const INFORMATIONS: {
+export declare const INFORMATIONS: {
     readonly 100: Information;
     readonly 101: Information;
     readonly 102: Information;
@@ -101,5 +101,4 @@ declare const INFORMATIONS: {
     readonly 198: Information;
     readonly 199: Information;
 };
-export default INFORMATIONS;
 //# sourceMappingURL=information.d.ts.map

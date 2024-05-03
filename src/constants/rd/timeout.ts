@@ -102,4 +102,3 @@ export const TIMEOUT_ERRORS = {
   998: { status: 998 } as Timeout,
   999: { status: 999 } as Timeout,
 } as const;
-

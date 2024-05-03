@@ -102,4 +102,3 @@ export const SERVER_ERRORS = {
   598: { status: 598 } as Server,
   599: { status: 599 } as Server,
 } as const;
-

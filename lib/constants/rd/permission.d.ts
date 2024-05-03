@@ -1,5 +1,5 @@
 import type { Permission } from '../..';
-declare const PERMISSION_DENIEDS: {
+export declare const PERMISSION_DENIEDS: {
     readonly 600: Permission;
     readonly 601: Permission;
     readonly 602: Permission;
@@ -101,5 +101,4 @@ declare const PERMISSION_DENIEDS: {
     readonly 698: Permission;
     readonly 699: Permission;
 };
-export default PERMISSION_DENIEDS;
 //# sourceMappingURL=permission.d.ts.map

@@ -5,4 +5,3 @@ import type {} from 'zod';
 export const permissionStatusSchema = createEnum(
   ...PERMISSION_ERROR_STATUS,
 );
-

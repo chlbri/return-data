@@ -1,6 +1,6 @@
 import type { Success } from '../..';
 type T = Success<undefined>;
-declare const SUCCESS: {
+export declare const SUCCESS: {
     readonly 200: T;
     readonly 201: T;
     readonly 202: T;
@@ -102,5 +102,5 @@ declare const SUCCESS: {
     readonly 298: T;
     readonly 299: T;
 };
-export default SUCCESS;
+export {};
 //# sourceMappingURL=success.d.ts.map

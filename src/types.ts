@@ -105,10 +105,14 @@ export type ReturnDataMap<T, R> = {
   timeout: TimeoutFunction<R>;
 };
 
-export type ReturnDataSuccessMap<T, R> = Partial<Omit<ReturnDataMap<T, R>, 'success'>> &
+export type ReturnDataSuccessMap<T, R> = Partial<
+  Omit<ReturnDataMap<T, R>, 'success'>
+> &
   Pick<ReturnDataMap<T, R>, 'success'>;
 
-export type ReturnDatatMaybeMap<T, R> = Partial<ReturnDataMap<T, R>> & { else: () => R };
+export type ReturnDatatMaybeMap<T, R> = Partial<ReturnDataMap<T, R>> & {
+  else: () => R;
+};
 
 // #endregion
 

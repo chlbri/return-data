@@ -32,10 +32,19 @@ export const defaultError = () => {
   throw new Error();
 };
 
-type FunctionPromiseRD<T = any> = (status: Status, payload?: T) => PromiseRD<T>;
-type FunctionPromiseRD2<T = any, R = any> = (status: Status, payload?: T) => PromiseRD<R>;
+type FunctionPromiseRD<T = any> = (
+  status: Status,
+  payload?: T,
+) => PromiseRD<T>;
+type FunctionPromiseRD2<T = any, R = any> = (
+  status: Status,
+  payload?: T,
+) => PromiseRD<R>;
 type FunctionRD<T = any> = (status: Status, payload?: T) => RD<T>;
-type FunctionRD2<T = any, R = any> = (status: Status, payload?: T) => RD<R>;
+type FunctionRD2<T = any, R = any> = (
+  status: Status,
+  payload?: T,
+) => RD<R>;
 
 export class ReturnData<T = any, S extends Status = Status> {
   constructor(private data: _ReturnData<T, S>) {}
@@ -418,7 +427,9 @@ export class ReturnData<T = any, S extends Status = Status> {
     });
   }
 
-  chainAsync(args: ReturnDataChainAsync<T> | FunctionPromiseRD<T> | PromiseRD<T>): PromiseRD<T> {
+  chainAsync(
+    args: ReturnDataChainAsync<T> | FunctionPromiseRD<T> | PromiseRD<T>,
+  ): PromiseRD<T> {
     if (args instanceof Function) {
       return this._chainAsync({
         information: args,
@@ -482,7 +493,9 @@ export class ReturnData<T = any, S extends Status = Status> {
     });
   }
 
-  renewSync<R>(args: ReturnDataRenewSync<T, R> | RD<R> | FunctionRD2<T, R>): RD<R> {
+  renewSync<R>(
+    args: ReturnDataRenewSync<T, R> | RD<R> | FunctionRD2<T, R>,
+  ): RD<R> {
     if (args instanceof ReturnData) {
       return this._renewSync({
         information: () => args,
@@ -540,7 +553,12 @@ export class ReturnData<T = any, S extends Status = Status> {
     });
   }
 
-  renewAsync<R>(args: ReturnDataRenewAsync<T, R> | PromiseRD<R> | FunctionPromiseRD2<T, R>): PromiseRD<R> {
+  renewAsync<R>(
+    args:
+      | ReturnDataRenewAsync<T, R>
+      | PromiseRD<R>
+      | FunctionPromiseRD2<T, R>,
+  ): PromiseRD<R> {
     if (args instanceof Function) {
       return this._renewAsync({
         information: args,
@@ -565,7 +583,10 @@ export class ReturnData<T = any, S extends Status = Status> {
 
   // #region Static
 
-  static chain(previous: RD, next: FunctionPromiseRD | ReturnDataChainAsync): PromiseRD {
+  static chain(
+    previous: RD,
+    next: FunctionPromiseRD | ReturnDataChainAsync,
+  ): PromiseRD {
     return previous.chainAsync(next);
   }
 

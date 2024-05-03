@@ -40,7 +40,7 @@ export default defineConfig({
     }),
     tscAlias({}),
   ],
-  external: ['@xstate/immer', 'xstate', 'dequal', 'zod'],
+  external: ['@bemedev/zod-extended', 'zod'],
 
   output: [
     {

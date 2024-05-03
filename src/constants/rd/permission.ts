@@ -102,4 +102,3 @@ export const PERMISSION_DENIEDS = {
   698: { status: 698 } as Permission,
   699: { status: 699 } as Permission,
 } as const;
-

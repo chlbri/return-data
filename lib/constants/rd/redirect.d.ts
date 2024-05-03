@@ -1,5 +1,5 @@
 import type { Redirect } from '../..';
-declare const REDIRECTS: {
+export declare const REDIRECTS: {
     readonly 300: Redirect;
     readonly 301: Redirect;
     readonly 302: Redirect;
@@ -101,5 +101,4 @@ declare const REDIRECTS: {
     readonly 398: Redirect;
     readonly 399: Redirect;
 };
-export default REDIRECTS;
 //# sourceMappingURL=redirect.d.ts.map

@@ -2,6 +2,7 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=node
 
 #For Libraries
+lib
 
 #
 ### Node ###
@@ -41,13 +42,8 @@ bower_components
 # node-waf configuration
 .lock-wscript
 
-# Compiled binary addons (https://nodejs.org/api/addons.html)
-# build
-# out
-# dist
-
 # Dependency directories
-node_modules/
+node_modules
 jspm_packages/
 
 # TypeScript v1 declaration files
@@ -122,6 +118,7 @@ yarn.lock
 
 # dotenv environment variables file
 .env
+.env.zsh
 .env.test
 .env*.local
 .env.development.local
@@ -136,5 +133,9 @@ yarn.lock
 .env.production.local.json
 .env.test.local.json
 
-#vscode
-.vscode
+#Apple
+**/.DS_Store
+
+#my
+build.npm.ts
+build.npm.js

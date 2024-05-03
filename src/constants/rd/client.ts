@@ -102,4 +102,3 @@ export const CLIENT_ERRORS = {
   498: { status: 498 } as ClientError,
   499: { status: 499 } as ClientError,
 } as const;
-

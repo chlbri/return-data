@@ -1,0 +1,1 @@
+{"version":3,"file":"information.js","sources":["../../../src/schemas/status/information.ts"],"sourcesContent":["import { INFORMATION_STATUS } from '#status/information';\nimport { createEnum } from '@bemedev/zod-extended';\n\nexport const informationStatusSchema = createEnum(...INFORMATION_STATUS);\n"],"names":[],"mappings":";;;MAGa,uBAAuB,GAAG,UAAU,CAAC,GAAG,kBAAkB;;;;"}

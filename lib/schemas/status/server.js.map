@@ -1,0 +1,1 @@
+{"version":3,"file":"server.js","sources":["../../../src/schemas/status/server.ts"],"sourcesContent":["import { SERVER_ERROR_STATUS } from '#status/server';\nimport { createEnum } from '@bemedev/zod-extended';\n\nexport const serverErrorStatusSchema = createEnum(...SERVER_ERROR_STATUS);\n"],"names":[],"mappings":";;;MAGa,uBAAuB,GAAG,UAAU,CAAC,GAAG,mBAAmB;;;;"}

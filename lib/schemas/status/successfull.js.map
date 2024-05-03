@@ -1,0 +1,1 @@
+{"version":3,"file":"successfull.js","sources":["../../../src/schemas/status/successfull.ts"],"sourcesContent":["import { SUCCESS_STATUS } from '#status/success';\nimport { createEnum } from '@bemedev/zod-extended';\n\nexport const successfullStatusSchema = createEnum(...SUCCESS_STATUS);\n"],"names":[],"mappings":";;;MAGa,uBAAuB,GAAG,UAAU,CAAC,GAAG,cAAc;;;;"}

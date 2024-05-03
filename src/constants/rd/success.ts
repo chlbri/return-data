@@ -1,9 +1,8 @@
-import type { Success } from '../../types';
+import type { Success } from '#types';
 
 type T = Success<undefined>;
 
-/*prettier-ignore*/
-const SUCCESS = {
+export const SUCCESS = {
   200: { status: 200, payload: undefined } as T,
   201: { status: 201, payload: undefined } as T,
   202: { status: 202, payload: undefined } as T,
@@ -106,4 +105,3 @@ const SUCCESS = {
   299: { status: 299, payload: undefined } as T,
 } as const;
 
-export default SUCCESS;

@@ -1,4 +1,3 @@
-import { NOmit } from 'core';
 import {
   ZodArray,
   ZodBoolean,
@@ -22,7 +21,7 @@ import {
   SUCCESS_STATUS,
   TIMEOUT_ERROR_STATUS,
 } from './constants/status';
-import ReturnData from './rd';
+import type { ReturnData } from './rd';
 
 // #region Config
 
@@ -46,8 +45,8 @@ export type Optional<T extends ZodRawShape | ZodPrimitive> =
   T extends ZodRawShape
     ? OptionalDeepPartial<T>
     : T extends ZodTypeAny
-    ? ZodOptional<T>
-    : never;
+      ? ZodOptional<T>
+      : never;
 
 export type ZodPrimitive =
   | ZodNumber
@@ -96,7 +95,7 @@ export type TimeoutFunction<R> = (status: TimeoutErrorStatus) => R;
 
 // #region Maps
 
-export type RDMap<T, R> = {
+export type ReturnDataMap<T, R> = {
   client: ClientErrorFunction<R>;
   information: InformationFunction<T, R>;
   permission: PermissionErrorFunction<T, R>;
@@ -106,10 +105,10 @@ export type RDMap<T, R> = {
   timeout: TimeoutFunction<R>;
 };
 
-export type RDSuccessMap<T, R> = Partial<NOmit<RDMap<T, R>, 'success'>> &
-  Pick<RDMap<T, R>, 'success'>;
+export type ReturnDataSuccessMap<T, R> = Partial<Omit<ReturnDataMap<T, R>, 'success'>> &
+  Pick<ReturnDataMap<T, R>, 'success'>;
 
-export type RDMaybeMap<T, R> = Partial<RDMap<T, R>> & { else: () => R };
+export type ReturnDatatMaybeMap<T, R> = Partial<ReturnDataMap<T, R>> & { else: () => R };
 
 // #endregion
 
@@ -119,33 +118,33 @@ export type RDMaybeMap<T, R> = Partial<RDMap<T, R>> & { else: () => R };
 
 export type RD<T = any, S extends Status = Status> = ReturnData<T, S>;
 
-export type PRD<T = any> = Promise<RD<T>>;
+export type PromiseRD<T = any> = Promise<RD<T>>;
 
-export type RDChainSync<T = any> = {
+export type ReturnDataChainSync<T = any> = {
   information: InformationFunction<T, RD<T>>;
   permission: PermissionErrorFunction<T, RD<T>>;
   redirect: RedirectFunction<T, RD<T>>;
   success: SuccessFunction<T, RD<T>>;
 };
 
-export type RDRenewSync<T = any, R = any> = {
+export type ReturnDataRenewSync<T = any, R = any> = {
   information: InformationFunction<T, RD<R>>;
   permission: PermissionErrorFunction<T, RD<R>>;
   redirect: RedirectFunction<T, RD<R>>;
   success: SuccessFunction<T, RD<R>>;
 };
 
-export type RDChainAsync<T = any> = {
-  information: InformationFunction<T, PRD<T>>;
-  permission: PermissionErrorFunction<T, PRD<T>>;
-  redirect: RedirectFunction<T, PRD<T>>;
-  success: SuccessFunction<T, PRD<T>>;
+export type ReturnDataChainAsync<T = any> = {
+  information: InformationFunction<T, PromiseRD<T>>;
+  permission: PermissionErrorFunction<T, PromiseRD<T>>;
+  redirect: RedirectFunction<T, PromiseRD<T>>;
+  success: SuccessFunction<T, PromiseRD<T>>;
 };
-export type RDRenewAsync<T = any, R = any> = {
-  information: InformationFunction<T, PRD<R>>;
-  permission: PermissionErrorFunction<T, PRD<R>>;
-  redirect: RedirectFunction<T, PRD<R>>;
-  success: SuccessFunction<T, PRD<R>>;
+export type ReturnDataRenewAsync<T = any, R = any> = {
+  information: InformationFunction<T, PromiseRD<R>>;
+  permission: PermissionErrorFunction<T, PromiseRD<R>>;
+  redirect: RedirectFunction<T, PromiseRD<R>>;
+  success: SuccessFunction<T, PromiseRD<R>>;
 };
 
 // #endregion
@@ -153,21 +152,22 @@ export type RDRenewAsync<T = any, R = any> = {
 // #endregion
 
 // #region Status
-export type ClientErrorStatus = typeof CLIENT_ERROR_STATUS[number];
+export type ClientErrorStatus = (typeof CLIENT_ERROR_STATUS)[number];
 
-export type InformationStatus = typeof INFORMATION_STATUS[number];
+export type InformationStatus = (typeof INFORMATION_STATUS)[number];
 
-export type PermissionErrorStatus = typeof PERMISSION_ERROR_STATUS[number];
+export type PermissionErrorStatus =
+  (typeof PERMISSION_ERROR_STATUS)[number];
 
-export type RedirectStatus = typeof REDIRECT_STATUS[number];
+export type RedirectStatus = (typeof REDIRECT_STATUS)[number];
 
-export type ServerErrorStatus = typeof SERVER_ERROR_STATUS[number];
+export type ServerErrorStatus = (typeof SERVER_ERROR_STATUS)[number];
 
-export type SuccessStatus = typeof SUCCESS_STATUS[number];
+export type SuccessStatus = (typeof SUCCESS_STATUS)[number];
 
-export type TimeoutErrorStatus = typeof TIMEOUT_ERROR_STATUS[number];
+export type TimeoutErrorStatus = (typeof TIMEOUT_ERROR_STATUS)[number];
 
-export type Status = typeof STATUS[number];
+export type Status = (typeof STATUS)[number];
 // #endregion
 
 // #region ReturnData
@@ -210,18 +210,21 @@ export type Timeout = {
 };
 // #endregion
 
+/**
+ * prettier-ignore
+ */
 export type _ReturnData<T, S extends Status> = S extends ClientErrorStatus
   ? ClientError
   : S extends InformationStatus
-  ? Information<T>
-  : S extends PermissionErrorStatus
-  ? Permission<T>
-  : S extends RedirectStatus
-  ? Redirect<T>
-  : S extends ServerErrorStatus
-  ? Server
-  : S extends SuccessStatus
-  ? Success<T>
-  : S extends TimeoutErrorStatus
-  ? Timeout
-  : never;
+    ? Information<T>
+    : S extends PermissionErrorStatus
+      ? Permission<T>
+      : S extends RedirectStatus
+        ? Redirect<T>
+        : S extends ServerErrorStatus
+          ? Server
+          : S extends SuccessStatus
+            ? Success<T>
+            : S extends TimeoutErrorStatus
+              ? Timeout
+              : never;

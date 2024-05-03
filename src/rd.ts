@@ -11,16 +11,16 @@ import type {
   ClientErrorFunction,
   InformationFunction,
   PermissionErrorFunction,
-  PRD,
+  PromiseRD,
   RD,
-  RDChainAsync,
-  RDChainSync,
-  RDMap,
-  RDMaybeMap,
-  RDRenewAsync,
-  RDRenewSync,
-  RDSuccessMap,
   RedirectFunction,
+  ReturnDataChainAsync,
+  ReturnDataChainSync,
+  ReturnDataMap,
+  ReturnDataRenewAsync,
+  ReturnDataRenewSync,
+  ReturnDataSuccessMap,
+  ReturnDatatMaybeMap,
   ServerFunction,
   Status,
   SuccessFunction,
@@ -28,16 +28,16 @@ import type {
   _ReturnData,
 } from './types';
 
-export const error = () => {
+export const defaultError = () => {
   throw new Error();
 };
 
-type FPRD<T = any> = (status: Status, payload?: T) => PRD<T>;
-type FPRD2<T = any, R = any> = (status: Status, payload?: T) => PRD<R>;
-type FRD<T = any> = (status: Status, payload?: T) => RD<T>;
-type FRD2<T = any, R = any> = (status: Status, payload?: T) => RD<R>;
+type FunctionPromiseRD<T = any> = (status: Status, payload?: T) => PromiseRD<T>;
+type FunctionPromiseRD2<T = any, R = any> = (status: Status, payload?: T) => PromiseRD<R>;
+type FunctionRD<T = any> = (status: Status, payload?: T) => RD<T>;
+type FunctionRD2<T = any, R = any> = (status: Status, payload?: T) => RD<R>;
 
-export default class ReturnData<T = any, S extends Status = Status> {
+export class ReturnData<T = any, S extends Status = Status> {
   constructor(private data: _ReturnData<T, S>) {}
 
   // #region Checkers
@@ -94,7 +94,7 @@ export default class ReturnData<T = any, S extends Status = Status> {
     server,
     success,
     timeout,
-  }: RDMap<T, R>): R {
+  }: ReturnDataMap<T, R>): R {
     const data = this.data;
 
     // #region Checkers
@@ -129,7 +129,7 @@ export default class ReturnData<T = any, S extends Status = Status> {
     return client(data.status, data.messages);
   }
 
-  maybeMap<R>(cases: RDMaybeMap<T, R>): R {
+  maybeMap<R>(cases: ReturnDatatMaybeMap<T, R>): R {
     // #region Cases
 
     const client =
@@ -168,16 +168,16 @@ export default class ReturnData<T = any, S extends Status = Status> {
     });
   }
 
-  successMap<R>(cases: RDSuccessMap<T, R>): R {
+  successMap<R>(cases: ReturnDataSuccessMap<T, R>): R {
     // #region Cases
 
-    const information = cases.information ?? error;
-    const permission = cases.permission ?? error;
-    const redirect = cases.redirect ?? error;
-    const server = cases.server ?? error;
+    const information = cases.information ?? defaultError;
+    const permission = cases.permission ?? defaultError;
+    const redirect = cases.redirect ?? defaultError;
+    const server = cases.server ?? defaultError;
     const success = cases.success;
-    const timeout = cases.timeout ?? error;
-    const client = cases.client ?? error;
+    const timeout = cases.timeout ?? defaultError;
+    const client = cases.client ?? defaultError;
 
     // #endregion
 
@@ -201,7 +201,7 @@ export default class ReturnData<T = any, S extends Status = Status> {
     permission,
     redirect,
     success,
-  }: RDChainSync<T>): RD<T> {
+  }: ReturnDataChainSync<T>): RD<T> {
     return this.map({
       success: (...args) => {
         return success(...args);
@@ -295,7 +295,7 @@ export default class ReturnData<T = any, S extends Status = Status> {
     });
   }
 
-  chainSync(args: RDChainSync<T> | RD<T> | FRD<T>): RD<T> {
+  chainSync(args: ReturnDataChainSync<T> | RD<T> | FunctionRD<T>): RD<T> {
     if (args instanceof ReturnData) {
       return this._chainSync({
         information: () => args,
@@ -321,7 +321,7 @@ export default class ReturnData<T = any, S extends Status = Status> {
     permission,
     redirect,
     success,
-  }: RDChainAsync<T>): PRD<T> {
+  }: ReturnDataChainAsync<T>): PromiseRD<T> {
     return this.map({
       success: (...args) => success(...args),
       information: async (status, payload, messages) => {
@@ -418,7 +418,7 @@ export default class ReturnData<T = any, S extends Status = Status> {
     });
   }
 
-  chainAsync(args: RDChainAsync<T> | FPRD<T> | PRD<T>): PRD<T> {
+  chainAsync(args: ReturnDataChainAsync<T> | FunctionPromiseRD<T> | PromiseRD<T>): PromiseRD<T> {
     if (args instanceof Function) {
       return this._chainAsync({
         information: args,
@@ -448,7 +448,7 @@ export default class ReturnData<T = any, S extends Status = Status> {
     permission,
     redirect,
     success,
-  }: RDRenewSync<T, R>): RD<R> {
+  }: ReturnDataRenewSync<T, R>): RD<R> {
     return this.map({
       success: (...args) => {
         return success(...args);
@@ -482,7 +482,7 @@ export default class ReturnData<T = any, S extends Status = Status> {
     });
   }
 
-  renewSync<R>(args: RDRenewSync<T, R> | RD<R> | FRD2<T, R>): RD<R> {
+  renewSync<R>(args: ReturnDataRenewSync<T, R> | RD<R> | FunctionRD2<T, R>): RD<R> {
     if (args instanceof ReturnData) {
       return this._renewSync({
         information: () => args,
@@ -508,7 +508,7 @@ export default class ReturnData<T = any, S extends Status = Status> {
     permission,
     redirect,
     success,
-  }: RDRenewAsync<T, R>): PRD<R> {
+  }: ReturnDataRenewAsync<T, R>): PromiseRD<R> {
     return this.map({
       success: (...args) => success(...args),
       information: async (status, payload, messages) => {
@@ -540,7 +540,7 @@ export default class ReturnData<T = any, S extends Status = Status> {
     });
   }
 
-  renewAsync<R>(args: RDRenewAsync<T, R> | PRD<R> | FPRD2<T, R>): PRD<R> {
+  renewAsync<R>(args: ReturnDataRenewAsync<T, R> | PromiseRD<R> | FunctionPromiseRD2<T, R>): PromiseRD<R> {
     if (args instanceof Function) {
       return this._renewAsync({
         information: args,
@@ -565,7 +565,7 @@ export default class ReturnData<T = any, S extends Status = Status> {
 
   // #region Static
 
-  static chain(previous: RD, next: FPRD | RDChainAsync): PRD {
+  static chain(previous: RD, next: FunctionPromiseRD | ReturnDataChainAsync): PromiseRD {
     return previous.chainAsync(next);
   }
 

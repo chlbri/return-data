@@ -1,0 +1,1 @@
+{"version":3,"file":"client.js","sources":["../../../src/schemas/status/client.ts"],"sourcesContent":["import { createEnum } from '@bemedev/zod-extended';\nimport { CLIENT_ERROR_STATUS } from '#status/client';\n\nexport const clientErrorStatusSchema = createEnum(...CLIENT_ERROR_STATUS);\n"],"names":[],"mappings":";;;MAGa,uBAAuB,GAAG,UAAU,CAAC,GAAG,mBAAmB;;;;"}

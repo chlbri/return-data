@@ -1,12 +1,5 @@
-import {
-  ZodArray,
-  ZodBoolean,
-  ZodDate,
-  ZodNumber,
-  ZodString,
-  ZodType,
-  ZodUndefined,
-} from 'zod';
+import { z } from 'zod';
+
 import {
   clientErrorStatusSchema,
   informationStatusSchema,
@@ -15,7 +8,8 @@ import {
   serverErrorStatusSchema,
   successfullStatusSchema,
   timeoutErrorStatusSchema,
-} from './schemas';
+} from './schemas/status';
+
 import type {
   ChainReturn,
   ClientError,
@@ -30,18 +24,18 @@ import type {
 
 export function isPrimitive(val: any): val is ZodPrimitive {
   return (
-    val instanceof ZodNumber ||
-    val instanceof ZodString ||
-    val instanceof ZodBoolean ||
-    val instanceof ZodUndefined ||
-    val instanceof ZodArray ||
-    val instanceof ZodDate
+    val instanceof z.ZodNumber ||
+    val instanceof z.ZodString ||
+    val instanceof z.ZodBoolean ||
+    val instanceof z.ZodUndefined ||
+    val instanceof z.ZodArray ||
+    val instanceof z.ZodDate
   );
 }
 
 export function chainSchemas<T>(
   value: T,
-  ...schemas: ZodType<T>[]
+  ...schemas: z.ZodType<T>[]
 ): ChainReturn<T> {
   if (!schemas[0]) return { success: true, data: value };
   const firstSchema = schemas[0];

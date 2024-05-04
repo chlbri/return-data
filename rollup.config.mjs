@@ -5,17 +5,17 @@ import { defineConfig } from 'rollup';
 import tscAlias from 'rollup-plugin-tsc-alias';
 import typescript from 'rollup-plugin-typescript2';
 
+const ignore = [
+  '**/*.test.ts',
+  '**/*.fixtures.ts',
+  './src/config/**/*.ts',
+  'src/types/**/*',
+  'src/__tests__/**/*',
+];
+
 const input = Object.fromEntries(
   globSync('src/**/*.ts', {
-    ignore: [
-      '**/*.test.ts',
-      '**/*.fixtures.ts',
-      './src/config/**/*.ts',
-      '**/*.typegen.ts',
-      'src/machines/main/main.machine.types.ts',
-      'src/types/**/*',
-      "src/types.ts"
-    ],
+    ignore: [...ignore, '**/types.ts'],
   }).map(file => [
     // This remove `src/` as well as the file extension from each
     // file, so e.g. src/nested/foo.js becomes nested/foo
@@ -35,7 +35,7 @@ export default defineConfig({
   plugins: [
     typescript({
       tsconfigOverride: {
-        exclude: ['src/**/*.test.ts', 'src/fixtures', 'src/config'],
+        exclude: ignore,
       },
     }),
     tscAlias({}),

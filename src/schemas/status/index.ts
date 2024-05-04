@@ -4,7 +4,7 @@ import { informationStatusSchema } from './information';
 import { permissionStatusSchema } from './permission';
 import { redirectStatusSchema } from './redirect';
 import { serverErrorStatusSchema } from './server';
-import { successStatusSchema } from './successfull';
+import { successStatusSchema } from './success';
 import { timeoutErrorStatusSchema } from './timeout';
 
 export {

@@ -6,6 +6,8 @@ import { SERVER_ERRORS } from './server';
 import { SUCCESS } from './success';
 import { TIMEOUT_ERRORS } from './timeout';
 
+//TODO Make all index empty, exports only
+
 export const RETURN_DATAS = {
   ...CLIENT_ERRORS,
   ...INFORMATIONS,

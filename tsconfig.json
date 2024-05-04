@@ -6,7 +6,6 @@
     "target": "ESNext",
     "declaration": true,
     "sourceMap": true,
-    "rootDir": "./src",
     "outDir": "./lib",
     "resolveJsonModule": true,
     "strict": true,
@@ -23,12 +22,16 @@
     "noEmit": true,
     "declarationMap": true,
     "paths": {
-      "#schemas/*":["./src/schemas/status"],
-      "#status/*":["./src/constants/status/*"],
-      "#data/*":["./src/constants/rd/*"],
-      "#rd":["./src/rd.ts"],
-      "#types":["./src/types.ts"],
-      "#functions":["./src/functions.ts"]
+      "#schemas/*": ["./src/schemas/*"],
+      "#status": ["./src/constants/status/index.ts"],
+      "#status/*": ["./src/constants/status/*"],
+      "#data/*": ["./src/constants/rd/*"],
+      "#data": ["./src/constants/rd/index.ts"],
+      "#rd": ["./src/ReturnData.ts"],
+      "#types": ["./src/types.ts"],
+      "#functions/*": ["./src/functions/*"],
+      "#lib": ["./lib"],
+      "#lib/*": ["./lib/*"]
     }
   }
 }

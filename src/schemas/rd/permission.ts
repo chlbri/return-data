@@ -1,13 +1,15 @@
+import { permissionStatusSchema } from '#schemas/status/permission';
 import { z } from 'zod';
-import { permissionStatusSchema } from '../status/permission';
 import { messages } from './helpers';
 
-const _any = z.object({
-  status: permissionStatusSchema,
-  payload: z.any().optional(),
-  notPermitteds: messages,
-  messages,
-});
+const _any = z
+  .object({
+    status: permissionStatusSchema,
+    payload: z.any().optional(),
+    notPermitteds: messages,
+    messages,
+  })
+  .strict();
 
 export function permissionSchema<T extends readonly []>(
   ...payload: T
@@ -26,14 +28,14 @@ export function permissionSchema<
   T extends readonly [z.ZodTypeAny] | readonly [],
 >(...payload: T) {
   if (payload.length === 1)
-    return z.object({
-      status: permissionStatusSchema,
-      payload: payload[0].optional() as T extends readonly [z.ZodTypeAny]
-        ? z.ZodOptional<T[0]>
-        : never,
-      notPermitteds: messages,
-      messages,
-    });
+    return z
+      .object({
+        status: permissionStatusSchema,
+        payload: payload[0].optional(),
+        notPermitteds: messages,
+        messages,
+      })
+      .strict();
 
   return _any;
 }

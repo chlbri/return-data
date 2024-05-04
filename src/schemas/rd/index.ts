@@ -35,5 +35,3 @@ export const rdSchema = <T extends z.ZodTypeAny>(payload: T) => {
     timeoutErrorSchema,
   ]);
 };
-
-const tt = successSchema(z.number());

@@ -2,7 +2,10 @@
   "name": "@bemedev/return-data",
   "version": "0.1.0",
   "description": "Return Data from promises",
-  "repository": "https://github.com/chlbri/core-promises.git",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chlbri/return-data"
+  },
   "license": "MIT",
   "type": "module",
   "main": "lib/index.js",

@@ -29,18 +29,23 @@ export type ReturnDataMap<T, R> = {
     success: SuccessFunction<T, R>;
     timeout: TimeoutFunction<R>;
 };
+export type RDDataMap<T, R> = ReturnDataMap<T, R>;
 export type ReturnDataSuccessMap<T, R> = Partial<Omit<ReturnDataMap<T, R>, 'success'>> & Pick<ReturnDataMap<T, R>, 'success'>;
-export type ReturnDatatMaybeMap<T, R> = Partial<ReturnDataMap<T, R>> & {
+export type RDSuccessMap<T, R> = ReturnDataSuccessMap<T, R>;
+export type ReturnDataMaybeMap<T, R> = Partial<ReturnDataMap<T, R>> & {
     else: () => R;
 };
+export type RDMaybeMap<T, R> = ReturnDataMaybeMap<T, R>;
 export type RD<T = any, S extends Status = Status> = ReturnData<T, S>;
-export type PromiseRD<T = any> = Promise<RD<T>>;
+export type PromiseReturnData<T = any> = Promise<RD<T>>;
+export type PromiseRD<T = any> = PromiseReturnData<T>;
 export type ReturnDataChainSync<T = any> = {
     information: InformationFunction<T, RD<T>>;
     permission: PermissionErrorFunction<T, RD<T>>;
     redirect: RedirectFunction<T, RD<T>>;
     success: SuccessFunction<T, RD<T>>;
 };
+export type RDChainSync<T = any> = ReturnDataChainSync<T>;
 export type ReturnDataRenewSync<T = any, R = any> = {
     information: InformationFunction<T, RD<R>>;
     permission: PermissionErrorFunction<T, RD<R>>;
@@ -87,13 +92,13 @@ export type Redirect<T = any> = {
     payload?: T;
     messages?: string[];
 };
-export type Success<T = any> = {
-    status: SuccessStatus;
-    payload: T;
-};
 export type Server = {
     status: ServerErrorStatus;
     messages?: string[];
+};
+export type Success<T = any> = {
+    status: SuccessStatus;
+    payload: T;
 };
 export type Timeout = {
     status: TimeoutErrorStatus;
@@ -101,5 +106,5 @@ export type Timeout = {
 /**
  * prettier-ignore
  */
-export type _ReturnData<T, S extends Status> = S extends ClientErrorStatus ? ClientError : S extends InformationStatus ? Information<T> : S extends PermissionErrorStatus ? Permission<T> : S extends RedirectStatus ? Redirect<T> : S extends ServerErrorStatus ? Server : S extends SuccessStatus ? Success<T> : S extends TimeoutErrorStatus ? Timeout : never;
+export type ReturnDataObject<T, S extends Status> = S extends ClientErrorStatus ? ClientError : S extends InformationStatus ? Information<T> : S extends PermissionErrorStatus ? Permission<T> : S extends RedirectStatus ? Redirect<T> : S extends ServerErrorStatus ? Server : S extends SuccessStatus ? Success<T> : S extends TimeoutErrorStatus ? Timeout : never;
 //# sourceMappingURL=types.d.ts.map

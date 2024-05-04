@@ -4,7 +4,7 @@ import { informationStatusSchema } from './information';
 import { permissionStatusSchema } from './permission';
 import { redirectStatusSchema } from './redirect';
 import { serverErrorStatusSchema } from './server';
-import { successfullStatusSchema } from './successfull';
+import { successStatusSchema } from './successfull';
 import { timeoutErrorStatusSchema } from './timeout';
 
 export {
@@ -13,7 +13,7 @@ export {
   permissionStatusSchema,
   redirectStatusSchema,
   serverErrorStatusSchema,
-  successfullStatusSchema,
+  successStatusSchema as successfullStatusSchema,
   timeoutErrorStatusSchema,
 };
 
@@ -23,6 +23,6 @@ export const statusSchema = z.union([
   permissionStatusSchema,
   redirectStatusSchema,
   serverErrorStatusSchema,
-  successfullStatusSchema,
+  successStatusSchema,
   timeoutErrorStatusSchema,
 ]);

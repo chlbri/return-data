@@ -1,5 +1,4 @@
 import {
-  isClientError,
   isInformation,
   isPermission,
   isRedirect,
@@ -7,6 +6,7 @@ import {
   isSuccess,
   isTimeout,
 } from './functions';
+import { clientErrorSchema } from './schemas/rd';
 import type {
   ClientErrorFunction,
   InformationFunction,
@@ -17,42 +17,40 @@ import type {
   ReturnDataChainAsync,
   ReturnDataChainSync,
   ReturnDataMap,
+  ReturnDataMaybeMap,
+  ReturnDataObject,
   ReturnDataRenewAsync,
   ReturnDataRenewSync,
   ReturnDataSuccessMap,
-  ReturnDatatMaybeMap,
   ServerFunction,
   Status,
   SuccessFunction,
   TimeoutFunction,
-  _ReturnData,
 } from './types';
 
 export const defaultError = () => {
   throw new Error();
 };
 
-type FunctionPromiseRD<T = any> = (
-  status: Status,
-  payload?: T,
-) => PromiseRD<T>;
-type FunctionPromiseRD2<T = any, R = any> = (
-  status: Status,
-  payload?: T,
-) => PromiseRD<R>;
-type FunctionRD<T = any> = (status: Status, payload?: T) => RD<T>;
-type FunctionRD2<T = any, R = any> = (
+type FunctionRDwithReturn<T = any, R = any> = (
   status: Status,
   payload?: T,
 ) => RD<R>;
+type FunctionRD<T = any> = FunctionRDwithReturn<T, T>;
+
+type FunctionPromiseRDwithReturn<T = any, R = any> = (
+  status: Status,
+  payload?: T,
+) => PromiseRD<R>;
+type FunctionPromiseRD<T = any> = FunctionPromiseRDwithReturn<T, T>;
 
 export class ReturnData<T = any, S extends Status = Status> {
-  constructor(private data: _ReturnData<T, S>) {}
+  constructor(private data: ReturnDataObject<T, S>) {}
 
   // #region Checkers
 
   get isClienError(): boolean {
-    return isClientError(this.data);
+    return clientErrorSchema.safeParse(this.data).success;
   }
 
   get isInformation(): boolean {
@@ -138,7 +136,7 @@ export class ReturnData<T = any, S extends Status = Status> {
     return client(data.status, data.messages);
   }
 
-  maybeMap<R>(cases: ReturnDatatMaybeMap<T, R>): R {
+  maybeMap<R>(cases: ReturnDataMaybeMap<T, R>): R {
     // #region Cases
 
     const client =
@@ -494,7 +492,7 @@ export class ReturnData<T = any, S extends Status = Status> {
   }
 
   renewSync<R>(
-    args: ReturnDataRenewSync<T, R> | RD<R> | FunctionRD2<T, R>,
+    args: ReturnDataRenewSync<T, R> | RD<R> | FunctionRDwithReturn<T, R>,
   ): RD<R> {
     if (args instanceof ReturnData) {
       return this._renewSync({
@@ -557,7 +555,7 @@ export class ReturnData<T = any, S extends Status = Status> {
     args:
       | ReturnDataRenewAsync<T, R>
       | PromiseRD<R>
-      | FunctionPromiseRD2<T, R>,
+      | FunctionPromiseRDwithReturn<T, R>,
   ): PromiseRD<R> {
     if (args instanceof Function) {
       return this._renewAsync({

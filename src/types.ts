@@ -105,14 +105,19 @@ export type ReturnDataMap<T, R> = {
   timeout: TimeoutFunction<R>;
 };
 
+export type RDDataMap<T, R> = ReturnDataMap<T, R>;
+
 export type ReturnDataSuccessMap<T, R> = Partial<
   Omit<ReturnDataMap<T, R>, 'success'>
 > &
   Pick<ReturnDataMap<T, R>, 'success'>;
 
-export type ReturnDatatMaybeMap<T, R> = Partial<ReturnDataMap<T, R>> & {
+export type RDSuccessMap<T, R> = ReturnDataSuccessMap<T, R>;
+
+export type ReturnDataMaybeMap<T, R> = Partial<ReturnDataMap<T, R>> & {
   else: () => R;
 };
+export type RDMaybeMap<T, R> = ReturnDataMaybeMap<T, R>;
 
 // #endregion
 
@@ -122,7 +127,8 @@ export type ReturnDatatMaybeMap<T, R> = Partial<ReturnDataMap<T, R>> & {
 
 export type RD<T = any, S extends Status = Status> = ReturnData<T, S>;
 
-export type PromiseRD<T = any> = Promise<RD<T>>;
+export type PromiseReturnData<T = any> = Promise<RD<T>>;
+export type PromiseRD<T = any> = PromiseReturnData<T>;
 
 export type ReturnDataChainSync<T = any> = {
   information: InformationFunction<T, RD<T>>;
@@ -130,6 +136,7 @@ export type ReturnDataChainSync<T = any> = {
   redirect: RedirectFunction<T, RD<T>>;
   success: SuccessFunction<T, RD<T>>;
 };
+export type RDChainSync<T = any> = ReturnDataChainSync<T>;
 
 export type ReturnDataRenewSync<T = any, R = any> = {
   information: InformationFunction<T, RD<R>>;
@@ -199,14 +206,14 @@ export type Redirect<T = any> = {
   messages?: string[];
 };
 
-export type Success<T = any> = {
-  status: SuccessStatus;
-  payload: T;
-};
-
 export type Server = {
   status: ServerErrorStatus;
   messages?: string[];
+};
+
+export type Success<T = any> = {
+  status: SuccessStatus;
+  payload: T;
 };
 
 export type Timeout = {
@@ -217,7 +224,10 @@ export type Timeout = {
 /**
  * prettier-ignore
  */
-export type _ReturnData<T, S extends Status> = S extends ClientErrorStatus
+export type ReturnDataObject<
+  T,
+  S extends Status,
+> = S extends ClientErrorStatus
   ? ClientError
   : S extends InformationStatus
     ? Information<T>

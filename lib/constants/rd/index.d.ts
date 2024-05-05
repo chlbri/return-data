@@ -778,7 +778,7 @@ export declare const RETURN_DATAS: {
     669: import("../..").Permission;
     670: import("../..").Permission;
     671: import("../..").Permission;
-    62: import("../..").Permission;
+    672: import("../..").Permission;
     673: import("../..").Permission;
     674: import("../..").Permission;
     675: import("../..").Permission;

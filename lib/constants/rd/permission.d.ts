@@ -72,7 +72,7 @@ export declare const PERMISSION_DENIEDS: {
     readonly 669: Permission;
     readonly 670: Permission;
     readonly 671: Permission;
-    readonly 62: Permission;
+    readonly 672: Permission;
     readonly 673: Permission;
     readonly 674: Permission;
     readonly 675: Permission;

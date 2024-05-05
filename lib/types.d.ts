@@ -1,4 +1,4 @@
-import { CLIENT_ERROR_STATUS, INFORMATION_STATUS, PERMISSION_ERROR_STATUS, REDIRECT_STATUS, SERVER_ERROR_STATUS, STATUS, SUCCESS_STATUS, TIMEOUT_ERROR_STATUS } from './constants/status/index.js';
+import type { CLIENT_ERROR_STATUS, INFORMATION_STATUS, PERMISSION_ERROR_STATUS, REDIRECT_STATUS, SERVER_ERROR_STATUS, STATUS, SUCCESS_STATUS, TIMEOUT_ERROR_STATUS } from './constants/status/index.js';
 import type { z } from 'zod';
 import type { ReturnData } from './ReturnData';
 export type ChainReturn<T> = {
@@ -12,7 +12,7 @@ export type OptionalDeepPartial<T extends z.ZodRawShape> = z.ZodOptional<z.ZodOb
     [key in keyof T]: z.ZodOptional<T[key]>;
 }>>;
 export type Optional<T extends z.ZodRawShape | ZodPrimitive> = T extends z.ZodRawShape ? OptionalDeepPartial<T> : T extends z.ZodTypeAny ? z.ZodOptional<T> : never;
-export type ZodPrimitive = z.ZodNumber | z.ZodString | z.ZodBoolean | z.ZodDate | z.ZodArray<any> | z.ZodUndefined | z.ZodNull;
+export type ZodPrimitive = z.ZodNumber | z.ZodString | z.ZodBoolean | z.ZodUndefined | z.ZodNull;
 export type ClientErrorFunction<R> = (status: ClientErrorStatus, messages?: string[]) => R;
 export type InformationFunction<T, R> = (status: InformationStatus, payload?: T, messages?: string[]) => R;
 export type PermissionErrorFunction<T, R> = (status: PermissionErrorStatus, payload?: T, notPermitteds?: string[], messages?: string[]) => R;

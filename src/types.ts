@@ -1,4 +1,4 @@
-import {
+import type {
   CLIENT_ERROR_STATUS,
   INFORMATION_STATUS,
   PERMISSION_ERROR_STATUS,
@@ -41,8 +41,6 @@ export type ZodPrimitive =
   | z.ZodNumber
   | z.ZodString
   | z.ZodBoolean
-  | z.ZodDate
-  | z.ZodArray<any>
   | z.ZodUndefined
   | z.ZodNull;
 

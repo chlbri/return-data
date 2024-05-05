@@ -1,10 +1,11 @@
-import { ReturnData } from '#rd';
-import { describe } from 'vitest';
-import { generateCheckTests } from '../fixtures/checkers';
 import {
+  generateCheckTests,
+  generateMapTests,
   generateMaybeMapTests,
   generateSuccessMapTests,
-} from '../fixtures/map';
+} from '#fixtures';
+import { ReturnData } from '#rd';
+import { describe } from 'vitest';
 
 const rd1 = new ReturnData({
   status: 603,
@@ -21,10 +22,14 @@ describe('#1 => Checkers', () => {
   generateCheckTests('permission', rd1);
 });
 
-describe('#2 => Map', () => {
+describe('#2 => MaybeMap', () => {
   generateMaybeMapTests('permission', rd2);
 });
 
 describe('#3 => SuccessMap', () => {
   generateSuccessMapTests('permission', rd1);
+});
+
+describe('#4 => Map', () => {
+  generateMapTests('permission', rd2);
 });

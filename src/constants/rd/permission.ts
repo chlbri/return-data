@@ -73,7 +73,7 @@ export const PERMISSION_DENIEDS = {
   669: { status: 669 } as Permission,
   670: { status: 670 } as Permission,
   671: { status: 671 } as Permission,
-  62: { status: 672 } as Permission,
+  672: { status: 672 } as Permission,
   673: { status: 673 } as Permission,
   674: { status: 674 } as Permission,
   675: { status: 675 } as Permission,

@@ -8,6 +8,7 @@ import typescript from 'rollup-plugin-typescript2';
 const ignore = [
   '**/*.test.ts',
   '**/*.fixtures.ts',
+  '**/fixtures/**/*',
   './src/config/**/*.ts',
   'src/types/**/*',
   'src/__tests__/**/*',

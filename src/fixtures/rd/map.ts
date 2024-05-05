@@ -28,6 +28,30 @@ export const generateMaybeMapTests = (
   });
 };
 
+export const generateMapTests = (type: StatusTypes, rd: ReturnData) => {
+  const expected = (bool: boolean) => (bool ? tester(rd.status) : _else());
+
+  typesArray.forEach((value, index) => {
+    const check = value === type;
+    const _invite = `#${index + 1} => ${value} ${invite(check)}`;
+    const _expected = expected(check);
+
+    const entries = typesArray.map(value => [value, _else] as const);
+    const map = Object.fromEntries(entries) as Record<
+      StatusTypes,
+      typeof _else
+    >;
+
+    test(_invite, () => {
+      const maybe = rd.map({
+        ...map,
+        [value]: tester,
+      });
+      expect(maybe).toBe(_expected);
+    });
+  });
+};
+
 export const generateSuccessMapTests = (
   type: StatusTypes,
   rd: ReturnData,

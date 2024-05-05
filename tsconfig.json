@@ -31,7 +31,9 @@
       "#types": ["./src/types.ts"],
       "#functions/*": ["./src/functions/*"],
       "#lib": ["./lib"],
-      "#lib/*": ["./lib/*"]
+      "#lib/*": ["./lib/*"],
+      "#fixtures": ["./src/fixtures/index.ts"],
+      "#fixtures/*": ["./src/fixtures/*"]
     }
   }
 }

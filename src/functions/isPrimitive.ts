@@ -7,7 +7,6 @@ export function isPrimitive(val: any): val is ZodPrimitive {
     val instanceof z.ZodString ||
     val instanceof z.ZodBoolean ||
     val instanceof z.ZodUndefined ||
-    val instanceof z.ZodArray ||
-    val instanceof z.ZodDate
+    val instanceof z.ZodNull
   );
 }

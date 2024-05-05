@@ -20,6 +20,7 @@
     "node": ">=20"
   },
   "devDependencies": {
+    "@bemedev/usefull-functions": "^0.1.1",
     "@bemedev/vitest-alias": "^0.0.2",
     "@bemedev/vitest-extended": "^0.3.0",
     "@bemedev/zod-extended": "^0.1.2",

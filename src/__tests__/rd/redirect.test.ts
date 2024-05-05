@@ -1,18 +1,20 @@
+import { ReturnData } from '#rd';
 import { describe } from 'vitest';
-import { ReturnData } from '../ReturnData';
-import { generateCheckTests } from './fixtures/checkers';
+import { generateCheckTests } from '../fixtures/checkers';
 import {
   generateMaybeMapTests,
   generateSuccessMapTests,
-} from './fixtures/map';
+} from '../fixtures/map';
 
 const rd1 = new ReturnData({
-  status: 503,
+  status: 303,
   messages: ['bad_url'],
 });
 
 const rd2 = new ReturnData({
-  status: 525,
+  status: 305,
+  payload: 'value',
+  messages: ['We will migrate to new API'],
 });
 
 // const rdInformation3 = new ReturnData({
@@ -20,13 +22,13 @@ const rd2 = new ReturnData({
 // });
 
 describe('#1 => Checkers', () => {
-  generateCheckTests('server', rd1);
+  generateCheckTests('redirect', rd1);
 });
 
 describe('#2 => Map', () => {
-  generateMaybeMapTests('server', rd2);
+  generateMaybeMapTests('redirect', rd2);
 });
 
 describe('#3 => SuccessMap', () => {
-  generateSuccessMapTests(rd1);
+  generateSuccessMapTests('redirect', rd1);
 });

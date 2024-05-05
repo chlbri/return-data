@@ -4,14 +4,14 @@ import { expect, test } from 'vitest';
 import { typesArray, type StatusTypes } from './helpers';
 
 export const tester = (status: Status) => status.toString();
-const _else = 'else';
+const _else = () => 'else';
 const invite = (bool: boolean) => (bool ? 'matches' : "doesn't match");
 
 export const generateMaybeMapTests = (
   type: StatusTypes,
   rd: ReturnData,
 ) => {
-  const expected = (bool: boolean) => (bool ? tester(rd.status) : _else);
+  const expected = (bool: boolean) => (bool ? tester(rd.status) : _else());
 
   typesArray.forEach((value, index) => {
     const check = value === type;
@@ -20,7 +20,7 @@ export const generateMaybeMapTests = (
 
     test(_invite, () => {
       const maybe = rd.maybeMap({
-        else: () => _else,
+        else: _else,
         [value]: tester,
       });
       expect(maybe).toBe(_expected);
@@ -28,7 +28,10 @@ export const generateMaybeMapTests = (
   });
 };
 
-export const generateSuccessMapTests = (rd: ReturnData) => {
+export const generateSuccessMapTests = (
+  type: StatusTypes,
+  rd: ReturnData,
+) => {
   const invite = (bool: boolean) => (bool ? 'matches' : "doesn't match");
 
   typesArray.forEach((value, index) => {
@@ -36,15 +39,24 @@ export const generateSuccessMapTests = (rd: ReturnData) => {
     const _invite = `#${index + 1} => ${value} ${invite(check)}`;
     const success = () =>
       rd.successMap({
+        [value]: _else,
         success: tester,
       });
 
     test(_invite, () => {
-      if (check) {
+      if (type === value) {
         expect(success).not.toThrow();
-        expect(success()).toBe(tester(rd.status));
+        if (check) {
+          expect(success()).toBe(tester(rd.status));
+        } else {
+          expect(success()).toBe(_else());
+        }
       } else {
-        expect(success).toThrow();
+        if (check) {
+          expect(success).not.toThrow();
+        } else {
+          expect(success).toThrow();
+        }
       }
     });
   });

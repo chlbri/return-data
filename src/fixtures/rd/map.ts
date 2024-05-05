@@ -18,7 +18,7 @@ export const generateMaybeMapTests = (
     const _invite = `#${index + 1} => ${value} ${invite(check)}`;
     const _expected = expected(check);
 
-    test(_invite, () => {
+    test.concurrent(_invite, () => {
       const maybe = rd.maybeMap({
         else: _else,
         [value]: tester,
@@ -42,7 +42,7 @@ export const generateMapTests = (type: StatusTypes, rd: ReturnData) => {
       typeof _else
     >;
 
-    test(_invite, () => {
+    test.concurrent(_invite, () => {
       const maybe = rd.map({
         ...map,
         [value]: tester,
@@ -67,7 +67,7 @@ export const generateSuccessMapTests = (
         success: tester,
       });
 
-    test(_invite, () => {
+    test.concurrent(_invite, () => {
       if (type === value) {
         expect(success).not.toThrow();
         if (check) {

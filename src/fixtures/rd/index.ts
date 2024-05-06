@@ -1,11 +1,9 @@
 import { RD } from '#types';
 import { describe } from 'vitest';
+import { generateChainTests } from './chain';
 import { generateCheckTests } from './checkers';
-import {
-  generateMapTests,
-  generateMaybeMapTests,
-  generateSuccessMapTests,
-} from './map';
+import { generateMaybeMapTests, generateSuccessMapTests } from './map';
+import { generateRenewTests } from './renew';
 
 export * from './checkers';
 export * from './helpers';
@@ -24,7 +22,11 @@ export const createTests = (...rds: RD[]) => {
     generateSuccessMapTests(...rds);
   });
 
-  describe('#4 => Map', () => {
-    generateMapTests(...rds);
+  describe('#4 => Chain', () => {
+    generateChainTests(...rds);
+  });
+
+  describe('#5 => Renew', () => {
+    generateRenewTests(...rds);
   });
 };

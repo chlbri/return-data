@@ -75,7 +75,7 @@ export type RedirectFunction<T, R> = (
 export type SuccessFunction<T, R> = (
   status: SuccessStatus,
   payload: T,
-  messages?: string[],
+  // messages?: string[],
 ) => R;
 
 export type ServerFunction<R> = (
@@ -89,7 +89,7 @@ export type TimeoutFunction<R> = (status: TimeoutErrorStatus) => R;
 
 // #region Maps
 
-export type ReturnDataMap<T, R> = {
+export type RdMap<T, R> = {
   client: ClientErrorFunction<R>;
   information: InformationFunction<T, R>;
   permission: PermissionErrorFunction<T, R>;
@@ -99,59 +99,27 @@ export type ReturnDataMap<T, R> = {
   timeout: TimeoutFunction<R>;
 };
 
-export type RDDataMap<T, R> = ReturnDataMap<T, R>;
+export type SuccessMap<T, R> = Partial<Omit<RdMap<T, R>, 'success'>> &
+  Pick<RdMap<T, R>, 'success'>;
 
-export type ReturnDataSuccessMap<T, R> = Partial<
-  Omit<ReturnDataMap<T, R>, 'success'>
-> &
-  Pick<ReturnDataMap<T, R>, 'success'>;
-
-export type RDSuccessMap<T, R> = ReturnDataSuccessMap<T, R>;
-
-export type ReturnDataMaybeMap<T, R> = Partial<ReturnDataMap<T, R>> & {
-  else: () => R;
+export type MaybeMap<T, R> = Partial<RdMap<T, R>> & {
+  else: (status: Status) => R;
 };
-export type RDMaybeMap<T, R> = ReturnDataMaybeMap<T, R>;
-
 // #endregion
-
 // #endregion
 
 // #region Chains
-
 export type RD<T = any, S extends Status = Status> = ReturnData<T, S>;
 
-export type PromiseReturnData<T = any> = Promise<RD<T>>;
-export type PromiseRD<T = any> = PromiseReturnData<T>;
+export type MapChain<T = any> = Pick<
+  RdMap<T, RD<T>>,
+  'information' | 'permission' | 'redirect' | 'success'
+>;
 
-export type ReturnDataChainSync<T = any> = {
-  information: InformationFunction<T, RD<T>>;
-  permission: PermissionErrorFunction<T, RD<T>>;
-  redirect: RedirectFunction<T, RD<T>>;
-  success: SuccessFunction<T, RD<T>>;
-};
-export type RDChainSync<T = any> = ReturnDataChainSync<T>;
-
-export type ReturnDataRenewSync<T = any, R = any> = {
-  information: InformationFunction<T, RD<R>>;
-  permission: PermissionErrorFunction<T, RD<R>>;
-  redirect: RedirectFunction<T, RD<R>>;
-  success: SuccessFunction<T, RD<R>>;
-};
-
-export type ReturnDataChainAsync<T = any> = {
-  information: InformationFunction<T, PromiseRD<T>>;
-  permission: PermissionErrorFunction<T, PromiseRD<T>>;
-  redirect: RedirectFunction<T, PromiseRD<T>>;
-  success: SuccessFunction<T, PromiseRD<T>>;
-};
-export type ReturnDataRenewAsync<T = any, R = any> = {
-  information: InformationFunction<T, PromiseRD<R>>;
-  permission: PermissionErrorFunction<T, PromiseRD<R>>;
-  redirect: RedirectFunction<T, PromiseRD<R>>;
-  success: SuccessFunction<T, PromiseRD<R>>;
-};
-
+export type MapRenew<T = any, R = any> = Pick<
+  RdMap<T, RD<R>>,
+  'information' | 'permission' | 'redirect' | 'success'
+>;
 // #endregion
 
 // #endregion
@@ -216,19 +184,12 @@ export type Timeout = {
 // #endregion
 
 // #region Types
-export type StatusTypes = keyof ReturnDataMap<any, any>;
+export type StatusTypes = keyof RdMap<any, any>;
 export type FunctionRDwithReturn<T = any, R = any> = (
-  status: Status,
+  status?: Status,
   payload?: T,
 ) => RD<R>;
 export type FunctionRD<T = any> = FunctionRDwithReturn<T, T>;
-
-export type FunctionPromiseRDwithReturn<T = any, R = any> = (
-  status: Status,
-  payload?: T,
-) => PromiseRD<R>;
-export type FunctionPromiseRD<T = any> = FunctionPromiseRDwithReturn<T, T>;
-
 // #endregion
 
 /**

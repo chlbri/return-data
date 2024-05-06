@@ -96,32 +96,46 @@ const map2: MapChain = {
 // #endregion
 // #endregion
 
-const _generateChainTests = <T>(rd: ReturnData<T>) => {
+const _generateRenewTests = <T>(rd: ReturnData<T>) => {
   const type = rd.type;
-  const { information, permission, redirect } = generateBooleans(type);
+  const { information, permission, redirect, client, timeout, server } =
+    generateBooleans(type);
   const canData = rd.canData;
+  const rd400 = ReturnData.defaultClient();
+  const rd500 = ReturnData.defaultServer();
+  const rd900 = ReturnData.defaultTimeout();
 
-  describe('#1 => Args : MapChain', () => {
+  const extendCheck = (rd0: ReturnData, _check: boolean) => {
+    let check = _check;
+    if (client) check = rd0.compare(rd400);
+    else if (server) check = rd0.compare(rd500);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    else if (timeout) check = rd0.compare(rd900);
+    return check;
+  };
+
+  describe('#1 => Args : MapRenew', () => {
     test('#1 => map1 matches previous rd (identity)', () => {
-      const rd0 = rd.chain(map1);
-      const check = rd0.compare(rd);
+      const rd0 = rd.renew(map1);
+      // eslint-disable-next-line prefer-const
+      let check = rd0.compare(rd);
+      check = extendCheck(rd0, check);
+      // if (client) check = rd0.compare(rd400);
+      // if (server) check = rd0.compare(rd500);
+      // // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      // if (timeout) check = rd0.compare(rd900);
       expect(check).toBe(true);
     });
 
     const text2 = `#2 => map2 ${information ? 'matches success' : redirect ? 'matches timeout' : permission ? 'matches server' : 'matches previous rd'}`;
 
     test(text2, () => {
-      const rd0 = rd.chain(map2);
+      const rd0 = rd.renew(map2);
       let check = rd0.compare(rd);
-      if (information) {
-        check = rd0.compare(rdSuccess1);
-      }
-      if (redirect) {
-        check = rd0.compare(rdTimeout1);
-      }
-      if (permission) {
-        check = rd0.compare(rdServer2);
-      }
+      if (information) check = rd0.compare(rdSuccess1);
+      if (redirect) check = rd0.compare(rdTimeout1);
+      if (permission) check = rd0.compare(rdServer2);
+      check = extendCheck(rd0, check);
       expect(check).toBe(true);
     });
   });
@@ -129,11 +143,12 @@ const _generateChainTests = <T>(rd: ReturnData<T>) => {
   describe('#2 => functions', () => {
     const useTest = (f: FunctionRD, index: number) => {
       return test(`#${index} => ${f.name}`, () => {
-        const rd0 = rd.chain(f as any);
+        const rd0 = rd.renew(f as any);
         let check = rd0.compare(rd);
         if (canData) {
           check = rd0.compare(f(rd0.status));
         }
+        check = extendCheck(rd0, check);
         expect(check).toBe(true);
       });
     };
@@ -147,11 +162,12 @@ const _generateChainTests = <T>(rd: ReturnData<T>) => {
   describe('#3 => ReturnDatas', () => {
     const useTest = (data: ReturnData, name: string, index: number) => {
       return test(`#${index + 1} => ${name}`, () => {
-        const rd0 = rd.chain(data as any);
+        const rd0 = rd.renew(data as any);
         let check = rd0.compare(rd);
         if (canData) {
           check = rd0.compare(data);
         }
+        check = extendCheck(rd0, check);
         expect(check).toBe(true);
       });
     };
@@ -176,4 +192,4 @@ const _generateChainTests = <T>(rd: ReturnData<T>) => {
   });
 };
 
-export const generateChainTests = generator(_generateChainTests);
+export const generateRenewTests = generator(_generateRenewTests);

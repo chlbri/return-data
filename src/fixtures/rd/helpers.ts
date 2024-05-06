@@ -1,4 +1,5 @@
-import type { StatusTypes } from '#types';
+import type { RD, StatusTypes } from '#types';
+import { describe } from 'vitest';
 
 export const typesArray = [
   'client',
@@ -28,6 +29,17 @@ export const generateBooleans = (type: StatusTypes) => {
     success,
     timeout,
   } as const;
+};
+
+export const generator = (tester: (arg: RD) => void) => {
+  function out(...rds: RD[]) {
+    rds.forEach((rd, index) => {
+      describe(`#${index + 1} ======>`, () => {
+        tester(rd);
+      });
+    });
+  }
+  return out;
 };
 
 // export const generateType = <T, S extends Status>(

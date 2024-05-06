@@ -1,22 +1,11 @@
 import type { ReturnData } from '#rd';
-import type { Status, StatusTypes } from '#types';
-import { describe, expect, test } from 'vitest';
-import { typesArray } from './helpers';
+import type { Status } from '#types';
+import { expect, test } from 'vitest';
+import { generator, typesArray } from './helpers';
 
 export const tester = (status: Status) => status.toString();
 const _else = () => 'else';
 const invite = (bool: boolean) => (bool ? 'matches' : "doesn't match");
-
-const generator = (tester: (arg: ReturnData) => void) => {
-  function out(...rds: ReturnData[]) {
-    rds.forEach((rd, index) => {
-      describe(`#${index + 1} ======>`, () => {
-        tester(rd);
-      });
-    });
-  }
-  return out;
-};
 
 const _generateMaybeMapTests = (rd: ReturnData) => {
   const expected = (bool: boolean) => (bool ? tester(rd.status) : _else());
@@ -37,32 +26,6 @@ const _generateMaybeMapTests = (rd: ReturnData) => {
 };
 
 export const generateMaybeMapTests = generator(_generateMaybeMapTests);
-
-const _generateMapTests = (rd: ReturnData) => {
-  const expected = (bool: boolean) => (bool ? tester(rd.status) : _else());
-
-  typesArray.forEach((value, index) => {
-    const check = value === rd.type;
-    const _invite = `#${index + 1} => ${value} ${invite(check)}`;
-    const _expected = expected(check);
-
-    const entries = typesArray.map(value => [value, _else] as const);
-    const map = Object.fromEntries(entries) as Record<
-      StatusTypes,
-      typeof _else
-    >;
-
-    test.concurrent(_invite, () => {
-      const maybe = rd.map({
-        ...map,
-        [value]: tester,
-      });
-      expect(maybe).toBe(_expected);
-    });
-  });
-};
-
-export const generateMapTests = generator(_generateMapTests);
 
 const _generateSuccessMapTests = (rd: ReturnData) => {
   const invite = (bool: boolean) => (bool ? 'matches' : "doesn't match");

@@ -103,6 +103,11 @@ export type Success<T = any> = {
 export type Timeout = {
     status: TimeoutErrorStatus;
 };
+export type StatusTypes = keyof ReturnDataMap<any, any>;
+export type FunctionRDwithReturn<T = any, R = any> = (status: Status, payload?: T) => RD<R>;
+export type FunctionRD<T = any> = FunctionRDwithReturn<T, T>;
+export type FunctionPromiseRDwithReturn<T = any, R = any> = (status: Status, payload?: T) => PromiseRD<R>;
+export type FunctionPromiseRD<T = any> = FunctionPromiseRDwithReturn<T, T>;
 /**
  * prettier-ignore
  */

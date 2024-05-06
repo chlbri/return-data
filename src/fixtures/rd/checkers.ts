@@ -1,11 +1,8 @@
 import type { ReturnData } from '#rd';
-import { expect, test } from 'vitest';
-import { generateBooleans, type StatusTypes } from './helpers';
+import { describe, expect, test } from 'vitest';
+import { generateBooleans } from './helpers';
 
-export const generateCheckTests = (
-  type: StatusTypes,
-  data: ReturnData,
-) => {
+export const _generateCheckTests = (data: ReturnData) => {
   // #region Booleans
   const {
     client,
@@ -15,7 +12,7 @@ export const generateCheckTests = (
     server,
     success,
     timeout,
-  } = generateBooleans(type);
+  } = generateBooleans(data.type);
 
   const canData = success || information || permission || redirect;
   // #endregion
@@ -50,5 +47,13 @@ export const generateCheckTests = (
 
   test.concurrent(`#8 => canData => ${canData}`, () => {
     expect(data.canData).toBe(canData);
+  });
+};
+
+export const generateCheckTests = (...rds: ReturnData[]) => {
+  rds.forEach((rd, index) => {
+    describe(`#${index} ======>`, () => {
+      _generateCheckTests(rd);
+    });
   });
 };

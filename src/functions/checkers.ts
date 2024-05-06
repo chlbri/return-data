@@ -45,3 +45,13 @@ export function isSuccess<T = any>(arg: any): arg is Success<T> {
 export function isTimeout(arg: Record<string, any>): arg is Timeout {
   return timeoutErrorSchema.safeParse(arg).success;
 }
+
+export const RD_CHECKERS = {
+  isClientError,
+  isInformation,
+  isPermission,
+  isRedirect,
+  isServer,
+  isSuccess,
+  isTimeout,
+};

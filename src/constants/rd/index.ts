@@ -27,3 +27,13 @@ export {
   SUCCESS,
   TIMEOUT_ERRORS,
 };
+
+export const RD_TYPES = [
+  'client',
+  'information',
+  'permission',
+  'redirect',
+  'server',
+  'success',
+  'timeout',
+] as const;

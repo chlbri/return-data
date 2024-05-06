@@ -1,4 +1,4 @@
-import type { ReturnDataMap } from '#types';
+import type { StatusTypes } from '#types';
 
 export const typesArray = [
   'client',
@@ -9,8 +9,6 @@ export const typesArray = [
   'success',
   'timeout',
 ] as const;
-
-export type StatusTypes = keyof ReturnDataMap<any, any>;
 
 export const generateBooleans = (type: StatusTypes) => {
   const client = type === 'client';
@@ -31,3 +29,15 @@ export const generateBooleans = (type: StatusTypes) => {
     timeout,
   } as const;
 };
+
+// export const generateType = <T, S extends Status>(
+//   rd: RD<T, S>,
+// ): StatusTypes => {
+//   switch (key) {
+//     case value:
+//       break;
+
+//     default:
+//       break;
+//   }
+// };

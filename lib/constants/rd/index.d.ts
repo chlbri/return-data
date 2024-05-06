@@ -1008,4 +1008,5 @@ export declare const RETURN_DATAS: {
     499: import("../..").ClientError;
 };
 export { CLIENT_ERRORS, INFORMATIONS, PERMISSION_DENIEDS, REDIRECTS, SERVER_ERRORS, SUCCESS, TIMEOUT_ERRORS, };
+export declare const RD_TYPES: readonly ["client", "information", "permission", "redirect", "server", "success", "timeout"];
 //# sourceMappingURL=index.d.ts.map

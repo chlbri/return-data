@@ -7,8 +7,13 @@ import {
   isSuccess,
   isTimeout,
 } from '#functions/checkers';
+import { getType } from '#functions/type';
 
 import type {
+  FunctionPromiseRD,
+  FunctionPromiseRDwithReturn,
+  FunctionRD,
+  FunctionRDwithReturn,
   PromiseRD,
   RD,
   ReturnDataChainAsync,
@@ -25,21 +30,6 @@ import type {
 export const defaultError = () => {
   throw new Error();
 };
-
-// #region Types
-type FunctionRDwithReturn<T = any, R = any> = (
-  status: Status,
-  payload?: T,
-) => RD<R>;
-type FunctionRD<T = any> = FunctionRDwithReturn<T, T>;
-
-type FunctionPromiseRDwithReturn<T = any, R = any> = (
-  status: Status,
-  payload?: T,
-) => PromiseRD<R>;
-type FunctionPromiseRD<T = any> = FunctionPromiseRDwithReturn<T, T>;
-
-// #endregion
 
 export class ReturnData<T = any, S extends Status = Status> {
   constructor(private data: ReturnDataObject<T, S>) {}
@@ -72,6 +62,10 @@ export class ReturnData<T = any, S extends Status = Status> {
 
   get isTimeoutError() {
     return ReturnData.isTimeout(this.data);
+  }
+
+  get type() {
+    return ReturnData.getType(this.data);
   }
   // #endregion
 
@@ -200,7 +194,9 @@ export class ReturnData<T = any, S extends Status = Status> {
     });
   }
 
-  chainSync(cases: ReturnDataChainSync<T> | RD<T> | FunctionRD<T>): RD<T> {
+  chainSync = (
+    cases: ReturnDataChainSync<T> | RD<T> | FunctionRD<T>,
+  ): RD<T> => {
     if (cases instanceof ReturnData) {
       return this._chainSync({
         information: () => cases,
@@ -219,7 +215,7 @@ export class ReturnData<T = any, S extends Status = Status> {
     }
 
     return this._chainSync(cases);
-  }
+  };
 
   private _chainAsync({
     information,
@@ -486,6 +482,7 @@ export class ReturnData<T = any, S extends Status = Status> {
   static isServer = isServer;
   static isSuccess = isSuccess;
   static isTimeout = isTimeout;
+  static getType = getType;
 
   static canData = <T = any>(data: T) => {
     return (

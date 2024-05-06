@@ -13,7 +13,7 @@ export {
   permissionStatusSchema,
   redirectStatusSchema,
   serverErrorStatusSchema,
-  successStatusSchema as successfullStatusSchema,
+  successStatusSchema,
   timeoutErrorStatusSchema,
 };
 
@@ -26,3 +26,13 @@ export const statusSchema = z.union([
   successStatusSchema,
   timeoutErrorStatusSchema,
 ]);
+
+export const STATUS_CHECKERS = {
+  client: clientErrorStatusSchema,
+  information: informationStatusSchema,
+  permission: permissionStatusSchema,
+  redirect: redirectStatusSchema,
+  server: serverErrorStatusSchema,
+  success: successStatusSchema,
+  timeout: timeoutErrorStatusSchema,
+};

@@ -1,20 +1,28 @@
 import type { ReturnData } from '#rd';
-import type { Status } from '#types';
-import { expect, test } from 'vitest';
-import { typesArray, type StatusTypes } from './helpers';
+import type { Status, StatusTypes } from '#types';
+import { describe, expect, test } from 'vitest';
+import { typesArray } from './helpers';
 
 export const tester = (status: Status) => status.toString();
 const _else = () => 'else';
 const invite = (bool: boolean) => (bool ? 'matches' : "doesn't match");
 
-export const generateMaybeMapTests = (
-  type: StatusTypes,
-  rd: ReturnData,
-) => {
+const generator = (tester: (arg: ReturnData) => void) => {
+  function out(...rds: ReturnData[]) {
+    rds.forEach((rd, index) => {
+      describe(`#${index + 1} ======>`, () => {
+        tester(rd);
+      });
+    });
+  }
+  return out;
+};
+
+const _generateMaybeMapTests = (rd: ReturnData) => {
   const expected = (bool: boolean) => (bool ? tester(rd.status) : _else());
 
   typesArray.forEach((value, index) => {
-    const check = value === type;
+    const check = value === rd.type;
     const _invite = `#${index + 1} => ${value} ${invite(check)}`;
     const _expected = expected(check);
 
@@ -28,11 +36,13 @@ export const generateMaybeMapTests = (
   });
 };
 
-export const generateMapTests = (type: StatusTypes, rd: ReturnData) => {
+export const generateMaybeMapTests = generator(_generateMaybeMapTests);
+
+const _generateMapTests = (rd: ReturnData) => {
   const expected = (bool: boolean) => (bool ? tester(rd.status) : _else());
 
   typesArray.forEach((value, index) => {
-    const check = value === type;
+    const check = value === rd.type;
     const _invite = `#${index + 1} => ${value} ${invite(check)}`;
     const _expected = expected(check);
 
@@ -52,10 +62,9 @@ export const generateMapTests = (type: StatusTypes, rd: ReturnData) => {
   });
 };
 
-export const generateSuccessMapTests = (
-  type: StatusTypes,
-  rd: ReturnData,
-) => {
+export const generateMapTests = generator(_generateMapTests);
+
+const _generateSuccessMapTests = (rd: ReturnData) => {
   const invite = (bool: boolean) => (bool ? 'matches' : "doesn't match");
 
   typesArray.forEach((value, index) => {
@@ -68,7 +77,7 @@ export const generateSuccessMapTests = (
       });
 
     test.concurrent(_invite, () => {
-      if (type === value) {
+      if (rd.type === value) {
         expect(success).not.toThrow();
         if (check) {
           expect(success()).toBe(tester(rd.status));
@@ -85,3 +94,5 @@ export const generateSuccessMapTests = (
     });
   });
 };
+
+export const generateSuccessMapTests = generator(_generateSuccessMapTests);

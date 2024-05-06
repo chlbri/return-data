@@ -35,7 +35,6 @@ export class ReturnData<T = any, S extends Status = Status> {
   constructor(private data: ReturnDataObject<T, S>) {}
 
   // #region Checkers
-
   get isClienError() {
     return ReturnData.isClientError(this.data);
   }
@@ -64,13 +63,13 @@ export class ReturnData<T = any, S extends Status = Status> {
     return ReturnData.isTimeout(this.data);
   }
 
-  get type() {
-    return ReturnData.getType(this.data);
+  get canData() {
+    return ReturnData.canData(this.data);
   }
   // #endregion
 
-  get canData() {
-    return ReturnData.canData(this.data);
+  get type() {
+    return ReturnData.getType(this.data);
   }
 
   get status() {
@@ -78,7 +77,6 @@ export class ReturnData<T = any, S extends Status = Status> {
   }
 
   // #region Mappers
-
   map = <R>(cases: ReturnDataMap<T, R>) => {
     return ReturnData.map(this.data, cases);
   };
@@ -90,11 +88,9 @@ export class ReturnData<T = any, S extends Status = Status> {
   successMap<R>(cases: ReturnDataSuccessMap<T, R>) {
     return ReturnData.successMap(this.data, cases);
   }
-
   // #endregion
 
   // #region Chain
-
   private _chainSync({
     information,
     permission,
@@ -341,11 +337,9 @@ export class ReturnData<T = any, S extends Status = Status> {
 
     return this._chainAsync(args);
   }
-
   // #endregion
 
   // #region Renews
-
   private _renewSync<R>({
     information,
     permission,
@@ -470,11 +464,9 @@ export class ReturnData<T = any, S extends Status = Status> {
 
     return this._renewAsync(args);
   }
-
   // #endregion
 
   // #region Static
-
   static isClientError = isClientError;
   static isInformation = isInformation;
   static isPermission = isPermission;
@@ -586,4 +578,5 @@ export class ReturnData<T = any, S extends Status = Status> {
       timeout,
     });
   }
+  // #endregion
 }

@@ -1,6 +1,12 @@
 import type { CLIENT_ERROR_STATUS, INFORMATION_STATUS, PERMISSION_ERROR_STATUS, REDIRECT_STATUS, SERVER_ERROR_STATUS, STATUS, SUCCESS_STATUS, TIMEOUT_ERROR_STATUS } from './constants/status/index.js';
+import type { ReturnData } from './ReturnData.js';
+import type { KeysMatchingWithArray } from '@bemedev/zod-extended/lib/types';
 import type { z } from 'zod';
-import type { ReturnData } from './ReturnData';
+export type Ru = Record<string, unknown>;
+export type KeysMatching<T extends Ru, AddObjectKeys extends boolean = true, Key = keyof T> = Key extends string ? T[Key] extends Ru ? `${Key}.${KeysMatching<T[Key], AddObjectKeys> & string}` | (AddObjectKeys extends true ? Key : never) : Key : never;
+export type KeyArraysMatching<T extends Ru, Key = keyof T> = Key extends string ? T[Key] extends Ru ? KeyArraysMatching<{
+    [key2 in keyof T[Key] as `${Key}.${key2 & string}`]: T[Key][key2];
+}> : [Key] : never;
 export type ChainReturn<T> = {
     success: true;
     data: T;
@@ -15,7 +21,7 @@ export type Optional<T extends z.ZodRawShape | ZodPrimitive> = T extends z.ZodRa
 export type ZodPrimitive = z.ZodNumber | z.ZodString | z.ZodBoolean | z.ZodUndefined | z.ZodNull;
 export type ClientErrorFunction<R> = (status: ClientErrorStatus, messages?: string[]) => R;
 export type InformationFunction<T, R> = (status: InformationStatus, payload?: T, messages?: string[]) => R;
-export type PermissionErrorFunction<T, R> = (status: PermissionErrorStatus, payload?: T, notPermitteds?: string[], messages?: string[]) => R;
+export type PermissionErrorFunction<T, R> = (status: PermissionErrorStatus, payload?: T, notPermitteds?: Record<T extends Ru ? KeysMatching<T> : string, number>, messages?: string[]) => R;
 export type RedirectFunction<T, R> = (status: RedirectStatus, payload?: T, messages?: string[]) => R;
 export type SuccessFunction<T, R> = (status: SuccessStatus, payload: T) => R;
 export type ServerFunction<R> = (status: ServerErrorStatus, messages?: string[]) => R;
@@ -56,7 +62,7 @@ export type Information<T = any> = {
 export type Permission<T = any> = {
     status: PermissionErrorStatus;
     payload?: T;
-    notPermitteds?: string[];
+    notPermitteds?: Record<T extends Ru ? KeysMatching<T> : string, number>;
     messages?: string[];
 };
 export type Redirect<T = any> = {
@@ -78,8 +84,11 @@ export type Timeout = {
 export type StatusTypes = keyof RdMap<any, any>;
 export type FunctionRDwithReturn<T = any, R = any> = (status?: Status, payload?: T) => RD<R>;
 export type FunctionRD<T = any> = FunctionRDwithReturn<T, T>;
+type _ReturnKeys2<T extends z.AnyZodObject> = KeysMatchingWithArray<z.infer<T>>;
+export type ReturnKeys<T extends z.AnyZodObject> = _ReturnKeys2<T> extends [string, ...string[]] ? _ReturnKeys2<T> : [string, ...string[]];
 /**
  * prettier-ignore
  */
 export type ReturnDataObject<T, S extends Status> = S extends ClientErrorStatus ? ClientError : S extends InformationStatus ? Information<T> : S extends PermissionErrorStatus ? Permission<T> : S extends RedirectStatus ? Redirect<T> : S extends ServerErrorStatus ? Server : S extends SuccessStatus ? Success<T> : S extends TimeoutErrorStatus ? Timeout : never;
+export {};
 //# sourceMappingURL=types.d.ts.map

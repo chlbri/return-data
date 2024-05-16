@@ -9,11 +9,40 @@ import type {
   TIMEOUT_ERROR_STATUS,
 } from '#status';
 
+import type { ReturnData } from '#rd';
+import type { KeysMatchingWithArray } from '@bemedev/zod-extended/lib/types';
 import type { z } from 'zod';
-import type { ReturnData } from './ReturnData';
+export type Ru = Record<string, unknown>;
+
+// #region KeysMatching
+export type KeysMatching<
+  T extends Ru,
+  AddObjectKeys extends boolean = true,
+  Key = keyof T,
+> = Key extends string
+  ? T[Key] extends Ru
+    ?
+        | `${Key}.${KeysMatching<T[Key], AddObjectKeys> & string}`
+        | (AddObjectKeys extends true ? Key : never)
+    : Key
+  : never;
+// #endregion
+
+// #region KeyArraysMatching
+// #region type KeyArraysMatching
+export type KeyArraysMatching<
+  T extends Ru,
+  Key = keyof T,
+> = Key extends string
+  ? T[Key] extends Ru
+    ? KeyArraysMatching<{
+        [key2 in keyof T[Key] as `${Key}.${key2 & string}`]: T[Key][key2];
+      }>
+    : [Key]
+  : never;
+// #endregion
 
 // #region Config
-
 export type ChainReturn<T> =
   | {
       success: true;
@@ -62,7 +91,7 @@ export type InformationFunction<T, R> = (
 export type PermissionErrorFunction<T, R> = (
   status: PermissionErrorStatus,
   payload?: T,
-  notPermitteds?: string[],
+  notPermitteds?: Record<T extends Ru ? KeysMatching<T> : string, number>,
   messages?: string[],
 ) => R;
 
@@ -158,7 +187,7 @@ export type Information<T = any> = {
 export type Permission<T = any> = {
   status: PermissionErrorStatus;
   payload?: T;
-  notPermitteds?: string[];
+  notPermitteds?: Record<T extends Ru ? KeysMatching<T> : string, number>;
   messages?: string[];
 };
 
@@ -192,6 +221,16 @@ export type FunctionRDwithReturn<T = any, R = any> = (
 export type FunctionRD<T = any> = FunctionRDwithReturn<T, T>;
 // #endregion
 
+// #region type ReturnKeys
+type _ReturnKeys2<T extends z.AnyZodObject> = KeysMatchingWithArray<
+  z.infer<T>
+>;
+
+export type ReturnKeys<T extends z.AnyZodObject> =
+  _ReturnKeys2<T> extends [string, ...string[]]
+    ? _ReturnKeys2<T>
+    : [string, ...string[]];
+// #endregion
 /**
  * prettier-ignore
  */

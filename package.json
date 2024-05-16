@@ -1,6 +1,6 @@
 {
   "name": "@bemedev/return-data",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Return Data from promises",
   "repository": {
     "type": "git",
@@ -23,7 +23,7 @@
     "@bemedev/usefull-functions": "^0.1.1",
     "@bemedev/vitest-alias": "^0.0.2",
     "@bemedev/vitest-extended": "^0.3.0",
-    "@bemedev/zod-extended": "^0.1.2",
+    "@bemedev/zod-extended": "^0.1.6",
     "@rollup/plugin-terser": "^0.4.4",
     "@typescript-eslint/eslint-plugin": "^7.8.0",
     "@typescript-eslint/parser": "^7.8.0",
@@ -50,7 +50,7 @@
     "config": "pnpm install",
     "config:off": "pnpm run config --offline",
     "ci": "pnpm run lint && pnpm run build && pnpm run test",
-    "ci:online": "pnpm run config && pnpm run lint && pnpm run build && pnpm run test",
+    "ci:online": "pnpm run config && pnpm run lint && pnpm run test && pnpm run build",
     "ci:admin": "pnpm run rm && pnpm run ci:online",
     "rollup": "rollup -c",
     "build": "rm -rf lib && pnpm run rollup",
@@ -68,8 +68,5 @@
     "lint-watch": "onchange --await-write-finish 5500 \"**/*\" -- pnpm run lint",
     "prepublishOnly": "",
     "prepare": "husky"
-  },
-  "dependencies": {
-    "hotscript": "^1.0.13"
   }
 }

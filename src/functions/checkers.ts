@@ -27,9 +27,9 @@ export function isInformation<T = any>(arg: any): arg is Information<T> {
 }
 
 export function isPermission<T = any>(arg: any): arg is Permission<T> {
-  return permissionSchema().safeParse(arg).success;
+  const out = permissionSchema().safeParse(arg).success;
+  return out;
 }
-
 export function isRedirect<T = any>(arg: any): arg is Redirect<T> {
   return redirectSchema().safeParse(arg).success;
 }

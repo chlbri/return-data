@@ -87,10 +87,6 @@ export class ReturnData<T = any, S extends Status = Status> {
         const checkPayload = payload === _to.data.payload;
         const checkPermitteds = notPermitteds === _to.data.notPermitteds;
         const checkMessages = messages === _to.data.messages;
-        console.log('permission', checkPermitteds);
-        console.log('payload', checkPayload);
-        console.log('messages', checkMessages);
-        console.log('status', checkStatus);
         return (
           checkStatus && checkPayload && checkPermitteds && checkMessages
         );

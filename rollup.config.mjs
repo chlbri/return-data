@@ -10,13 +10,12 @@ const ignore = [
   '**/*.fixtures.ts',
   '**/fixtures/**/*',
   './src/config/**/*.ts',
-  'src/types/**/*',
   'src/__tests__/**/*',
 ];
 
 const input = Object.fromEntries(
   globSync('src/**/*.ts', {
-    ignore: [...ignore, '**/types.ts'],
+    ignore,
   }).map(file => [
     // This remove `src/` as well as the file extension from each
     // file, so e.g. src/nested/foo.js becomes nested/foo

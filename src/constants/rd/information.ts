@@ -1,4 +1,4 @@
-import type { Information } from '#types';
+import type { Information } from '#typings';
 
 export const INFORMATIONS = {
   100: { status: 100 } as Information,

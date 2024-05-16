@@ -1,5 +1,5 @@
 import { permissionStatusSchema } from '#schemas/status/permission';
-import type { ReturnKeys } from '#types';
+import type { ReturnKeys } from '#typings';
 import { zodObjectKeys } from '@bemedev/zod-extended';
 import { z } from 'zod';
 import { messages } from './helpers';

@@ -21,7 +21,7 @@ import type {
   ReturnDataObject,
   Status,
   SuccessMap,
-} from '#types';
+} from '#typings';
 
 export const defaultError = () => {
   throw new Error();

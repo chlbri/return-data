@@ -1,4 +1,4 @@
-import type { ClientError } from '#types';
+import type { ClientError } from '#typings';
 
 export const CLIENT_ERRORS = {
   400: { status: 400 } as ClientError,

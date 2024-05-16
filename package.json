@@ -1,6 +1,6 @@
 {
   "name": "@bemedev/return-data",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Return Data from promises",
   "repository": {
     "type": "git",
@@ -9,7 +9,7 @@
   "license": "MIT",
   "type": "module",
   "main": "lib/index.js",
-  "typings": "lib/index.d.ts",
+  "types": "lib/index.d.ts",
   "module": "lib/index.js",
   "private": false,
   "files": [
@@ -37,6 +37,7 @@
     "prettier": "^3.2.5",
     "rollup": "^4.17.2",
     "rollup-plugin-tsc-alias": "^1.1.2",
+    "rollup-plugin-typescript-paths": "^1.5.0",
     "rollup-plugin-typescript2": "^0.36.0",
     "ts-jest": "^29.1.2",
     "typescript": "^5.4.5",
@@ -53,7 +54,7 @@
     "ci:online": "pnpm run config && pnpm run lint && pnpm run test && pnpm run build",
     "ci:admin": "pnpm run rm && pnpm run ci:online",
     "rollup": "rollup -c",
-    "build": "rm -rf lib && pnpm run rollup",
+    "build": "rm -rf lib && pnpm run rollup && rm -rf ./lib/types.cjs ./lib/types.cjs.map ./lib/types.js ./lib/types.js.map",
     "rm": "rm -rf node_modules pnpm-lock.yaml",
     "rinit": "pnpm run rm && pnpm run config",
     "rinit:off": "pnpm run rm && pnpm run config:off",

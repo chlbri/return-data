@@ -28,7 +28,7 @@
       "#data/*": ["./src/constants/rd/*"],
       "#data": ["./src/constants/rd/index.ts"],
       "#rd": ["./src/ReturnData.ts"],
-      "#types": ["./src/types.ts"],
+      "#typings": ["./src/types.ts"],
       "#functions/*": ["./src/functions/*"],
       "#lib": ["./lib"],
       "#lib/*": ["./lib/*"],

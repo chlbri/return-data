@@ -1,5 +1,5 @@
 import { RD_TYPES } from '#data';
-import { Status, StatusTypes } from '#types';
+import { Status, StatusTypes } from '#typings';
 
 type Fn<T> = (value: Status) => T;
 

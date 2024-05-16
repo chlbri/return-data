@@ -16,7 +16,7 @@ import type {
   Server,
   Success,
   Timeout,
-} from '#types';
+} from '#typings';
 
 export function isClientError(arg: any): arg is ClientError {
   return clientErrorSchema.safeParse(arg).success;

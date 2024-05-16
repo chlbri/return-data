@@ -56,6 +56,9 @@ devDependencies:
   rollup-plugin-tsc-alias:
     specifier: ^1.1.2
     version: 1.1.2(rollup@4.17.2)
+  rollup-plugin-typescript-paths:
+    specifier: ^1.5.0
+    version: 1.5.0(typescript@5.4.5)
   rollup-plugin-typescript2:
     specifier: ^0.36.0
     version: 0.36.0(rollup@4.17.2)(typescript@5.4.5)
@@ -3597,6 +3600,14 @@ packages:
     dependencies:
       rollup: 4.17.2
       tsc-alias: 1.8.10
+    dev: true
+
+  /rollup-plugin-typescript-paths@1.5.0(typescript@5.4.5):
+    resolution: {integrity: sha512-zly2aiGNjYJNq5YUi6eyGrQnCYUQ8b5czOtHZIGriwG9U3Ba2F9hlSklafXCdsNulK/IlNmE0Kzj0h+fVV32pA==}
+    peerDependencies:
+      typescript: '>=3.4'
+    dependencies:
+      typescript: 5.4.5
     dev: true
 
   /rollup-plugin-typescript2@0.36.0(rollup@4.17.2)(typescript@5.4.5):

@@ -1,4 +1,4 @@
-import type { Redirect } from '../..';
+import type { Redirect } from '../../types.js';
 export declare const REDIRECTS: {
     readonly 300: Redirect;
     readonly 301: Redirect;

@@ -1,4 +1,4 @@
-import type { Success } from '../..';
+import type { Success } from '../../types.js';
 type T = Success<undefined>;
 export declare const SUCCESS: {
     readonly 200: T;

@@ -1,4 +1,4 @@
-import type { Success } from '#types';
+import type { Success } from '#typings';
 
 type T = Success<undefined>;
 

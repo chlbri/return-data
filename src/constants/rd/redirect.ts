@@ -1,4 +1,4 @@
-import type { Redirect } from '#types';
+import type { Redirect } from '#typings';
 
 export const REDIRECTS = {
   300: { status: 300 } as Redirect,

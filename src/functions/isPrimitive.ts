@@ -1,4 +1,4 @@
-import type { ZodPrimitive } from '#types';
+import type { ZodPrimitive } from '#typings';
 import { z } from 'zod';
 
 export function isPrimitive(val: any): val is ZodPrimitive {

@@ -1,6 +1,5 @@
 import { ReturnData } from '#rd';
-import type { FunctionRD } from '#types';
-import { MapChain } from '#types';
+import type { FunctionRD, MapChain } from '#typings';
 import { describe, expect, test } from 'vitest';
 import { generateBooleans, generator } from './helpers';
 
@@ -80,6 +79,7 @@ const f525 = () => rdServer2;
 const map1: MapChain = {
   information: (status, payload, messages) =>
     new ReturnData({ status, payload, messages }),
+  //@ts-expect-error it's ok
   permission: (status, payload, notPermitteds, messages) =>
     new ReturnData({ status, payload, messages, notPermitteds }),
   redirect: (status, payload, messages) =>

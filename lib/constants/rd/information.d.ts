@@ -1,4 +1,4 @@
-import type { Information } from '../..';
+import type { Information } from '../../types.js';
 export declare const INFORMATIONS: {
     readonly 100: Information;
     readonly 101: Information;

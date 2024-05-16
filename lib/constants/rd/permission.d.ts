@@ -1,4 +1,4 @@
-import type { Permission } from '../..';
+import type { Permission } from '../../types.js';
 export declare const PERMISSION_DENIEDS: {
     readonly 600: Permission;
     readonly 601: Permission;

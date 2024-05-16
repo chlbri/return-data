@@ -1,4 +1,4 @@
-import type { Timeout } from '../..';
+import type { Timeout } from '../../types.js';
 export declare const TIMEOUT_ERRORS: {
     readonly 900: Timeout;
     readonly 901: Timeout;

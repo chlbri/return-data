@@ -1,4 +1,4 @@
-import type { Server } from '#types';
+import type { Server } from '#typings';
 
 export const SERVER_ERRORS = {
   500: { status: 500 } as Server,

@@ -1,4 +1,4 @@
-import type { Server } from '../..';
+import type { Server } from '../../types.js';
 export declare const SERVER_ERRORS: {
     readonly 500: Server;
     readonly 501: Server;

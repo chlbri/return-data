@@ -1,4 +1,4 @@
-import { ReturnDataObject, Status } from '#types';
+import type { ReturnDataObject, Status } from '#typings';
 import { createTests } from '@bemedev/vitest-extended';
 import { TestArgs } from '@bemedev/vitest-extended/lib/types';
 

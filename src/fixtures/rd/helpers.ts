@@ -1,4 +1,4 @@
-import type { RD, StatusTypes } from '#types';
+import type { RD, StatusTypes } from '#typings';
 import { describe } from 'vitest';
 
 export const typesArray = [

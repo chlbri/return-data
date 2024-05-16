@@ -1,4 +1,4 @@
-import type { Timeout } from '#types';
+import type { Timeout } from '#typings';
 
 export const TIMEOUT_ERRORS = {
   900: { status: 900 } as Timeout,

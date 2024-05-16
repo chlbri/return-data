@@ -1,5 +1,5 @@
 import type { ReturnData } from '#rd';
-import type { Status } from '#types';
+import type { Status } from '#typings';
 import { expect, test } from 'vitest';
 import { generator, typesArray } from './helpers';
 

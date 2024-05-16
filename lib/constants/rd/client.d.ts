@@ -1,4 +1,4 @@
-import type { ClientError } from '../..';
+import type { ClientError } from '../../types.js';
 export declare const CLIENT_ERRORS: {
     readonly 400: ClientError;
     readonly 401: ClientError;

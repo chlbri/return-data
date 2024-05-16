@@ -1,3 +1,3 @@
 export * from '#rd';
-export * from '#types';
+export * from '#typings';
 export * from './schemas/rd';

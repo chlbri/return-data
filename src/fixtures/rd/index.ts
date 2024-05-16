@@ -1,4 +1,4 @@
-import { RD } from '#types';
+import { RD } from '#typings';
 import { describe } from 'vitest';
 import { generateChainTests } from './chain';
 import { generateCheckTests } from './checkers';

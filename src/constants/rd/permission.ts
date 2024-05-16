@@ -1,4 +1,4 @@
-import type { Permission } from '#types';
+import type { Permission } from '#typings';
 
 export const PERMISSION_DENIEDS = {
   600: { status: 600 } as Permission,

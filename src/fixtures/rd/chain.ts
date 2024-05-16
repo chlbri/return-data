@@ -1,6 +1,6 @@
 import { ReturnData } from '#rd';
-import type { FunctionRD } from '#types';
-import { MapChain } from '#types';
+import type { FunctionRD } from '#typings';
+import { MapChain } from '#typings';
 import { describe, expect, test } from 'vitest';
 import { generateBooleans, generator } from './helpers';
 
